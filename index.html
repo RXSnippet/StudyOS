@@ -2,741 +2,1371 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>StudyOS — ISC Class 11</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #0a0a0f;
-  --bg2: #111118;
-  --bg3: #18181f;
-  --bg4: #1e1e28;
-  --surface: #22222e;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.12);
-  --accent: #7c6af7;
-  --accent2: #a89af8;
-  --accent3: #4ade80;
-  --accent4: #fb923c;
-  --accent5: #38bdf8;
-  --danger: #f87171;
-  --text: #f0f0f8;
-  --text2: #9898b8;
-  --text3: #5a5a7a;
-  --radius: 12px;
-  --radius2: 8px;
-  --mono: 'DM Mono', monospace;
-  --sans: 'DM Sans', sans-serif;
-  --display: 'Syne', sans-serif;
+  --bg: #0d0d12;
+  --bg2: #14141c;
+  --bg3: #1a1a24;
+  --surface: #1e1e2a;
+  --surface2: #252534;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --accent: #8b7cf6;
+  --accent-dim: rgba(139,124,246,0.15);
+  --green: #4ade80;
+  --green-dim: rgba(74,222,128,0.15);
+  --orange: #fb923c;
+  --orange-dim: rgba(251,146,60,0.15);
+  --blue: #60a5fa;
+  --blue-dim: rgba(96,165,250,0.15);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.15);
+  --text: #eeeef8;
+  --text2: #8888aa;
+  --text3: #44445a;
+  --r: 12px;
+  --r2: 8px;
+  --mono: 'Space Mono', monospace;
+  --font: 'Outfit', sans-serif;
+  --nav-h: 64px;
+  --top-h: 54px;
 }
-.light {
-  --bg: #f5f5ff;
-  --bg2: #ededf8;
-  --bg3: #e5e5f5;
-  --bg4: #dcdcef;
-  --surface: #ffffff;
-  --border: rgba(0,0,0,0.07);
-  --border2: rgba(0,0,0,0.12);
-  --accent: #5b4de8;
-  --accent2: #7c6af7;
-  --accent3: #16a34a;
-  --accent4: #ea580c;
-  --accent5: #0284c7;
-  --danger: #dc2626;
-  --text: #0f0f1a;
-  --text2: #4a4a6a;
-  --text3: #9090b0;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
-button{cursor:pointer;font-family:var(--sans);border:none;outline:none}
-input,select{font-family:var(--sans);outline:none}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.5; overflow: hidden; height: 100dvh; }
+button { cursor: pointer; font-family: var(--font); border: none; outline: none; }
+input, select, textarea { font-family: var(--font); outline: none; }
 
-/* LAYOUT */
-.app{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 0;flex-shrink:0;transition:background .3s}
-.sidebar-logo{padding:0 20px 24px;font-family:var(--display);font-size:18px;font-weight:800;color:var(--text);letter-spacing:-0.5px}
-.sidebar-logo span{color:var(--accent)}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text2);cursor:pointer;font-size:13px;font-weight:500;transition:all .2s;border-left:2px solid transparent}
-.nav-item:hover{color:var(--text);background:var(--border)}
-.nav-item.active{color:var(--accent2);background:rgba(124,106,247,0.1);border-left-color:var(--accent)}
-.nav-icon{width:16px;height:16px;opacity:.7}
-.nav-item.active .nav-icon{opacity:1}
-.sidebar-bottom{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border)}
-.theme-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);cursor:pointer}
-.toggle-switch{width:32px;height:18px;background:var(--surface);border-radius:9px;position:relative;border:1px solid var(--border2)}
-.toggle-knob{width:12px;height:12px;background:var(--accent);border-radius:50%;position:absolute;top:2px;left:2px;transition:left .2s}
-.light .toggle-knob{left:16px}
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{height:56px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;background:var(--bg2);flex-shrink:0;transition:background .3s}
-.topbar-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text)}
-.topbar-sub{font-size:12px;color:var(--text3);margin-left:auto}
-.content{flex:1;overflow-y:auto;padding:24px;background:var(--bg);transition:background .3s}
+/* TOP BAR */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--top-h);
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 18px; z-index: 100;
+}
+.topbar-logo { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+.topbar-logo span { color: var(--accent); }
+.topbar-right { margin-left: auto; font-size: 12px; color: var(--text3); font-family: var(--mono); }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-h);
+  background: var(--bg2); border-top: 1px solid var(--border);
+  display: flex; align-items: center; z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 0; background: none; color: var(--text3); font-size: 10px;
+  font-weight: 600; letter-spacing: 0.03em; transition: color .2s;
+}
+.nav-btn.active { color: var(--accent); }
+.nav-icon { font-size: 20px; line-height: 1; }
+
+/* CONTENT AREA */
+.content {
+  position: fixed; top: var(--top-h); bottom: var(--nav-h);
+  left: 0; right: 0; overflow-y: auto; overflow-x: hidden;
+  padding: 16px; -webkit-overflow-scrolling: touch;
+}
 
 /* VIEWS */
-.view{display:none}
-.view.active{display:block}
+.view { display: none; }
+.view.active { display: block; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-/* DASHBOARD */
-.dash-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px}
-.stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:var(--mono)}
-.stat-val{font-size:28px;font-weight:700;font-family:var(--display);color:var(--text)}
-.stat-sub{font-size:12px;color:var(--text2);margin-top:4px}
-.stat-accent{color:var(--accent3)}
-.section-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px}
-.today-tasks{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.task-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);transition:background .15s}
-.task-item:last-child{border-bottom:none}
-.task-item:hover{background:var(--bg3)}
-.task-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border2);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.task-check.done{background:var(--accent3);border-color:var(--accent3)}
-.task-check.done::after{content:'✓';font-size:10px;color:#fff;font-weight:700}
-.task-text{flex:1;font-size:13px;color:var(--text)}
-.task-text.done{text-decoration:line-through;color:var(--text3)}
-.task-tag{font-size:10px;padding:2px 8px;border-radius:20px;font-family:var(--mono);font-weight:500}
-.tag-math{background:rgba(124,106,247,0.15);color:var(--accent2)}
-.tag-phys{background:rgba(56,189,248,0.15);color:var(--accent5)}
-.tag-chem{background:rgba(251,146,60,0.15);color:var(--accent4)}
-.tag-bio{background:rgba(74,222,128,0.15);color:var(--accent3)}
-.tag-cs{background:rgba(248,113,113,0.15);color:var(--danger)}
-.streak-card{background:linear-gradient(135deg,rgba(124,106,247,0.2),rgba(124,106,247,0.05));border:1px solid rgba(124,106,247,0.3);border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
-.streak-flame{font-size:32px}
-.streak-num{font-size:36px;font-weight:800;font-family:var(--display);color:var(--accent2)}
-.streak-text{font-size:12px;color:var(--text2)}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* CARDS */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 14px 16px; margin-bottom: 12px;
+}
+.card-sm { padding: 10px 14px; }
 
-/* PROGRESS BARS */
-.subj-progress{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px}
-.sp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.sp-name{font-size:13px;font-weight:500;color:var(--text)}
-.sp-pct{font-size:12px;font-family:var(--mono);color:var(--text2)}
-.prog-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
-.prog-fill{height:100%;border-radius:3px;transition:width .6s ease}
-.fill-math{background:var(--accent)}
-.fill-phys{background:var(--accent5)}
-.fill-chem{background:var(--accent4)}
-.fill-bio{background:var(--accent3)}
-.fill-cs{background:var(--danger)}
-.fill-eng{background:#c084fc}
+/* SECTION LABEL */
+.section-label {
+  font-size: 11px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  font-family: var(--mono); margin-bottom: 10px; margin-top: 4px;
+}
+
+/* STREAK BANNER */
+.streak-banner {
+  background: linear-gradient(135deg, rgba(139,124,246,0.2), rgba(139,124,246,0.05));
+  border: 1px solid rgba(139,124,246,0.3); border-radius: var(--r);
+  padding: 16px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 14px;
+}
+.streak-num { font-size: 40px; font-weight: 800; color: var(--accent); line-height: 1; }
+.streak-label { font-size: 13px; color: var(--text2); }
+.streak-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; }
+.stat-lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); margin-bottom: 4px; }
+.stat-val { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1.1; }
+.stat-sub { font-size: 11px; color: var(--text2); margin-top: 3px; }
+
+/* TASKS */
+.task-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 0; border-bottom: 1px solid var(--border);
+}
+.task-item:last-child { border-bottom: none; }
+.task-check {
+  width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+  border: 1.5px solid var(--border2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; font-size: 11px; color: #fff;
+}
+.task-check.done { background: var(--green); border-color: var(--green); }
+.task-text { flex: 1; font-size: 13px; color: var(--text); }
+.task-text.done { text-decoration: line-through; color: var(--text3); }
+.task-badge {
+  font-size: 10px; padding: 2px 7px; border-radius: 20px;
+  font-family: var(--mono); font-weight: 700; flex-shrink: 0;
+}
+
+/* PROGRESS BAR */
+.prog-wrap { margin-bottom: 10px; }
+.prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.prog-name { font-size: 14px; font-weight: 600; }
+.prog-pct { font-size: 12px; font-family: var(--mono); color: var(--text2); }
+.prog-bar { height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
+.prog-detail { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+/* SUBJECT COLORS */
+.c-math { color: #8b7cf6; } .bg-math { background: #8b7cf6; }
+.c-phys { color: #60a5fa; } .bg-phys { background: #60a5fa; }
+.c-chem { color: #fb923c; } .bg-chem { background: #fb923c; }
+.c-cs   { color: #f87171; } .bg-cs   { background: #f87171; }
+.dim-math { background: rgba(139,124,246,0.12); }
+.dim-phys { background: rgba(96,165,250,0.12); }
+.dim-chem { background: rgba(251,146,60,0.12); }
+.dim-cs   { background: rgba(248,113,113,0.12); }
+
+/* CHAPTER VIEW */
+.exam-section { margin-bottom: 20px; }
+.exam-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; font-family: var(--mono);
+  padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+}
+.exam-unit { background: rgba(139,124,246,0.2); color: #8b7cf6; }
+.exam-half { background: rgba(96,165,250,0.2); color: #60a5fa; }
+.exam-cum  { background: rgba(251,146,60,0.2); color: #fb923c; }
+.exam-ann  { background: rgba(74,222,128,0.2); color: #4ade80; }
+.exam-rev  { background: rgba(248,113,113,0.2); color: #f87171; }
+
+.chapter-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 14px; border-radius: var(--r2);
+  background: var(--surface2); margin-bottom: 6px;
+  cursor: pointer; transition: opacity .15s; border: 1px solid transparent;
+  -webkit-user-select: none; user-select: none;
+}
+.chapter-item.done { opacity: 0.55; border-color: rgba(74,222,128,0.3); }
+.chapter-item.done .ch-name { text-decoration: line-through; color: var(--text3); }
+.ch-icon {
+  width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+  border: 1.5px solid var(--border2); display: flex; align-items: center;
+  justify-content: center; font-size: 11px; color: #fff; font-weight: 700;
+  transition: all .2s;
+}
+.chapter-item.done .ch-icon { background: var(--green); border-color: var(--green); }
+.ch-name { flex: 1; font-size: 13px; color: var(--text); }
+.ch-note { font-size: 10px; color: var(--text3); font-family: var(--mono); }
+
+/* SUBJECT SELECTOR */
+.subj-pills { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.subj-pill {
+  padding: 7px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--border2); background: transparent; color: var(--text2);
+  transition: all .2s; cursor: pointer;
+}
+.subj-pill.active { color: #fff; border-color: transparent; }
+.pill-math.active { background: #8b7cf6; }
+.pill-phys.active { background: #60a5fa; }
+.pill-chem.active { background: #fb923c; }
+.pill-cs.active   { background: #f87171; }
 
 /* MIND MAPS */
-.mindmap-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.mm-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s}
-.mm-card:hover{border-color:var(--accent);transform:translateY(-1px)}
-.mm-icon{font-size:24px;margin-bottom:8px}
-.mm-title{font-family:var(--display);font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
-.mm-sub{font-size:12px;color:var(--text3)}
-.mm-topics{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.mm-chip{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--bg4);color:var(--text2)}
-.mm-detail{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:none}
-.mm-detail.open{display:block}
-.mm-detail-title{font-family:var(--display);font-size:18px;font-weight:800;margin-bottom:16px;color:var(--text)}
-.mm-node{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:12px 14px;margin-bottom:8px}
-.mm-node-title{font-size:13px;font-weight:500;color:var(--accent2);margin-bottom:6px;display:flex;align-items:center;gap:8px;cursor:pointer}
-.mm-node-title::before{content:'▸';font-size:10px;transition:transform .2s}
-.mm-node.expanded .mm-node-title::before{transform:rotate(90deg)}
-.mm-node-body{display:none;font-size:12px;color:var(--text2);line-height:1.7;padding-top:6px}
-.mm-node.expanded .mm-node-body{display:block}
-.formula-pill{display:inline-block;background:rgba(124,106,247,0.15);color:var(--accent2);font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;margin:2px}
-.back-btn{background:transparent;border:1px solid var(--border2);color:var(--text2);padding:6px 14px;border-radius:var(--radius2);font-size:12px;margin-bottom:16px;transition:all .2s}
-.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.mm-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 16px; margin-bottom: 10px;
+  cursor: pointer; transition: border-color .2s;
+}
+.mm-card:active { border-color: var(--accent); }
+.mm-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.mm-emoji { font-size: 28px; }
+.mm-card-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.mm-card-sub { font-size: 12px; color: var(--text3); }
+.mm-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.mm-chip {
+  font-size: 10px; padding: 3px 8px; border-radius: 20px;
+  background: var(--bg3); color: var(--text2); border: 1px solid var(--border);
+}
 
-/* TIME CALCULATOR */
-.calc-form{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;max-width:560px}
-.form-group{margin-bottom:16px}
-.form-label{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono);margin-bottom:6px;display:block}
-.form-input{width:100%;background:var(--bg4);border:1px solid var(--border2);border-radius:var(--radius2);padding:9px 12px;color:var(--text);font-size:13px;transition:border .2s}
-.form-input:focus{border-color:var(--accent)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.subj-toggle{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
-.stoggle{padding:6px 14px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:12px;transition:all .2s}
-.stoggle.on{border-color:var(--accent);background:rgba(124,106,247,0.15);color:var(--accent2)}
-.calc-btn{background:var(--accent);color:#fff;padding:10px 24px;border-radius:var(--radius2);font-size:13px;font-weight:500;font-family:var(--sans);transition:opacity .2s;margin-top:4px}
-.calc-btn:hover{opacity:.85}
-.calc-result{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:16px}
-.calc-result-title{font-family:var(--display);font-size:14px;font-weight:700;margin-bottom:14px;color:var(--text)}
-.alloc-item{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.alloc-subject{font-size:13px;color:var(--text);width:100px;flex-shrink:0}
-.alloc-bar-wrap{flex:1}
-.alloc-time{font-size:12px;font-family:var(--mono);color:var(--text2);width:60px;text-align:right;flex-shrink:0}
+.mm-node {
+  background: var(--surface2); border-radius: var(--r2);
+  margin-bottom: 8px; overflow: hidden;
+}
+.mm-node-head {
+  display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+  cursor: pointer; -webkit-user-select: none; user-select: none;
+}
+.mm-node-arrow { font-size: 10px; color: var(--text3); transition: transform .2s; flex-shrink: 0; }
+.mm-node.open .mm-node-arrow { transform: rotate(90deg); }
+.mm-node-title { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+.mm-node-body {
+  display: none; padding: 0 14px 12px; font-size: 12px; color: var(--text2); line-height: 1.7;
+}
+.mm-node.open .mm-node-body { display: block; }
+.formula-tag {
+  display: inline-block; background: rgba(139,124,246,0.15); color: #a89af8;
+  font-family: var(--mono); font-size: 11px; padding: 2px 7px; border-radius: 4px; margin: 2px 2px 2px 0;
+}
+
+/* BACK HEADER */
+.back-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.back-btn {
+  background: var(--surface2); border: 1px solid var(--border2); color: var(--text2);
+  padding: 7px 14px; border-radius: 20px; font-size: 13px; font-weight: 500;
+}
+.back-title { font-size: 16px; font-weight: 700; color: var(--text); }
+
+/* FOCUS / TIMER */
+.timer-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 24px 16px; text-align: center; margin-bottom: 12px;
+}
+.timer-mode-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+.timer-mode-btn {
+  padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  border: 1.5px solid var(--border2); background: transparent; color: var(--text2); transition: all .2s;
+}
+.timer-mode-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.timer-display { font-family: var(--mono); font-size: 56px; font-weight: 700; color: var(--text); letter-spacing: 0.04em; margin-bottom: 6px; }
+.timer-sublabel { font-size: 11px; color: var(--text3); margin-bottom: 18px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em; }
+.timer-btns { display: flex; gap: 10px; justify-content: center; }
+.t-btn {
+  padding: 10px 28px; border-radius: 10px; font-size: 14px; font-weight: 700;
+  transition: all .2s;
+}
+.t-start { background: var(--accent); color: #fff; }
+.t-start:active { opacity: 0.85; }
+.t-reset { background: var(--surface2); border: 1px solid var(--border2); color: var(--text2); }
+
+.focus-topic {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text2);
+}
+.focus-topic:last-child { border-bottom: none; }
+.ft-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+.imp-q {
+  background: var(--surface2); border-left: 2px solid var(--orange);
+  border-radius: 0 var(--r2) var(--r2) 0; padding: 10px 12px; margin-bottom: 8px;
+  font-size: 12px; color: var(--text);
+}
+.imp-q-badge { font-size: 10px; color: var(--orange); font-family: var(--mono); display: block; margin-bottom: 3px; font-weight: 700; }
+
+/* MORE / REMINDERS */
+.more-menu-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 15px 16px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r);
+  margin-bottom: 10px; cursor: pointer; transition: border-color .2s;
+}
+.more-menu-item:active { border-color: var(--accent); }
+.more-icon { font-size: 22px; width: 36px; text-align: center; }
+.more-label { font-size: 15px; font-weight: 600; color: var(--text); }
+.more-sub { font-size: 12px; color: var(--text3); }
+.more-arrow { margin-left: auto; color: var(--text3); font-size: 18px; }
+
+/* FORM CONTROLS */
+.form-input {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--r2); padding: 10px 13px; color: var(--text); font-size: 14px;
+  transition: border .2s;
+}
+.form-input:focus { border-color: var(--accent); }
+.form-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; font-family: var(--mono); margin-bottom: 6px; display: block; }
+.form-group { margin-bottom: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.btn-primary {
+  background: var(--accent); color: #fff; padding: 11px 22px;
+  border-radius: var(--r2); font-size: 14px; font-weight: 700;
+  transition: opacity .2s; width: 100%;
+}
+.btn-primary:active { opacity: 0.85; }
+
+.toggle-pill {
+  padding: 6px 13px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  border: 1.5px solid var(--border2); background: transparent; color: var(--text2);
+  transition: all .2s; cursor: pointer; margin: 3px;
+}
+.toggle-pill.on { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+
+/* REMINDER ITEM */
+.rem-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 13px 14px; margin-bottom: 8px;
+}
+.rem-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.rem-text { flex: 1; font-size: 14px; color: var(--text); }
+.rem-time { font-size: 12px; font-family: var(--mono); color: var(--text3); flex-shrink: 0; }
+.rem-del { background: none; border: none; color: var(--text3); font-size: 20px; padding: 4px; cursor: pointer; transition: color .2s; }
+.rem-del:hover { color: var(--red); }
 
 /* TIMETABLE */
-.tt-actions{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.tt-btn{padding:8px 18px;border-radius:var(--radius2);font-size:13px;border:1px solid var(--border2);background:transparent;color:var(--text2);transition:all .2s}
-.tt-btn:hover,.tt-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.tt-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-.tt-day{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;min-height:140px}
-.tt-day-label{font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.tt-slot{background:var(--bg4);border-radius:6px;padding:6px 8px;margin-bottom:6px;font-size:11px;color:var(--text2);border-left:2px solid var(--accent)}
-.tt-slot.phys{border-left-color:var(--accent5)}
-.tt-slot.chem{border-left-color:var(--accent4)}
-.tt-slot.bio{border-left-color:var(--accent3)}
-.tt-slot.eng{border-left-color:#c084fc}
-.tt-slot.rev{border-left-color:var(--danger)}
-.tt-slot-time{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.tt-week-pills { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.week-pill {
+  padding: 7px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--border2); background: transparent; color: var(--text2);
+  transition: all .2s; cursor: pointer;
+}
+.week-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tt-day-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 10px; overflow: hidden; }
+.tt-day-header { background: var(--surface2); padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); }
+.tt-slot-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.tt-slot-item:last-child { border-bottom: none; }
+.tt-color-bar { width: 3px; border-radius: 2px; height: 28px; flex-shrink: 0; }
+.tt-slot-text { font-size: 13px; color: var(--text); }
 
-/* REMINDERS */
-.reminder-list{display:flex;flex-direction:column;gap:10px;max-width:560px}
-.rem-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px}
-.rem-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.rem-text{flex:1;font-size:13px;color:var(--text)}
-.rem-time{font-size:12px;font-family:var(--mono);color:var(--text3)}
-.rem-del{background:transparent;border:none;color:var(--text3);font-size:16px;cursor:pointer;transition:color .2s;padding:4px}
-.rem-del:hover{color:var(--danger)}
-.add-rem{display:flex;gap:10px;margin-top:14px;max-width:560px}
-.add-rem .form-input{flex:1}
-.add-rem-btn{background:var(--accent);color:#fff;padding:9px 18px;border-radius:var(--radius2);font-size:13px;white-space:nowrap;transition:opacity .2s}
-.add-rem-btn:hover{opacity:.85}
-.motivation{background:linear-gradient(135deg,rgba(74,222,128,0.1),rgba(124,106,247,0.1));border:1px solid rgba(74,222,128,0.2);border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;font-size:13px;color:var(--text2);font-style:italic}
-.motivation strong{color:var(--accent3);font-style:normal}
+/* ALLOC RESULT */
+.alloc-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.alloc-subj { font-size: 13px; color: var(--text); width: 90px; flex-shrink: 0; }
+.alloc-bar-w { flex: 1; }
+.alloc-hrs { font-size: 12px; font-family: var(--mono); color: var(--text2); width: 48px; text-align: right; flex-shrink: 0; }
 
-/* FOCUS MODE */
-.focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.focus-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
-.focus-card-title{font-family:var(--display);font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-.focus-item{padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px}
-.focus-item:last-child{border-bottom:none}
-.focus-dot{width:5px;height:5px;background:var(--accent);border-radius:50%;flex-shrink:0}
-.important-q{background:var(--bg3);border-radius:var(--radius2);padding:10px 12px;margin-bottom:8px;font-size:12px;color:var(--text);border-left:2px solid var(--accent4)}
-.imp-badge{font-size:10px;font-family:var(--mono);color:var(--accent4);display:block;margin-bottom:3px}
-.timer-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;max-width:300px;margin:0 auto 24px}
-.timer-display{font-family:var(--mono);font-size:48px;font-weight:500;color:var(--text);letter-spacing:.05em}
-.timer-controls{display:flex;justify-content:center;gap:10px;margin-top:16px}
-.timer-btn{padding:8px 20px;border-radius:var(--radius2);font-size:13px;border:1px solid var(--border2);background:transparent;color:var(--text2);transition:all .2s}
-.timer-btn.start{background:var(--accent);color:#fff;border-color:var(--accent)}
-.timer-btn:hover:not(.start){background:var(--bg4)}
-
-/* ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.view.active .stat-card,.view.active .subj-progress,.view.active .mm-card,.view.active .today-tasks{animation:fadeUp .35s ease both}
-.view.active .stat-card:nth-child(2){animation-delay:.05s}
-.view.active .stat-card:nth-child(3){animation-delay:.1s}
+/* ABOUT PAGE */
+.about-hero {
+  background: linear-gradient(135deg, rgba(139,124,246,0.2), rgba(96,165,250,0.1));
+  border: 1px solid rgba(139,124,246,0.3); border-radius: var(--r);
+  padding: 28px 20px; text-align: center; margin-bottom: 16px;
+}
+.about-logo { font-size: 36px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -1px; }
+.about-logo span { color: var(--accent); }
+.about-sub { font-size: 13px; color: var(--text3); }
+.about-credit {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 20px; text-align: center; margin-bottom: 10px;
+}
+.about-credit-name { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.about-credit-sub { font-size: 12px; color: var(--text3); font-family: var(--mono); }
+.about-info-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 8px; }
+.about-info-icon { font-size: 20px; }
+.about-info-text { font-size: 13px; color: var(--text2); }
 
 /* SCROLLBAR */
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--surface);border-radius:3px}
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
+
+/* MOTIVATION QUOTE */
+.quote-card {
+  background: var(--surface); border-left: 3px solid var(--accent);
+  border-radius: 0 var(--r) var(--r) 0; padding: 14px 16px; margin-bottom: 12px;
+  font-size: 13px; color: var(--text2); font-style: italic;
+}
+.quote-card strong { color: var(--accent); font-style: normal; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; }
+.empty-state .es-icon { font-size: 36px; margin-bottom: 10px; }
+
+/* CALC RESULT */
+.calc-result-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 16px; margin-top: 14px;
+}
 </style>
 </head>
 <body>
-<div class="app" id="app">
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-  <div class="sidebar-logo">Study<span>OS</span></div>
-  <div class="nav-item active" onclick="nav('dashboard',this)">
-    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
-    Dashboard
-  </div>
-  <div class="nav-item" onclick="nav('progress',this)">
-    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,11 5,7 9,9 15,3"/><line x1="1" y1="15" x2="15" y2="15"/></svg>
-    Progress
-  </div>
-  <div class="nav-item" onclick="nav('mindmap',this)">
-    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><circle cx="2" cy="3" r="1.5"/><circle cx="14" cy="3" r="1.5"/><circle cx="2" cy="13" r="1.5"/><circle cx="14" cy="13" r="1.5"/><line x1="5.5" y1="6.5" x2="3.5" y2="4.5"/><line x1="10.5" y1="6.5" x2="12.5" y2="4.5"/><line x1="5.5" y1="9.5" x2="3.5" y2="11.5"/><line x1="10.5" y1="9.5" x2="12.5" y2="11.5"/></svg>
-    Mind Maps
-  </div>
-  <div class="nav-item" onclick="nav('calculator',this)">
-    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="2"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg>
-    Time Calc
-  </div>
-  <div class="nav-item" onclick="nav('timetable',this)">
-    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="12" rx="1.5"/><line x1="1" y1="7" x2="15" y2="7"/><line x1="5" y1="1" x2="5" y2="5"/><line x1="11" y1="1" x2="11" y2="5"/></svg>
-    Timetable
-  </div>
-  <div class="nav-item" onclick="nav('focus',this)">
-    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="7"/><circle cx="8" cy="8" r="3.5"/><circle cx="8" cy="8" r="1"/></svg>
-    Focus Mode
-  </div>
-  <div class="nav-item" onclick="nav('reminders',this)">
-    <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1a5 5 0 0 1 5 5v3l1.5 2H1.5L3 9V6a5 5 0 0 1 5-5z"/><path d="M6.5 13.5a1.5 1.5 0 0 0 3 0"/></svg>
-    Reminders
-  </div>
-  <div class="sidebar-bottom">
-    <div class="theme-toggle" onclick="toggleTheme()">
-      <span style="font-size:12px;color:var(--text2)">Dark</span>
-      <div class="toggle-switch"><div class="toggle-knob"></div></div>
-      <span style="font-size:12px;color:var(--text2)">Light</span>
-    </div>
-  </div>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">Study<span>OS</span></div>
+  <div class="topbar-right">ISC · Class XI</div>
 </div>
 
-<!-- MAIN -->
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-title" id="topbar-title">Dashboard</div>
-    <div class="topbar-sub" id="topbar-date"></div>
+<!-- CONTENT -->
+<div class="content" id="main-content">
+
+  <!-- HOME VIEW -->
+  <div class="view active" id="view-home">
+    <div class="streak-banner">
+      <div style="font-size:36px;line-height:1">🔥</div>
+      <div>
+        <div class="streak-num" id="streak-num">0</div>
+        <div class="streak-label">day streak</div>
+        <div class="streak-sub">Tap to log today's session</div>
+      </div>
+      <button onclick="logStreak()" style="margin-left:auto;background:rgba(139,124,246,0.2);border:1px solid rgba(139,124,246,0.4);color:#a89af8;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;">
+        Log ✓
+      </button>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-lbl">Chapters done</div>
+        <div class="stat-val" id="home-ch-done">0</div>
+        <div class="stat-sub" id="home-ch-total">of 0 total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Topics covered</div>
+        <div class="stat-val" id="home-topics">0%</div>
+        <div class="stat-sub">overall progress</div>
+      </div>
+    </div>
+
+    <div class="section-label">Today's Tasks</div>
+    <div class="card" id="task-list"></div>
+
+    <div class="section-label" style="margin-top:6px">Subject Progress</div>
+    <div id="home-progress"></div>
   </div>
-  <div class="content">
 
-    <!-- DASHBOARD -->
-    <div class="view active" id="view-dashboard">
-      <div class="streak-card">
-        <div class="streak-flame">🔥</div>
-        <div>
-          <div class="streak-num">7</div>
-          <div class="streak-text">day streak — keep it going!</div>
-        </div>
-        <div style="margin-left:auto;text-align:right">
-          <div style="font-size:11px;color:var(--text3);font-family:var(--mono)">UNIT TEST IN</div>
-          <div style="font-size:28px;font-weight:800;font-family:var(--display);color:var(--accent4)" id="countdown-days">—</div>
-          <div style="font-size:11px;color:var(--text3)">days</div>
-        </div>
-      </div>
-      <div class="dash-grid">
-        <div class="stat-card">
-          <div class="stat-label">Chapters done</div>
-          <div class="stat-val">12<span style="font-size:16px;color:var(--text3)">/28</span></div>
-          <div class="stat-sub">43% complete</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Today's hours</div>
-          <div class="stat-val stat-accent">3.5h</div>
-          <div class="stat-sub">Goal: 4h</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Topics revised</div>
-          <div class="stat-val">38</div>
-          <div class="stat-sub">This week</div>
-        </div>
-      </div>
-      <div class="two-col" style="margin-bottom:20px">
-        <div>
-          <div class="section-title">Today's Tasks</div>
-          <div class="today-tasks" id="task-list"></div>
-        </div>
-        <div>
-          <div class="section-title">Subject Progress</div>
-          <div id="dash-progress"></div>
-        </div>
-      </div>
+  <!-- CHAPTERS VIEW -->
+  <div class="view" id="view-chapters">
+    <div id="chapters-subj-select">
+      <div class="section-label">Choose Subject</div>
+      <div class="subj-pills" id="ch-pills"></div>
+      <div id="chapter-content"></div>
     </div>
-
-    <!-- PROGRESS -->
-    <div class="view" id="view-progress">
-      <div class="section-title" style="margin-bottom:16px">Subject-wise Progress</div>
-      <div id="progress-bars"></div>
-      <div class="section-title" style="margin-top:24px;margin-bottom:14px">Weekly Activity</div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
-        <div style="display:flex;align-items:flex-end;gap:8px;height:100px">
-          <div id="activity-bars" style="display:flex;gap:8px;align-items:flex-end;width:100%"></div>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:6px" id="activity-labels"></div>
-      </div>
-      <div class="section-title" style="margin-top:24px;margin-bottom:14px">Chapter Tracker</div>
-      <div id="chapter-tracker"></div>
-    </div>
-
-    <!-- MIND MAPS -->
-    <div class="view" id="view-mindmap">
-      <div id="mm-list">
-        <div class="section-title" style="margin-bottom:14px">Select a Subject</div>
-        <div class="mindmap-grid" id="mm-cards"></div>
-      </div>
-      <div id="mm-detail-view" style="display:none">
-        <button class="back-btn" onclick="closeMM()">← Back to subjects</button>
-        <div id="mm-detail-content"></div>
-      </div>
-    </div>
-
-    <!-- TIME CALCULATOR -->
-    <div class="view" id="view-calculator">
-      <div class="section-title" style="margin-bottom:16px">Smart Time Calculator</div>
-      <div class="calc-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Exam date</label>
-            <input type="date" class="form-input" id="exam-date"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Hours / day</label>
-            <input type="number" class="form-input" id="hours-day" value="4" min="1" max="12"/>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Subjects to cover</label>
-          <div class="subj-toggle" id="subj-toggle"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Weak subjects (get more time)</label>
-          <div class="subj-toggle" id="weak-toggle"></div>
-        </div>
-        <button class="calc-btn" onclick="calcTime()">Calculate Plan</button>
-      </div>
-      <div class="calc-result" id="calc-result" style="display:none">
-        <div class="calc-result-title">Your Personalised Allocation</div>
-        <div id="alloc-bars"></div>
-        <div style="font-size:12px;color:var(--text3);margin-top:12px;font-family:var(--mono)" id="alloc-summary"></div>
-      </div>
-    </div>
-
-    <!-- TIMETABLE -->
-    <div class="view" id="view-timetable">
-      <div class="section-title" style="margin-bottom:14px">Weekly Timetable</div>
-      <div class="tt-actions">
-        <button class="tt-btn active" onclick="switchWeek(this,'current')">This Week</button>
-        <button class="tt-btn" onclick="switchWeek(this,'next')">Next Week</button>
-        <button class="tt-btn" onclick="switchWeek(this,'revision')">Revision Week</button>
-      </div>
-      <div class="tt-grid" id="tt-grid"></div>
-    </div>
-
-    <!-- FOCUS MODE -->
-    <div class="view" id="view-focus">
-      <div class="section-title" style="margin-bottom:16px">Unit Test Focus Mode</div>
-      <div class="timer-box">
-        <div style="font-size:11px;font-family:var(--mono);color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.1em">Pomodoro Timer</div>
-        <div class="timer-display" id="timer-disp">25:00</div>
-        <div class="timer-controls">
-          <button class="timer-btn start" id="timer-start" onclick="timerToggle()">Start</button>
-          <button class="timer-btn" onclick="timerReset()">Reset</button>
-        </div>
-      </div>
-      <div class="focus-grid" id="focus-grid"></div>
-    </div>
-
-    <!-- REMINDERS -->
-    <div class="view" id="view-reminders">
-      <div class="motivation" id="motivation-text"></div>
-      <div class="section-title" style="margin-bottom:14px">Daily Reminders</div>
-      <div class="reminder-list" id="reminder-list"></div>
-      <div class="add-rem">
-        <input type="text" class="form-input" id="rem-input" placeholder="Add new reminder…"/>
-        <input type="time" class="form-input" id="rem-time" value="07:00" style="width:110px"/>
-        <button class="add-rem-btn" onclick="addReminder()">+ Add</button>
-      </div>
-    </div>
-
   </div>
+
+  <!-- MIND MAPS VIEW -->
+  <div class="view" id="view-maps">
+    <div id="maps-list">
+      <div class="section-label">Mind Maps</div>
+      <div id="mm-subject-cards"></div>
+    </div>
+    <div id="maps-detail" style="display:none">
+      <div class="back-header">
+        <button class="back-btn" onclick="closeMM()">← Back</button>
+        <div class="back-title" id="mm-detail-title"></div>
+      </div>
+      <div id="mm-nodes"></div>
+    </div>
+  </div>
+
+  <!-- FOCUS VIEW -->
+  <div class="view" id="view-focus">
+    <div class="timer-card">
+      <div class="timer-mode-row">
+        <button class="timer-mode-btn active" onclick="setMode(this,25,'Focus')" data-mins="25">Focus</button>
+        <button class="timer-mode-btn" onclick="setMode(this,5,'Short Break')" data-mins="5">Short Break</button>
+        <button class="timer-mode-btn" onclick="setMode(this,15,'Long Break')" data-mins="15">Long Break</button>
+      </div>
+      <div class="timer-display" id="timer-disp">25:00</div>
+      <div class="timer-sublabel" id="timer-lbl">FOCUS SESSION</div>
+      <div class="timer-btns">
+        <button class="t-btn t-start" id="timer-start-btn" onclick="timerToggle()">Start</button>
+        <button class="t-btn t-reset" onclick="timerReset()">Reset</button>
+      </div>
+    </div>
+    <div class="subj-pills" id="focus-pills"></div>
+    <div id="focus-content"></div>
+  </div>
+
+  <!-- MORE VIEW -->
+  <div class="view" id="view-more">
+    <div id="more-menu">
+      <div class="section-label">More</div>
+      <div class="more-menu-item" onclick="showMoreView('reminders')">
+        <div class="more-icon">🔔</div>
+        <div><div class="more-label">Reminders</div><div class="more-sub">Daily study reminders</div></div>
+        <div class="more-arrow">›</div>
+      </div>
+      <div class="more-menu-item" onclick="showMoreView('timetable')">
+        <div class="more-icon">📅</div>
+        <div><div class="more-label">Timetable</div><div class="more-sub">Weekly study schedule</div></div>
+        <div class="more-arrow">›</div>
+      </div>
+      <div class="more-menu-item" onclick="showMoreView('timecalc')">
+        <div class="more-icon">⏳</div>
+        <div><div class="more-label">Time Calculator</div><div class="more-sub">Smart study planner</div></div>
+        <div class="more-arrow">›</div>
+      </div>
+      <div class="more-menu-item" onclick="showMoreView('about')">
+        <div class="more-icon">ℹ️</div>
+        <div><div class="more-label">About</div><div class="more-sub">App info & credits</div></div>
+        <div class="more-arrow">›</div>
+      </div>
+    </div>
+
+    <!-- SUB VIEWS INSIDE MORE -->
+    <div id="more-subview" style="display:none"></div>
+  </div>
+
 </div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="navigate('home',this)">
+    <div class="nav-icon">🏠</div>Home
+  </button>
+  <button class="nav-btn" onclick="navigate('chapters',this)">
+    <div class="nav-icon">📚</div>Chapters
+  </button>
+  <button class="nav-btn" onclick="navigate('maps',this)">
+    <div class="nav-icon">🗺️</div>Maps
+  </button>
+  <button class="nav-btn" onclick="navigate('focus',this)">
+    <div class="nav-icon">⏱️</div>Focus
+  </button>
+  <button class="nav-btn" onclick="navigate('more',this)">
+    <div class="nav-icon">☰</div>More
+  </button>
 </div>
 
 <script>
-const subjects = [
-  {id:'math', name:'Mathematics', icon:'📐', tag:'tag-math', fill:'fill-math', color:'#7c6af7', chapters:['Sets & Relations','Complex Numbers','Sequences & Series','Permutations & Combinations','Trigonometry','Calculus (Limits)','Coordinate Geometry','Statistics'], progress:65},
-  {id:'phys', name:'Physics', icon:'⚛️', tag:'tag-phys', fill:'fill-phys', color:'#38bdf8', chapters:['Units & Measurement','Motion in a Straight Line','Laws of Motion','Work, Energy & Power','Rotational Motion','Gravitation'], progress:48},
-  {id:'chem', name:'Chemistry', icon:'🧪', tag:'tag-chem', fill:'fill-chem', color:'#fb923c', chapters:['Atomic Structure','Periodic Table','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium'], progress:55},
-  {id:'bio', name:'Biology', icon:'🧬', tag:'tag-bio', fill:'fill-bio', color:'#4ade80', chapters:['Cell Structure','Biomolecules','Cell Division','Plant Physiology','Animal Kingdom'], progress:72},
-  {id:'cs', name:'Computer Sc.', icon:'💻', tag:'tag-cs', fill:'fill-cs', color:'#f87171', chapters:['Java Basics','OOP Concepts','Arrays & Strings','Sorting Algorithms','Recursion','Boolean Algebra'], progress:80},
-  {id:'eng', name:'English', icon:'📖', tag:'tag-eng', fill:'fill-eng', color:'#c084fc', chapters:['Prose Analysis','Poetry Comprehension','Grammar','Essay Writing','Letter Writing'], progress:60},
+/* ==============================
+   DATA
+============================== */
+const SUBJECTS = [
+  {
+    id: 'math', name: 'Mathematics', emoji: '📐', color: '#8b7cf6',
+    examSections: [
+      {
+        label: 'Unit Test', type: 'unit',
+        chapters: ['Sets','Relations & Functions','Trigonometry','Height and Distance']
+      },
+      {
+        label: 'Half-Yearly', type: 'half',
+        chapters: ['Trigonometry (Advanced)','Complex Numbers','Quadratic Equations','Linear Inequalities','Permutations & Combinations','Conic Sections','Limits','Derivatives']
+      },
+      {
+        label: 'Cumulative', type: 'cum',
+        chapters: ['Linear & Quadratic Inequalities','Binomial Theorem','Sequences & Series','Straight Lines','Introduction to 3D Geometry']
+      },
+      {
+        label: 'Annual', type: 'ann',
+        chapters: ['Circles','Probability','Statistics']
+      }
+    ]
+  },
+  {
+    id: 'phys', name: 'Physics', emoji: '⚛️', color: '#60a5fa',
+    examSections: [
+      {
+        label: 'Unit Test', type: 'unit',
+        chapters: ['Dimensional Analysis','Motion in a Straight Line','Motion in a Plane','Newton\'s Laws of Motion']
+      },
+      {
+        label: 'Half-Yearly', type: 'half',
+        chapters: ['Friction','Uniform Circular Motion','Work, Power & Energy','Centre of Mass','Rotational Motion of Rigid Body','Gravitation','Elasticity','Fluid Pressure'],
+        revision: ['Newton\'s Laws of Motion']
+      },
+      {
+        label: 'Cumulative', type: 'cum',
+        chapters: ['Flow of Liquids','Surface Tension','Thermodynamics','Isothermal & Adiabatic Process','Heat Engine','Kinetic Theory of Gases','Simple Harmonic Motion'],
+        revision: ['Ch-3 to Ch-14 (All)']
+      },
+      {
+        label: 'Annual', type: 'ann',
+        chapters: ['Waves','Wave Motion','Interference and Beats','Stationary Waves','Vibration of Stretched String']
+      }
+    ]
+  },
+  {
+    id: 'chem', name: 'Chemistry', emoji: '🧪', color: '#fb923c',
+    examSections: [
+      {
+        label: 'Unit Test', type: 'unit',
+        chapters: ['Some Basic Concepts of Chemistry','Structure of Atom']
+      },
+      {
+        label: 'Half-Yearly', type: 'half',
+        chapters: ['Classification of Elements & Periodicity','Chemical Bonding & Molecular Structure','Chemical Thermodynamics'],
+        revision: ['Some Basic Concepts','Structure of Atom']
+      },
+      {
+        label: 'Cumulative', type: 'cum',
+        chapters: ['Equilibrium','Redox Reactions','Organic Chemistry — Basic Principles & Techniques'],
+        revision: ['Chemical Bonding','Chemical Thermodynamics']
+      },
+      {
+        label: 'Annual', type: 'ann',
+        chapters: ['Hydrocarbons']
+      }
+    ]
+  },
+  {
+    id: 'cs', name: 'Computer Sc.', emoji: '💻', color: '#f87171',
+    examSections: [
+      {
+        label: 'Unit Test', type: 'unit',
+        chapters: ['Java Basics & Syntax','OOP — Encapsulation & Classes','OOP — Inheritance & Polymorphism','Constructors & Methods']
+      },
+      {
+        label: 'Half-Yearly', type: 'half',
+        chapters: ['Arrays & Strings','String Methods & Operations','2D Arrays & Matrices','Recursion Basics']
+      },
+      {
+        label: 'Cumulative', type: 'cum',
+        chapters: ['Sorting Algorithms (Bubble, Selection, Insertion)','Searching Algorithms','Boolean Algebra','Logic Gates']
+      },
+      {
+        label: 'Annual', type: 'ann',
+        chapters: ['File Handling','Exception Handling','Data Structures Overview']
+      }
+    ]
+  }
 ];
 
-const mindmapData = {
+const ALL_CHAPTERS = [];
+SUBJECTS.forEach(s => {
+  s.examSections.forEach(sec => {
+    sec.chapters.forEach(ch => {
+      ALL_CHAPTERS.push({ subj: s.id, ch: ch });
+    });
+  });
+});
+
+const MINDMAP_DATA = {
+  math: [
+    {
+      title: 'Sets & Relations',
+      body: '<b>Key Formulas:</b><br><span class="formula-tag">n(A∪B) = n(A)+n(B)−n(A∩B)</span><span class="formula-tag">De Morgan: (A∪B)\'=A\'∩B\'</span><br><br><b>Topics:</b> Venn diagrams, types of relations (reflexive, symmetric, transitive, equivalence), domain & range of functions, one-one & onto.'
+    },
+    {
+      title: 'Trigonometry',
+      body: '<span class="formula-tag">sin²θ+cos²θ=1</span><span class="formula-tag">sin(A+B)=sinAcosB+cosAsinB</span><span class="formula-tag">cos2A=1−2sin²A</span><br><br><b>Unit circle values:</b> memorise 0°,30°,45°,60°,90°. Height & Distance — always draw diagram first.'
+    },
+    {
+      title: 'Complex Numbers',
+      body: '<span class="formula-tag">z = a+ib</span><span class="formula-tag">|z| = √(a²+b²)</span><span class="formula-tag">z·z̄ = |z|²</span><br><br>Rationalise by conjugate. Powers of i cycle: i,−1,−i,1. Modulus & argument are frequently tested.'
+    },
+    {
+      title: 'Sequences & Series',
+      body: '<span class="formula-tag">aₙ=a+(n−1)d</span><span class="formula-tag">Sₙ=n/2[2a+(n−1)d]</span><span class="formula-tag">Σn²=n(n+1)(2n+1)/6</span><br><br>For 3 numbers in AP: use a−d,a,a+d. For GP: use a/r,a,ar.'
+    },
+    {
+      title: 'P & C + Binomial',
+      body: '<span class="formula-tag">ⁿPr=n!/(n−r)!</span><span class="formula-tag">ⁿCr=n!/[r!(n−r)!]</span><span class="formula-tag">Tᵣ₊₁=ⁿCr·aⁿ⁻ʳ·bʳ</span><br><br>Circular permutation: (n−1)!. For term independent of x: set exponent of x = 0 and solve for r.'
+    },
+    {
+      title: 'Limits & Derivatives',
+      body: '<span class="formula-tag">lim(x→0) sinx/x=1</span><span class="formula-tag">lim(x→0)(aˣ−1)/x=ln a</span><span class="formula-tag">d/dx(xⁿ)=nxⁿ⁻¹</span><br><br>L\'Hôpital: use when form is 0/0 or ∞/∞. Product rule: d(uv)=udv+vdu.'
+    }
+  ],
+  phys: [
+    {
+      title: 'Dimensional Analysis',
+      body: '<b>Key dimensions:</b><br>Velocity [LT⁻¹], Force [MLT⁻²], Pressure [ML⁻¹T⁻²], Energy [ML²T⁻²], Power [ML²T⁻³]<br><br>Use dimensional analysis to: check formula correctness, derive relations, find units. Significant figures and error analysis are always tested.'
+    },
+    {
+      title: 'Laws of Motion',
+      body: '<span class="formula-tag">F=ma</span><span class="formula-tag">Impulse=F·Δt=Δp</span><span class="formula-tag">f≤μN</span><br><br>Always draw FBDs. Atwood machine: a=(m₁−m₂)g/(m₁+m₂). Inclined plane: a=g(sinθ−μcosθ). Newton\'s 3rd law pairs must act on different bodies.'
+    },
+    {
+      title: 'Work, Power & Energy',
+      body: '<span class="formula-tag">W=F·d·cosθ</span><span class="formula-tag">KE=½mv²</span><span class="formula-tag">PE=mgh</span><span class="formula-tag">Spring PE=½kx²</span><br><br>Work-Energy theorem: W_net = ΔKE. Conservation of energy: identify ALL forms. Power = W/t = F·v.'
+    },
+    {
+      title: 'Rotational Motion',
+      body: '<span class="formula-tag">τ=Iα</span><span class="formula-tag">L=Iω</span><span class="formula-tag">KE_rot=½Iω²</span><br><br>Moment of inertia: Rod (centre) = ML²/12, Disc = MR²/2, Ring = MR². Parallel axis theorem: I=Icm+Md².'
+    },
+    {
+      title: 'Gravitation',
+      body: '<span class="formula-tag">F=Gm₁m₂/r²</span><span class="formula-tag">g=GM/R²</span><span class="formula-tag">v_esc=√(2gR)</span><br><br>Orbital velocity: v=√(GM/r). Kepler\'s 3rd law: T²∝r³. Variation of g with height and depth frequently tested.'
+    }
+  ],
+  chem: [
+    {
+      title: 'Atomic Structure',
+      body: '<span class="formula-tag">Eₙ=−13.6/n² eV</span><span class="formula-tag">rₙ=0.529n²/Z Å</span><br><br>Quantum numbers: n (shell), l (subshell, 0 to n−1), m (orientation, −l to +l), s (spin ±½). Aufbau principle, Hund\'s rule, Pauli exclusion — know all exceptions (Cu, Cr).'
+    },
+    {
+      title: 'Chemical Bonding',
+      body: 'VSEPR theory: shapes based on electron pairs. Hybridisation: sp (linear, 180°), sp² (trigonal planar, 120°), sp³ (tetrahedral, 109.5°).<br><br><span class="formula-tag">Formal charge = V − N − B/2</span><br><br>Bond order from MO theory determines stability and magnetic properties.'
+    },
+    {
+      title: 'Thermodynamics',
+      body: '<span class="formula-tag">ΔH=ΔU+ΔngRT</span><span class="formula-tag">ΔG=ΔH−TΔS</span><span class="formula-tag">ΔG°=−RTlnK</span><br><br>ΔG<0: spontaneous. Hess\'s law: ΔH is path-independent. Standard enthalpy of formation, combustion, neutralisation — learn key values.'
+    },
+    {
+      title: 'Equilibrium',
+      body: '<span class="formula-tag">Kc=[C]c[D]d/[A]a[B]b</span><span class="formula-tag">Kp=Kc(RT)^Δn</span><br><br>Le Chatelier: ↑temp shifts toward endothermic side. ↑pressure favours fewer moles side. pH = −log[H⁺]. Ka·Kb = Kw = 10⁻¹⁴.'
+    },
+    {
+      title: 'Organic Chemistry Basics',
+      body: 'IUPAC naming: find longest chain, number from end nearest substituent, alphabetical substituent order.<br><br>Inductive, mesomeric, hyperconjugation effects determine reactivity. Nucleophile attacks electron-poor carbon; electrophile attacks electron-rich sites. Know SN1 vs SN2 conditions.'
+    }
+  ],
+  cs: [
+    {
+      title: 'Java OOP Concepts',
+      body: '<b>4 Pillars:</b> Encapsulation, Inheritance, Polymorphism, Abstraction.<br><br>Constructor overloading vs method overloading. <code>super()</code> calls parent constructor. Runtime polymorphism via method overriding. <code>this</code> refers to current object. Abstract class cannot be instantiated.'
+    },
+    {
+      title: 'Arrays & Strings',
+      body: '<span class="formula-tag">int[] a = new int[n];</span><span class="formula-tag">int[][] m = new int[r][c];</span><br><br>String methods: length(), charAt(i), substring(s,e), indexOf(ch), toUpperCase(), trim(), equals() vs ==. Character methods: Character.isDigit(), isLetter(), isUpperCase().'
+    },
+    {
+      title: 'Sorting Algorithms',
+      body: '<b>Bubble Sort:</b> O(n²) — adjacent swaps, largest bubbles up each pass.<br><b>Selection Sort:</b> O(n²) — find min, swap with position i.<br><b>Insertion Sort:</b> O(n²) worst, O(n) best — shift elements right, insert at correct position.<br><br>ISC always asks for dry run — show array state after EACH pass.'
+    },
+    {
+      title: 'Boolean Algebra',
+      body: '<b>Laws:</b> Identity (A+0=A), Complement (A+A\'=1), De Morgan: (AB)\'=A\'+B\'<br><br>SOP (Sum of Products) and POS (Product of Sums) forms. K-Map for simplification — group 1s in powers of 2. Logic gates: AND, OR, NOT, NAND, NOR, XOR truth tables.'
+    }
+  ]
+};
+
+const TASKS = [
+  { text: 'Solve Sets — Exercise 1.3', subj: 'math', done: false },
+  { text: 'Read Dimensional Analysis notes', subj: 'phys', done: false },
+  { text: 'Revise Atomic Structure formulas', subj: 'chem', done: false },
+  { text: 'Java — write Bubble Sort dry run', subj: 'cs', done: false },
+  { text: 'Trigonometry values practice', subj: 'math', done: false },
+];
+
+const BADGE_LABELS = { unit: 'Unit Test', half: 'Half-Yearly', cum: 'Cumulative', ann: 'Annual' };
+const BADGE_CLASS = { unit: 'exam-unit', half: 'exam-half', cum: 'exam-cum', ann: 'exam-ann' };
+
+const FOCUS_DATA = {
   math: {
-    nodes:[
-      {title:'Sets & Relations', body:'<b>Key formulas:</b><br><span class="formula-pill">n(A∪B) = n(A)+n(B)−n(A∩B)</span><span class="formula-pill">De Morgan: (A∪B)\'= A\'∩B\'</span><br><br><b>Unit Test topics:</b> Venn diagrams, types of relations, domain & range of functions.'},
-      {title:'Complex Numbers', body:'<span class="formula-pill">z = a+ib</span><span class="formula-pill">|z| = √(a²+b²)</span><span class="formula-pill">z·z̄ = |z|²</span><br><br><b>Key questions:</b> Express in a+ib form (rationalise by conjugate), find modulus & argument, powers of i cycle.'},
-      {title:'Sequences & Series', body:'<span class="formula-pill">aₙ = a+(n−1)d</span><span class="formula-pill">Sₙ = n/2[2a+(n−1)d]</span><span class="formula-pill">Σn² = n(n+1)(2n+1)/6</span><br><br><b>AP trick:</b> use a−d, a, a+d for 3 numbers in AP.'},
-      {title:'Permutations & Combinations', body:'<span class="formula-pill">ⁿPr = n!/(n−r)!</span><span class="formula-pill">ⁿCr = n!/[r!(n−r)!]</span><span class="formula-pill">Circular: (n−1)!</span><br><br><b>Binomial:</b> Tᵣ₊₁ = ⁿCr·aⁿ⁻ʳ·bʳ — find term independent of x by setting x power = 0.'},
-      {title:'Calculus — Limits', body:'<span class="formula-pill">lim(x→0) sinx/x = 1</span><span class="formula-pill">lim(x→0) (aˣ−1)/x = ln a</span><span class="formula-pill">d/dx(xⁿ) = nxⁿ⁻¹</span><br><br><b>L\'Hôpital:</b> use when form is 0/0 or ∞/∞.'},
-    ]
+    topics: ['Sets — Venn diagrams & De Morgan\'s laws', 'Trigonometry — all standard values', 'Relations — types and definitions', 'Height & Distance — angle of elevation/depression', 'Functions — domain, range, one-one & onto'],
+    qs: ['If A={1,2,3} and B={2,3,4}, find A∩B, A∪B, A−B', 'Prove: sin²A+cos²A=1 using unit circle', 'A tower 100m high — find angle of elevation from 100m away']
   },
   phys: {
-    nodes:[
-      {title:'Units & Measurement', body:'Dimensions of common quantities: Velocity [LT⁻¹], Force [MLT⁻²], Pressure [ML⁻¹T⁻²], Energy [ML²T⁻²].<br><br>Significant figures rules and error analysis are frequently tested.'},
-      {title:'Laws of Motion', body:'<span class="formula-pill">F = ma</span><span class="formula-pill">Impulse = F·t = Δp</span><span class="formula-pill">f ≤ μN</span><br><br>Free body diagrams are essential. Atwood machine, inclined plane problems are common Unit Test questions.'},
-      {title:'Work, Energy & Power', body:'<span class="formula-pill">W = F·d·cosθ</span><span class="formula-pill">KE = ½mv²</span><span class="formula-pill">PE = mgh</span><br><br>Conservation of energy — always identify all forms. Spring PE = ½kx².'},
-    ]
+    topics: ['Dimensions: Force, Pressure, Energy, Power', 'FBD — Atwood machine & inclined plane', 'Newton\'s 3rd law — action-reaction pairs', 'Projectile motion — max height, range, time of flight', 'Relative velocity problems'],
+    qs: ['5kg block on 30° incline (μ=0.3) — find acceleration', 'Two masses 3kg, 5kg on Atwood — find acceleration', 'Ball thrown at 45°, range=100m — find initial velocity']
   },
   chem: {
-    nodes:[
-      {title:'Atomic Structure', body:'Bohr model: Energy of nth orbit <span class="formula-pill">Eₙ = −13.6/n² eV</span>. Quantum numbers: n, l, m, s. Aufbau, Hund\'s rule, Pauli exclusion principle.'},
-      {title:'Chemical Bonding', body:'VSEPR theory for shapes. Bond order from MO theory. Hybridisation: sp (linear), sp² (trigonal), sp³ (tetrahedral). Formal charge = V − N − B/2.'},
-      {title:'Equilibrium', body:'<span class="formula-pill">Kc = [C]c[D]d / [A]a[B]b</span><span class="formula-pill">Kp = Kc(RT)^Δn</span><br><br>Le Chatelier\'s principle — effect of temperature, pressure, concentration changes.'},
-    ]
-  },
-  bio: {
-    nodes:[
-      {title:'Cell Structure', body:'Prokaryote vs Eukaryote key differences. Organelle functions: mitochondria (ATP), ribosome (protein synthesis), chloroplast (photosynthesis), ER (transport). Unit test focuses on diagrams and functions.'},
-      {title:'Cell Division', body:'Mitosis: PMAT (Prophase, Metaphase, Anaphase, Telophase). Meiosis produces 4 haploid cells — site of crossing over is Prophase I. Significance: genetic variation.'},
-      {title:'Plant Physiology', body:'Photosynthesis: <span class="formula-pill">6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂</span>. Light reactions (thylakoid) vs Calvin cycle (stroma). Transpiration — factors affecting it.'},
-    ]
+    topics: ['Mole concept — n=m/M=V/22.4', 'Electronic configuration & quantum numbers', 'Bohr model — energy & radius formulae', 'Stoichiometry — balancing equations', 'Limiting reagent problems'],
+    qs: ['Find electrons, protons, neutrons in ²³Na and ³⁵Cl', 'Calculate moles in 54g of H₂O', 'Balance: Fe + HCl → FeCl₂ + H₂']
   },
   cs: {
-    nodes:[
-      {title:'Java OOP', body:'Four pillars: Encapsulation, Inheritance, Polymorphism, Abstraction.<br><br>Constructor overloading, method overriding (runtime polymorphism), super keyword, this keyword — all tested heavily.'},
-      {title:'Arrays & Strings', body:'<span class="formula-pill">int[] a = new int[n]</span><span class="formula-pill">String s = "..."</span><br><br>String methods: length(), charAt(), substring(), indexOf(), toUpperCase(). 2D arrays for matrix problems.'},
-      {title:'Sorting Algorithms', body:'Bubble sort: O(n²). Selection sort: O(n²). Insertion sort: O(n²) worst but O(n) best. Know how to trace through an array step by step — ISC asks for dry runs.'},
-    ]
-  },
-  eng: {
-    nodes:[
-      {title:'Essay Writing', body:'Structure: Introduction (hook + thesis) → 2–3 body paragraphs (topic sentence + evidence + analysis) → Conclusion (restate + insight).<br><br>ISC favours balanced arguments with examples from current affairs or literature.'},
-      {title:'Poetry Analysis', body:'Identify: theme, tone, imagery, metaphor, simile, personification, alliteration, rhyme scheme (ABAB, ABBA etc.). Always quote from the poem to support your analysis.'},
-      {title:'Grammar', body:'Common Unit Test topics: Subject-verb agreement, reported speech (tense shift rules), active/passive voice, articles, prepositions, conjunctions. Practice transformation of sentences.'},
-    ]
-  },
+    topics: ['this keyword — current object reference', 'super keyword — parent class access', 'Method overloading vs overriding', 'Constructor — default vs parameterised', 'String: equals() vs == difference'],
+    qs: ['Write Java: print Fibonacci series up to n terms', 'Trace Bubble Sort on [8,3,5,1,9,2] — show each pass', 'Write method to check if string is palindrome']
+  }
 };
 
-const tasks = [
-  {text:'Complete Complex Numbers — Exercise 5.3', tag:'tag-math', label:'Maths', done:false},
-  {text:'Read Laws of Motion theory notes', tag:'tag-phys', label:'Physics', done:true},
-  {text:'Revise Atomic Structure formulas', tag:'tag-chem', label:'Chemistry', done:false},
-  {text:'Java — write Bubble Sort dry run', tag:'tag-cs', label:'Comp Sc.', done:false},
-  {text:'Essay on Environment — first draft', tag:'tag-eng', label:'English', done:true},
-];
-
-const weekData = {
-  current:[
-    {day:'Mon',slots:[{text:'Math: Sequences',cls:''},{text:'Phys: Motion',cls:'phys'}]},
-    {day:'Tue',slots:[{text:'Chem: Atomic Structure',cls:'chem'},{text:'Math: Complex No.',cls:''}]},
-    {day:'Wed',slots:[{text:'Bio: Cell Division',cls:'bio'},{text:'CS: OOP',cls:'rev'}]},
-    {day:'Thu',slots:[{text:'Math: P&C',cls:''},{text:'Phys: Laws of Motion',cls:'phys'}]},
-    {day:'Fri',slots:[{text:'Eng: Essay Writing',cls:'eng'},{text:'Chem: Bonding',cls:'chem'}]},
-    {day:'Sat',slots:[{text:'Math: Full revision',cls:''},{text:'Mock test (2hr)',cls:'rev'}]},
-    {day:'Sun',slots:[{text:'Rest / catch-up',cls:'bio'}]},
+const TIMETABLE = {
+  current: [
+    { day: 'Monday',    slots: [{text:'Mathematics — Sets & Relations',color:'#8b7cf6'},{text:'Physics — Dimensional Analysis',color:'#60a5fa'}] },
+    { day: 'Tuesday',   slots: [{text:'Chemistry — Atomic Structure',color:'#fb923c'},{text:'Mathematics — Trigonometry',color:'#8b7cf6'}] },
+    { day: 'Wednesday', slots: [{text:'Computer Sc. — Java OOP',color:'#f87171'},{text:'Physics — Laws of Motion',color:'#60a5fa'}] },
+    { day: 'Thursday',  slots: [{text:'Mathematics — Complex Numbers',color:'#8b7cf6'},{text:'Chemistry — Basic Concepts',color:'#fb923c'}] },
+    { day: 'Friday',    slots: [{text:'Physics — Motion',color:'#60a5fa'},{text:'Computer Sc. — Arrays',color:'#f87171'}] },
+    { day: 'Saturday',  slots: [{text:'Full Revision — Unit Test topics',color:'#4ade80'},{text:'Mock test — 2 hours',color:'#a78bfa'}] },
+    { day: 'Sunday',    slots: [{text:'Rest / Catch-up',color:'#64748b'}] },
   ],
-  next:[
-    {day:'Mon',slots:[{text:'Math: Calculus intro',cls:''},{text:'Phys: Work & Energy',cls:'phys'}]},
-    {day:'Tue',slots:[{text:'Chem: Equilibrium',cls:'chem'},{text:'CS: Arrays',cls:'rev'}]},
-    {day:'Wed',slots:[{text:'Bio: Physiology',cls:'bio'},{text:'Math: Coordinate Geom.',cls:''}]},
-    {day:'Thu',slots:[{text:'Phys: Gravitation',cls:'phys'},{text:'Eng: Poetry',cls:'eng'}]},
-    {day:'Fri',slots:[{text:'Math: Statistics',cls:''},{text:'Chem: Thermodynamics',cls:'chem'}]},
-    {day:'Sat',slots:[{text:'Full mock test',cls:'rev'},{text:'Error analysis',cls:'rev'}]},
-    {day:'Sun',slots:[{text:'Weak subject focus',cls:''}]},
+  next: [
+    { day: 'Monday',    slots: [{text:'Mathematics — Sequences & Series',color:'#8b7cf6'},{text:'Physics — Work & Energy',color:'#60a5fa'}] },
+    { day: 'Tuesday',   slots: [{text:'Chemistry — Chemical Bonding',color:'#fb923c'},{text:'Computer Sc. — Sorting',color:'#f87171'}] },
+    { day: 'Wednesday', slots: [{text:'Mathematics — P & C',color:'#8b7cf6'},{text:'Physics — Gravitation',color:'#60a5fa'}] },
+    { day: 'Thursday',  slots: [{text:'Chemistry — Equilibrium',color:'#fb923c'},{text:'Mathematics — Limits',color:'#8b7cf6'}] },
+    { day: 'Friday',    slots: [{text:'Computer Sc. — Boolean Algebra',color:'#f87171'},{text:'Physics — Rotational Motion',color:'#60a5fa'}] },
+    { day: 'Saturday',  slots: [{text:'Full Mock Test',color:'#4ade80'},{text:'Error Analysis',color:'#a78bfa'}] },
+    { day: 'Sunday',    slots: [{text:'Weak Subject Focus',color:'#64748b'}] },
   ],
-  revision:[
-    {day:'Mon',slots:[{text:'Math: Algebra revision',cls:''},{text:'Math: Formulae drill',cls:''}]},
-    {day:'Tue',slots:[{text:'Phys: All chapters',cls:'phys'},{text:'Phys: Numericals',cls:'phys'}]},
-    {day:'Wed',slots:[{text:'Chem: Revision',cls:'chem'},{text:'Bio: Diagrams',cls:'bio'}]},
-    {day:'Thu',slots:[{text:'CS: Programs list',cls:'rev'},{text:'Eng: Grammar drills',cls:'eng'}]},
-    {day:'Fri',slots:[{text:'Full paper practice',cls:'rev'}]},
-    {day:'Sat',slots:[{text:'Light review only',cls:''}]},
-    {day:'Sun',slots:[{text:'Rest — exam tomorrow',cls:'bio'}]},
-  ],
+  revision: [
+    { day: 'Monday',    slots: [{text:'Math — All formulas drill',color:'#8b7cf6'},{text:'Math — Trigonometry revision',color:'#8b7cf6'}] },
+    { day: 'Tuesday',   slots: [{text:'Physics — Units to Motion',color:'#60a5fa'},{text:'Physics — Numericals',color:'#60a5fa'}] },
+    { day: 'Wednesday', slots: [{text:'Chemistry — Full revision',color:'#fb923c'},{text:'CS — Programs list',color:'#f87171'}] },
+    { day: 'Thursday',  slots: [{text:'CS — Algorithms dry run',color:'#f87171'},{text:'Math — Coordinate Geom.',color:'#8b7cf6'}] },
+    { day: 'Friday',    slots: [{text:'Full Paper Practice',color:'#4ade80'}] },
+    { day: 'Saturday',  slots: [{text:'Light review only',color:'#64748b'}] },
+    { day: 'Sunday',    slots: [{text:'Rest — exam tomorrow',color:'#64748b'}] },
+  ]
 };
 
-const remindersData = [
-  {text:'Morning study session', time:'07:00', color:'#7c6af7'},
-  {text:'Formula revision — 15 min', time:'13:00', color:'#4ade80'},
-  {text:'Evening problem solving', time:'18:30', color:'#38bdf8'},
-  {text:'Review today\'s notes before sleep', time:'21:30', color:'#fb923c'},
-];
-
-const motivations = [
+const QUOTES = [
   '"The expert in anything was once a beginner." — Class 11 is your beginning.',
-  '"Study hard now so you can play harder later." — You\'re 7 days strong!',
-  '"Success is the sum of small efforts repeated daily." — Keep the streak alive.',
+  '"Success is the sum of small efforts repeated daily."',
   '"Your future self is watching you right now." — Make them proud.',
+  '"Hard work beats talent when talent doesn\'t work hard."',
+  '"Study hard in silence. Let success make the noise."'
 ];
 
-const focusData = {
-  math:{topics:['Complex Numbers — all forms','AP/GP — nth term & sum','P&C — circular, binomial','Limits & L\'Hôpital','Coordinate Geometry — conics'], qs:['Find term independent of x in (x+1/x)^8','Sum of 3 numbers in AP is 24, product 440 — find them','Express (3+4i)/(1−2i) in a+ib form']},
-  phys:{topics:['Dimensions of force, pressure, energy','FBD — Atwood machine, inclined plane','Conservation of energy — spring problems','Circular motion — centripetal force'], qs:['A body of mass 5kg on incline 30° — find acceleration','KE of 1kg moving at 10m/s — find PE at max height']},
-  cs:{topics:['Constructor vs method','super and this keywords','Bubble sort dry run','String methods — charAt, substring','2D array matrix operations'], qs:['Write Java program: print prime numbers 1–100','Trace bubble sort on [5,3,8,1,9]']},
-};
-
-let timerInterval=null, timerSecs=25*60, timerRunning=false;
-let currentWeek='current';
-
-// INIT
-document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-// Countdown
-const examDate = new Date(); examDate.setDate(examDate.getDate()+18);
-document.getElementById('countdown-days').textContent = 18;
-
-// Tasks
-const tl = document.getElementById('task-list');
-tasks.forEach((t,i)=>{
-  const d=document.createElement('div'); d.className='task-item';
-  d.innerHTML=`<div class="task-check ${t.done?'done':''}" onclick="toggleTask(${i},this)"></div><span class="task-text ${t.done?'done':''}">${t.text}</span><span class="task-tag ${t.tag}">${t.label}</span>`;
-  tl.appendChild(d);
-});
-
-function toggleTask(i,el){
-  tasks[i].done=!tasks[i].done;
-  el.classList.toggle('done');
-  el.parentElement.querySelector('.task-text').classList.toggle('done');
+/* ==============================
+   STATE (localStorage)
+============================== */
+function getState() {
+  try {
+    return JSON.parse(localStorage.getItem('studyos_state') || '{}');
+  } catch(e) { return {}; }
 }
-
-// Dash progress
-const dp=document.getElementById('dash-progress');
-subjects.forEach(s=>{
-  dp.innerHTML+=`<div class="subj-progress"><div class="sp-top"><span class="sp-name">${s.icon} ${s.name}</span><span class="sp-pct">${s.progress}%</span></div><div class="prog-bar"><div class="prog-fill ${s.fill}" style="width:${s.progress}%"></div></div></div>`;
-});
-
-// Progress page
-const pb=document.getElementById('progress-bars');
-subjects.forEach(s=>{
-  pb.innerHTML+=`<div class="subj-progress"><div class="sp-top"><span class="sp-name" style="font-size:14px">${s.icon} ${s.name}</span><span class="sp-pct" style="font-size:13px">${s.progress}%</span></div><div class="prog-bar" style="height:8px"><div class="prog-fill ${s.fill}" style="width:${s.progress}%"></div></div><div style="font-size:11px;color:var(--text3);margin-top:5px;font-family:var(--mono)">${Math.round(s.chapters.length*s.progress/100)} / ${s.chapters.length} chapters</div></div>`;
-});
-
-// Activity bars
-const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-const hours=[3.5,4,4.5,3,5,6,2];
-const maxH=Math.max(...hours);
-const ab=document.getElementById('activity-bars');
-const al=document.getElementById('activity-labels');
-days.forEach((d,i)=>{
-  ab.innerHTML+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;background:var(--accent);border-radius:3px 3px 0 0;height:${hours[i]/maxH*80}px;opacity:${0.4+hours[i]/maxH*0.6}"></div></div>`;
-  al.innerHTML+=`<div style="flex:1;text-align:center;font-size:10px;color:var(--text3);font-family:var(--mono)">${d}</div>`;
-});
-
-// Chapter tracker
-const ct=document.getElementById('chapter-tracker');
-subjects.forEach(s=>{
-  let html=`<div style="margin-bottom:16px"><div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px">${s.icon} ${s.name}</div><div style="display:flex;flex-wrap:wrap;gap:6px">`;
-  s.chapters.forEach((c,i)=>{
-    const done=i<Math.round(s.chapters.length*s.progress/100);
-    html+=`<div style="font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid ${done?s.color:'var(--border2)'};background:${done?s.color+'22':'transparent'};color:${done?s.color:'var(--text3)'};">${done?'✓ ':''} ${c}</div>`;
-  });
-  html+='</div></div>';
-  ct.innerHTML+=html;
-});
-
-// Mind Maps
-const mc=document.getElementById('mm-cards');
-subjects.forEach(s=>{
-  const chips=s.chapters.slice(0,3).map(c=>`<div class="mm-chip">${c}</div>`).join('');
-  mc.innerHTML+=`<div class="mm-card" onclick="openMM('${s.id}','${s.name}','${s.icon}')"><div class="mm-icon">${s.icon}</div><div class="mm-title">${s.name}</div><div class="mm-sub">${s.chapters.length} chapters · ${s.progress}% done</div><div class="mm-topics">${chips}${s.chapters.length>3?`<div class="mm-chip">+${s.chapters.length-3} more</div>`:''}</div></div>`;
-});
-
-function openMM(id,name,icon){
-  document.getElementById('mm-list').style.display='none';
-  const dv=document.getElementById('mm-detail-view');
-  dv.style.display='block';
-  const data=mindmapData[id];
-  let html=`<div class="mm-detail open"><div class="mm-detail-title">${icon} ${name} — Mind Map</div>`;
-  if(data){
-    data.nodes.forEach(n=>{
-      html+=`<div class="mm-node"><div class="mm-node-title" onclick="toggleNode(this)">${n.title}</div><div class="mm-node-body">${n.body}</div></div>`;
-    });
-  } else {
-    html+=`<div style="color:var(--text3);font-size:13px">Mind map coming soon for this subject.</div>`;
+function saveState(state) {
+  localStorage.setItem('studyos_state', JSON.stringify(state));
+}
+function getChapterDone(subjId, chName) {
+  const s = getState();
+  return !!(s.chapters && s.chapters[subjId] && s.chapters[subjId][chName]);
+}
+function toggleChapterDone(subjId, chName) {
+  const s = getState();
+  if (!s.chapters) s.chapters = {};
+  if (!s.chapters[subjId]) s.chapters[subjId] = {};
+  s.chapters[subjId][chName] = !s.chapters[subjId][chName];
+  saveState(s);
+}
+function getStreak() {
+  const s = getState();
+  return s.streak || 0;
+}
+function logStreak() {
+  const s = getState();
+  const today = new Date().toDateString();
+  if (s.lastLog === today) {
+    alert('Already logged today! Come back tomorrow 🔥');
+    return;
   }
-  html+='</div>';
-  document.getElementById('mm-detail-content').innerHTML=html;
+  s.streak = (s.streak || 0) + 1;
+  s.lastLog = today;
+  saveState(s);
+  document.getElementById('streak-num').textContent = s.streak;
+}
+function getReminders() {
+  const s = getState();
+  return s.reminders || [
+    { text: 'Morning study session', time: '07:00', color: '#8b7cf6' },
+    { text: 'Formula revision — 15 min', time: '13:00', color: '#4ade80' },
+    { text: 'Evening problem solving', time: '18:30', color: '#60a5fa' },
+    { text: 'Review notes before sleep', time: '21:30', color: '#fb923c' },
+  ];
+}
+function saveReminders(r) {
+  const s = getState();
+  s.reminders = r;
+  saveState(s);
+}
+function getTasks() {
+  const s = getState();
+  return s.tasks || TASKS.map(t => ({...t}));
+}
+function saveTasks(t) {
+  const s = getState();
+  s.tasks = t;
+  saveState(s);
 }
 
-function closeMM(){
-  document.getElementById('mm-list').style.display='block';
-  document.getElementById('mm-detail-view').style.display='none';
-}
-
-function toggleNode(el){
-  el.parentElement.classList.toggle('expanded');
-}
-
-// Time calculator — subject toggles
-const subjIds=subjects.map(s=>s.id);
-const subjNames=subjects.map(s=>s.name);
-const st=document.getElementById('subj-toggle');
-const wt=document.getElementById('weak-toggle');
-subjects.forEach(s=>{
-  const b=document.createElement('button'); b.className='stoggle on'; b.textContent=s.name; b.dataset.id=s.id;
-  b.onclick=()=>b.classList.toggle('on'); st.appendChild(b);
-  const w=document.createElement('button'); w.className='stoggle'; w.textContent=s.name; w.dataset.id=s.id;
-  w.onclick=()=>w.classList.toggle('on'); wt.appendChild(w);
-});
-
-function calcTime(){
-  const edate=document.getElementById('exam-date').value;
-  const hpd=parseFloat(document.getElementById('hours-day').value)||4;
-  const sel=[...document.querySelectorAll('#subj-toggle .stoggle.on')].map(b=>b.dataset.id);
-  const weak=[...document.querySelectorAll('#weak-toggle .stoggle.on')].map(b=>b.dataset.id);
-  if(!edate||sel.length===0){alert('Please fill exam date and select subjects.');return;}
-  const days=Math.max(1,Math.round((new Date(edate)-new Date())/(1000*60*60*24)));
-  const total=days*hpd;
-  const weights={}; sel.forEach(id=>{ weights[id]=weak.includes(id)?1.5:1; });
-  const wsum=Object.values(weights).reduce((a,b)=>a+b,0);
-  const alloc={};sel.forEach(id=>{ alloc[id]=+(total*weights[id]/wsum).toFixed(1); });
-  const maxH=Math.max(...Object.values(alloc));
-  let html=''; sel.forEach(id=>{
-    const s=subjects.find(x=>x.id===id);
-    html+=`<div class="alloc-item"><div class="alloc-subject">${s.icon} ${s.name}</div><div class="alloc-bar-wrap"><div class="prog-bar"><div class="prog-fill ${s.fill}" style="width:${alloc[id]/maxH*100}%"></div></div></div><div class="alloc-time">${alloc[id]}h</div></div>`;
-  });
-  document.getElementById('alloc-bars').innerHTML=html;
-  document.getElementById('alloc-summary').textContent=`${days} days × ${hpd}h/day = ${total}h total study time across ${sel.length} subjects`;
-  document.getElementById('calc-result').style.display='block';
-}
-
-// Timetable
-function renderTimetable(week){
-  const grid=document.getElementById('tt-grid');
-  grid.innerHTML='';
-  weekData[week].forEach(d=>{
-    let slots=d.slots.map(s=>`<div class="tt-slot ${s.cls}"><div style="font-size:11px;font-weight:500">${s.text}</div></div>`).join('');
-    grid.innerHTML+=`<div class="tt-day"><div class="tt-day-label">${d.day}</div>${slots}</div>`;
-  });
-}
-renderTimetable('current');
-
-function switchWeek(btn,week){
-  document.querySelectorAll('.tt-btn').forEach(b=>b.classList.remove('active'));
+/* ==============================
+   NAVIGATION
+============================== */
+let currentView = 'home';
+function navigate(view, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
   btn.classList.add('active');
-  currentWeek=week;
-  renderTimetable(week);
-}
+  currentView = view;
 
-// Focus mode
-const fg=document.getElementById('focus-grid');
-['math','phys','cs'].forEach(id=>{
-  const s=subjects.find(x=>x.id===id);
-  const d=focusData[id];
-  let topicsHtml=d.topics.map(t=>`<div class="focus-item"><div class="focus-dot" style="background:${s.color}"></div>${t}</div>`).join('');
-  let qsHtml=d.qs.map(q=>`<div class="important-q"><span class="imp-badge">★ Important</span>${q}</div>`).join('');
-  fg.innerHTML+=`<div class="focus-card"><div class="focus-card-title" style="color:${s.color}">${s.icon} ${s.name} — Unit Test<span style="font-size:10px;font-family:var(--mono);color:var(--text3)">FOCUS</span></div>${topicsHtml}<div style="margin-top:12px;font-size:11px;font-family:var(--mono);color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em">Must-do questions</div>${qsHtml}</div>`;
-});
-
-// Timer
-function timerToggle(){
-  if(timerRunning){
-    clearInterval(timerInterval); timerRunning=false;
-    document.getElementById('timer-start').textContent='Resume';
-  } else {
-    timerRunning=true;
-    document.getElementById('timer-start').textContent='Pause';
-    timerInterval=setInterval(()=>{
-      if(timerSecs<=0){clearInterval(timerInterval);timerRunning=false;document.getElementById('timer-start').textContent='Start';timerSecs=25*60;updateTimerDisp();return;}
-      timerSecs--;updateTimerDisp();
-    },1000);
+  // Reset More sub-views
+  if (view === 'more') {
+    document.getElementById('more-menu').style.display = 'block';
+    document.getElementById('more-subview').style.display = 'none';
   }
-}
-function timerReset(){clearInterval(timerInterval);timerRunning=false;timerSecs=25*60;updateTimerDisp();document.getElementById('timer-start').textContent='Start';}
-function updateTimerDisp(){const m=Math.floor(timerSecs/60),s=timerSecs%60;document.getElementById('timer-disp').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
 
-// Reminders
-function renderReminders(){
-  const rl=document.getElementById('reminder-list');
-  rl.innerHTML='';
-  remindersData.forEach((r,i)=>{
-    rl.innerHTML+=`<div class="rem-item"><div class="rem-dot" style="background:${r.color}"></div><div class="rem-text">${r.text}</div><div class="rem-time">${r.time}</div><button class="rem-del" onclick="delReminder(${i})">×</button></div>`;
+  if (view === 'home') renderHome();
+  if (view === 'chapters') initChapters();
+  if (view === 'maps') initMaps();
+  if (view === 'focus') initFocus();
+}
+
+/* ==============================
+   HOME
+============================== */
+function renderHome() {
+  const streak = getStreak();
+  document.getElementById('streak-num').textContent = streak;
+
+  // Count chapters
+  let done = 0, total = 0;
+  SUBJECTS.forEach(s => {
+    s.examSections.forEach(sec => {
+      sec.chapters.forEach(ch => {
+        total++;
+        if (getChapterDone(s.id, ch)) done++;
+      });
+    });
+  });
+  document.getElementById('home-ch-done').textContent = done;
+  document.getElementById('home-ch-total').textContent = `of ${total} total`;
+  document.getElementById('home-topics').textContent = total ? Math.round(done/total*100) + '%' : '0%';
+
+  // Tasks
+  const tasks = getTasks();
+  const tl = document.getElementById('task-list');
+  tl.innerHTML = '';
+  tasks.forEach((t, i) => {
+    const colors = {math:'#8b7cf6',phys:'#60a5fa',chem:'#fb923c',cs:'#f87171'};
+    const names = {math:'Math',phys:'Physics',chem:'Chemistry',cs:'Comp Sc.'};
+    const div = document.createElement('div');
+    div.className = 'task-item';
+    div.innerHTML = `
+      <div class="task-check ${t.done?'done':''}" onclick="toggleTask(${i})">
+        ${t.done ? '✓' : ''}
+      </div>
+      <span class="task-text ${t.done?'done':''}">${t.text}</span>
+      <span class="task-badge" style="background:${colors[t.subj]}22;color:${colors[t.subj]}">${names[t.subj]}</span>
+    `;
+    tl.appendChild(div);
+  });
+
+  // Subject progress
+  const hp = document.getElementById('home-progress');
+  hp.innerHTML = '';
+  SUBJECTS.forEach(s => {
+    let sdone = 0, stotal = 0;
+    s.examSections.forEach(sec => {
+      sec.chapters.forEach(ch => {
+        stotal++;
+        if (getChapterDone(s.id, ch)) sdone++;
+      });
+    });
+    const pct = stotal ? Math.round(sdone/stotal*100) : 0;
+    hp.innerHTML += `
+      <div class="card card-sm" style="margin-bottom:8px">
+        <div class="prog-top">
+          <span class="prog-name">${s.emoji} ${s.name}</span>
+          <span class="prog-pct">${sdone}/${stotal}</span>
+        </div>
+        <div class="prog-bar">
+          <div class="prog-fill" style="background:${s.color};width:${pct}%"></div>
+        </div>
+      </div>
+    `;
   });
 }
-renderReminders();
 
-function delReminder(i){remindersData.splice(i,1);renderReminders();}
-function addReminder(){
-  const t=document.getElementById('rem-input').value.trim();
-  const tm=document.getElementById('rem-time').value;
-  if(!t)return;
-  const colors=['#7c6af7','#4ade80','#38bdf8','#fb923c','#c084fc'];
-  remindersData.push({text:t,time:tm,color:colors[remindersData.length%colors.length]});
-  document.getElementById('rem-input').value='';
-  renderReminders();
-}
-document.getElementById('motivation-text').innerHTML=`<strong>Daily nudge:</strong> ${motivations[Math.floor(Math.random()*motivations.length)]}`;
-
-// Navigation
-const titles={dashboard:'Dashboard',progress:'Progress Tracker',mindmap:'Mind Maps',calculator:'Time Calculator',timetable:'Weekly Timetable',focus:'Unit Test Focus Mode',reminders:'Reminders & Streaks'};
-function nav(id,el){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('view-'+id).classList.add('active');
-  el.classList.add('active');
-  document.getElementById('topbar-title').textContent=titles[id];
+function toggleTask(i) {
+  const tasks = getTasks();
+  tasks[i].done = !tasks[i].done;
+  saveTasks(tasks);
+  renderHome();
 }
 
-// Theme
-function toggleTheme(){
-  document.getElementById('app').classList.toggle('light');
+/* ==============================
+   CHAPTERS
+============================== */
+let activeSubj = 'math';
+
+function initChapters() {
+  const pills = document.getElementById('ch-pills');
+  pills.innerHTML = '';
+  SUBJECTS.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = `subj-pill pill-${s.id} ${s.id === activeSubj ? 'active' : ''}`;
+    btn.textContent = s.emoji + ' ' + s.name;
+    btn.onclick = () => { activeSubj = s.id; initChapters(); };
+    pills.appendChild(btn);
+  });
+  renderChapterContent(activeSubj);
 }
 
-// Set today's exam date default
-const d=new Date(); d.setDate(d.getDate()+18);
-document.getElementById('exam-date').valueAsDate=d;
+function renderChapterContent(subjId) {
+  const s = SUBJECTS.find(x => x.id === subjId);
+  let html = '';
+
+  s.examSections.forEach(sec => {
+    html += `<div class="exam-section">
+      <div>
+        <span class="exam-badge ${BADGE_CLASS[sec.type]}">${BADGE_LABELS[sec.type]}</span>
+      </div>`;
+
+    sec.chapters.forEach(ch => {
+      const done = getChapterDone(subjId, ch);
+      html += `
+        <div class="chapter-item ${done?'done':''}" onclick="handleChChapter('${subjId}','${ch.replace(/'/g,"\\'")}')">
+          <div class="ch-icon">${done ? '✓' : ''}</div>
+          <span class="ch-name">${ch}</span>
+        </div>`;
+    });
+
+    if (sec.revision && sec.revision.length) {
+      html += `<div style="margin-top:6px;margin-bottom:4px"><span class="exam-badge exam-rev">Revision</span></div>`;
+      sec.revision.forEach(ch => {
+        html += `<div class="chapter-item" style="opacity:0.6;cursor:default">
+          <div class="ch-icon" style="font-size:9px;color:var(--text3)">↩</div>
+          <span class="ch-name" style="color:var(--text3)">${ch}</span>
+          <span class="ch-note">revise</span>
+        </div>`;
+      });
+    }
+
+    html += `</div>`;
+  });
+
+  document.getElementById('chapter-content').innerHTML = html;
+}
+
+function handleChChapter(subjId, chName) {
+  toggleChapterDone(subjId, chName);
+  renderChapterContent(subjId);
+
+  // Also update home stats in background
+  const streak = getStreak();
+  document.getElementById('streak-num').textContent = streak;
+}
+
+/* ==============================
+   MIND MAPS
+============================== */
+function initMaps() {
+  document.getElementById('maps-list').style.display = 'block';
+  document.getElementById('maps-detail').style.display = 'none';
+
+  const cards = document.getElementById('mm-subject-cards');
+  cards.innerHTML = '';
+  SUBJECTS.forEach(s => {
+    const nodes = MINDMAP_DATA[s.id] || [];
+    const chips = nodes.slice(0, 3).map(n => `<div class="mm-chip">${n.title}</div>`).join('');
+    cards.innerHTML += `
+      <div class="mm-card" onclick="openMM('${s.id}')">
+        <div class="mm-card-top">
+          <div class="mm-emoji">${s.emoji}</div>
+          <div>
+            <div class="mm-card-title">${s.name}</div>
+            <div class="mm-card-sub">${nodes.length} topics</div>
+          </div>
+        </div>
+        <div class="mm-chips">${chips}${nodes.length>3?`<div class="mm-chip">+${nodes.length-3} more</div>`:''}</div>
+      </div>`;
+  });
+}
+
+function openMM(subjId) {
+  const s = SUBJECTS.find(x => x.id === subjId);
+  document.getElementById('maps-list').style.display = 'none';
+  document.getElementById('maps-detail').style.display = 'block';
+  document.getElementById('mm-detail-title').textContent = s.emoji + ' ' + s.name;
+
+  const nodes = MINDMAP_DATA[subjId] || [];
+  let html = '';
+  nodes.forEach((n, i) => {
+    html += `
+      <div class="mm-node" id="mmn-${i}">
+        <div class="mm-node-head" onclick="toggleMMNode(${i})">
+          <div class="mm-node-arrow">▶</div>
+          <div class="mm-node-title">${n.title}</div>
+        </div>
+        <div class="mm-node-body">${n.body}</div>
+      </div>`;
+  });
+  if (!html) html = '<div class="empty-state"><div class="es-icon">🚧</div>Mind map coming soon!</div>';
+  document.getElementById('mm-nodes').innerHTML = html;
+}
+
+function closeMM() {
+  document.getElementById('maps-list').style.display = 'block';
+  document.getElementById('maps-detail').style.display = 'none';
+}
+
+function toggleMMNode(i) {
+  document.getElementById('mmn-' + i).classList.toggle('open');
+}
+
+/* ==============================
+   FOCUS / TIMER
+============================== */
+let timerSecs = 25 * 60, timerRunning = false, timerInterval = null, timerMins = 25, timerModeName = 'FOCUS SESSION';
+let activeFocusSubj = 'math';
+
+function initFocus() {
+  const pills = document.getElementById('focus-pills');
+  pills.innerHTML = '';
+  SUBJECTS.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = `subj-pill pill-${s.id} ${s.id === activeFocusSubj ? 'active' : ''}`;
+    btn.textContent = s.emoji + ' ' + s.name;
+    btn.onclick = () => { activeFocusSubj = s.id; initFocus(); };
+    pills.appendChild(btn);
+  });
+  renderFocusContent(activeFocusSubj);
+}
+
+function renderFocusContent(subjId) {
+  const data = FOCUS_DATA[subjId];
+  const s = SUBJECTS.find(x => x.id === subjId);
+  let html = `<div class="card" style="margin-bottom:10px">
+    <div class="section-label" style="color:${s.color}">Key Topics</div>`;
+  data.topics.forEach(t => {
+    html += `<div class="focus-topic">
+      <div class="ft-dot" style="background:${s.color}"></div>${t}
+    </div>`;
+  });
+  html += `</div><div class="section-label">Must-Do Questions</div>`;
+  data.qs.forEach(q => {
+    html += `<div class="imp-q"><span class="imp-badge">★ Important</span>${q}</div>`;
+  });
+  document.getElementById('focus-content').innerHTML = html;
+}
+
+function setMode(btn, mins, name) {
+  document.querySelectorAll('.timer-mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  timerMins = mins; timerModeName = name.toUpperCase() + ' SESSION';
+  timerSecs = mins * 60; timerRunning = false;
+  clearInterval(timerInterval);
+  document.getElementById('timer-start-btn').textContent = 'Start';
+  document.getElementById('timer-lbl').textContent = timerModeName;
+  updateTimerDisp();
+}
+
+function timerToggle() {
+  if (timerRunning) {
+    clearInterval(timerInterval); timerRunning = false;
+    document.getElementById('timer-start-btn').textContent = 'Resume';
+  } else {
+    timerRunning = true;
+    document.getElementById('timer-start-btn').textContent = 'Pause';
+    timerInterval = setInterval(() => {
+      if (timerSecs <= 0) {
+        clearInterval(timerInterval); timerRunning = false;
+        timerSecs = timerMins * 60;
+        document.getElementById('timer-start-btn').textContent = 'Start';
+        updateTimerDisp();
+        if (Notification && Notification.permission === 'granted') {
+          new Notification('StudyOS', { body: timerModeName + ' complete! Take a break.' });
+        }
+        return;
+      }
+      timerSecs--;
+      updateTimerDisp();
+    }, 1000);
+  }
+}
+
+function timerReset() {
+  clearInterval(timerInterval); timerRunning = false;
+  timerSecs = timerMins * 60;
+  document.getElementById('timer-start-btn').textContent = 'Start';
+  updateTimerDisp();
+}
+
+function updateTimerDisp() {
+  const m = Math.floor(timerSecs / 60), s = timerSecs % 60;
+  document.getElementById('timer-disp').textContent =
+    String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+/* ==============================
+   MORE SUB-VIEWS
+============================== */
+function showMoreView(view) {
+  document.getElementById('more-menu').style.display = 'none';
+  const sv = document.getElementById('more-subview');
+  sv.style.display = 'block';
+
+  if (view === 'reminders') sv.innerHTML = buildRemindersHTML();
+  else if (view === 'timetable') sv.innerHTML = buildTimetableHTML();
+  else if (view === 'timecalc') sv.innerHTML = buildTimeCalcHTML();
+  else if (view === 'about') sv.innerHTML = buildAboutHTML();
+}
+
+function backToMore() {
+  document.getElementById('more-menu').style.display = 'block';
+  document.getElementById('more-subview').style.display = 'none';
+}
+
+/* REMINDERS */
+function buildRemindersHTML() {
+  const rems = getReminders();
+  const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  let html = `
+    <div class="back-header">
+      <button class="back-btn" onclick="backToMore()">← Back</button>
+      <div class="back-title">Reminders</div>
+    </div>
+    <div class="quote-card"><strong>Daily nudge:</strong> ${quote}</div>
+    <div id="rem-list">`;
+  rems.forEach((r, i) => {
+    html += `<div class="rem-item">
+      <div class="rem-dot" style="background:${r.color}"></div>
+      <div class="rem-text">${r.text}</div>
+      <div class="rem-time">${r.time}</div>
+      <button class="rem-del" onclick="deleteReminder(${i})">×</button>
+    </div>`;
+  });
+  html += `</div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <input type="text" class="form-input" id="rem-new-text" placeholder="Reminder text…" style="flex:1"/>
+      <input type="time" class="form-input" id="rem-new-time" value="08:00" style="width:100px"/>
+    </div>
+    <button class="btn-primary" style="margin-top:10px" onclick="addReminder()">+ Add Reminder</button>`;
+  return html;
+}
+
+function deleteReminder(i) {
+  const rems = getReminders();
+  rems.splice(i, 1);
+  saveReminders(rems);
+  document.getElementById('more-subview').innerHTML = buildRemindersHTML();
+}
+
+function addReminder() {
+  const text = document.getElementById('rem-new-text').value.trim();
+  const time = document.getElementById('rem-new-time').value;
+  if (!text) return;
+  const rems = getReminders();
+  const colors = ['#8b7cf6','#4ade80','#60a5fa','#fb923c','#f87171'];
+  rems.push({ text, time, color: colors[rems.length % colors.length] });
+  saveReminders(rems);
+  document.getElementById('more-subview').innerHTML = buildRemindersHTML();
+}
+
+/* TIMETABLE */
+let activeWeek = 'current';
+function buildTimetableHTML(week) {
+  week = week || activeWeek;
+  activeWeek = week;
+  const weeks = ['current', 'next', 'revision'];
+  const labels = { current: 'This Week', next: 'Next Week', revision: 'Revision' };
+  let html = `
+    <div class="back-header">
+      <button class="back-btn" onclick="backToMore()">← Back</button>
+      <div class="back-title">Timetable</div>
+    </div>
+    <div class="tt-week-pills">`;
+  weeks.forEach(w => {
+    html += `<button class="week-pill ${w===week?'active':''}" onclick="switchTTWeek('${w}')">${labels[w]}</button>`;
+  });
+  html += `</div><div id="tt-days-content">`;
+  TIMETABLE[week].forEach(d => {
+    html += `<div class="tt-day-card">
+      <div class="tt-day-header">${d.day}</div>`;
+    d.slots.forEach(sl => {
+      html += `<div class="tt-slot-item">
+        <div class="tt-color-bar" style="background:${sl.color}"></div>
+        <div class="tt-slot-text">${sl.text}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+function switchTTWeek(week) {
+  document.getElementById('more-subview').innerHTML = buildTimetableHTML(week);
+}
+
+/* TIME CALCULATOR */
+function buildTimeCalcHTML() {
+  let toggles = '', weakToggles = '';
+  SUBJECTS.forEach(s => {
+    toggles += `<button class="toggle-pill on" data-id="${s.id}" onclick="this.classList.toggle('on')">${s.emoji} ${s.name}</button>`;
+    weakToggles += `<button class="toggle-pill" data-id="${s.id}" onclick="this.classList.toggle('on')">${s.emoji} ${s.name}</button>`;
+  });
+  return `
+    <div class="back-header">
+      <button class="back-btn" onclick="backToMore()">← Back</button>
+      <div class="back-title">Time Calculator</div>
+    </div>
+    <div class="card">
+      <div class="form-group">
+        <label class="form-label">Total Study Days Available</label>
+        <input type="number" class="form-input" id="tc-days" value="30" min="1" max="365"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hours per Day</label>
+        <input type="number" class="form-input" id="tc-hours" value="4" min="1" max="16"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subjects to Cover</label>
+        <div id="tc-subjects" style="margin-top:6px">${toggles}</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Weak Subjects (extra time)</label>
+        <div id="tc-weak" style="margin-top:6px">${weakToggles}</div>
+      </div>
+      <button class="btn-primary" onclick="calcTime()">Calculate Plan</button>
+    </div>
+    <div id="tc-result"></div>`;
+}
+
+function calcTime() {
+  const days = parseInt(document.getElementById('tc-days').value) || 30;
+  const hpd = parseFloat(document.getElementById('tc-hours').value) || 4;
+  const sel = [...document.querySelectorAll('#tc-subjects .toggle-pill.on')].map(b => b.dataset.id);
+  const weak = [...document.querySelectorAll('#tc-weak .toggle-pill.on')].map(b => b.dataset.id);
+  if (!sel.length) { alert('Select at least one subject.'); return; }
+  const total = days * hpd;
+  const weights = {}; sel.forEach(id => { weights[id] = weak.includes(id) ? 1.5 : 1; });
+  const wsum = Object.values(weights).reduce((a,b) => a+b, 0);
+  const alloc = {}; sel.forEach(id => { alloc[id] = +(total * weights[id] / wsum).toFixed(1); });
+  const maxH = Math.max(...Object.values(alloc));
+  let html = `<div class="calc-result-box">
+    <div class="section-label">Your Personalised Plan</div>`;
+  sel.forEach(id => {
+    const s = SUBJECTS.find(x => x.id === id);
+    const pct = alloc[id] / maxH * 100;
+    html += `<div class="alloc-item">
+      <div class="alloc-subj">${s.emoji} ${s.name}</div>
+      <div class="alloc-bar-w">
+        <div class="prog-bar"><div class="prog-fill" style="background:${s.color};width:${pct}%"></div></div>
+      </div>
+      <div class="alloc-hrs">${alloc[id]}h</div>
+    </div>`;
+  });
+  html += `<div style="font-size:11px;color:var(--text3);margin-top:10px;font-family:var(--mono)">${days} days × ${hpd}h = ${total}h total across ${sel.length} subjects</div></div>`;
+  document.getElementById('tc-result').innerHTML = html;
+}
+
+/* ABOUT */
+function buildAboutHTML() {
+  return `
+    <div class="back-header">
+      <button class="back-btn" onclick="backToMore()">← Back</button>
+      <div class="back-title">About</div>
+    </div>
+    <div class="about-hero">
+      <div class="about-logo">Study<span>OS</span></div>
+      <div class="about-sub">Your ISC Class XI study companion</div>
+    </div>
+    <div class="about-credit">
+      <div class="about-credit-name">Rupam Sadhukhan</div>
+      <div class="about-credit-sub">MADE WITH THE HELP OF CLAUDE AI</div>
+      <div style="margin-top:12px;font-size:22px">🎓✨</div>
+    </div>
+    <div class="about-info-row">
+      <div class="about-info-icon">📚</div>
+      <div class="about-info-text">ISC Class XI — PCM + Computer Science</div>
+    </div>
+    <div class="about-info-row">
+      <div class="about-info-icon">📐</div>
+      <div class="about-info-text">Mathematics, Physics, Chemistry, Computer Sc.</div>
+    </div>
+    <div class="about-info-row">
+      <div class="about-info-icon">🗺️</div>
+      <div class="about-info-text">Full syllabus mind maps with key formulas</div>
+    </div>
+    <div class="about-info-row">
+      <div class="about-info-icon">⏱️</div>
+      <div class="about-info-text">Pomodoro timer — Focus / Short Break / Long Break</div>
+    </div>
+    <div class="about-info-row">
+      <div class="about-info-icon">✅</div>
+      <div class="about-info-text">Track chapters across Unit Test, Half-Yearly, Cumulative & Annual</div>
+    </div>
+    <div class="about-info-row">
+      <div class="about-info-icon">💾</div>
+      <div class="about-info-text">Progress saved locally on your device</div>
+    </div>
+    <div style="text-align:center;padding:24px 0 8px;font-size:11px;color:var(--text3);font-family:var(--mono)">
+      StudyOS v2.0 · Built for ISC 2025–26
+    </div>`;
+}
+
+/* ==============================
+   INIT
+============================== */
+renderHome();
+initChapters();
+initMaps();
+initFocus();
 </script>
 </body>
 </html>

@@ -7,185 +7,180 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #0d0d12;
-  --bg2: #14141c;
-  --bg3: #1a1a24;
-  --surface: #1e1e2a;
-  --surface2: #252534;
-  --border: rgba(255,255,255,0.08);
-  --border2: rgba(255,255,255,0.14);
+  --bg: #0a0a10;
+  --bg2: #111118;
+  --bg3: #171720;
+  --surface: #1c1c26;
+  --surface2: #222230;
+  --surface3: #2a2a3a;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
   --accent: #8b7cf6;
+  --accent2: #a78bfa;
   --accent-dim: rgba(139,124,246,0.15);
+  --accent-glow: rgba(139,124,246,0.25);
   --green: #4ade80;
-  --green-dim: rgba(74,222,128,0.15);
+  --green-dim: rgba(74,222,128,0.12);
   --orange: #fb923c;
-  --orange-dim: rgba(251,146,60,0.15);
   --blue: #60a5fa;
-  --blue-dim: rgba(96,165,250,0.15);
   --red: #f87171;
-  --red-dim: rgba(248,113,113,0.15);
+  --yellow: #fbbf24;
   --text: #eeeef8;
   --text2: #8888aa;
   --text3: #44445a;
-  --r: 12px;
-  --r2: 8px;
+  --r: 14px;
+  --r2: 9px;
+  --r3: 20px;
   --mono: 'Space Mono', monospace;
   --font: 'Outfit', sans-serif;
-  --nav-h: 64px;
-  --top-h: 54px;
+  --nav-h: 68px;
+  --top-h: 56px;
+  --ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease2: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.5; overflow: hidden; height: 100dvh; }
+html { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  overflow: hidden;
+  height: 100dvh;
+}
 button { cursor: pointer; font-family: var(--font); border: none; outline: none; }
 input, select, textarea { font-family: var(--font); outline: none; }
 
-/* TOP BAR */
+/* ——— TOPBAR ——— */
 .topbar {
   position: fixed; top: 0; left: 0; right: 0; height: var(--top-h);
-  background: var(--bg2); border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; padding: 0 18px; z-index: 100;
+  background: rgba(17,17,24,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 20px; z-index: 200;
 }
-.topbar-logo { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+.topbar-logo { font-size: 21px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
 .topbar-logo span { color: var(--accent); }
-.topbar-right { margin-left: auto; font-size: 12px; color: var(--text3); font-family: var(--mono); }
+.topbar-tag {
+  margin-left: 10px; font-size: 10px; font-family: var(--mono);
+  color: var(--accent); background: var(--accent-dim);
+  border: 1px solid rgba(139,124,246,0.3);
+  padding: 2px 8px; border-radius: 20px; letter-spacing: 0.05em;
+}
+.topbar-right { margin-left: auto; font-size: 11px; color: var(--text3); font-family: var(--mono); }
 
-/* BOTTOM NAV */
+/* ——— BOTTOM NAV ——— */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-h);
-  background: var(--bg2); border-top: 1px solid var(--border);
-  display: flex; align-items: center; z-index: 100;
+  background: rgba(17,17,24,0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: stretch; z-index: 200;
   padding-bottom: env(safe-area-inset-bottom);
 }
 .nav-btn {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 10px 0; background: none; color: var(--text3); font-size: 10px;
-  font-weight: 600; letter-spacing: 0.03em; transition: color .2s;
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 4px;
+  background: none; color: var(--text3); font-size: 10px;
+  font-weight: 600; letter-spacing: 0.04em;
+  transition: color .2s var(--ease2); position: relative; overflow: hidden;
 }
 .nav-btn.active { color: var(--accent); }
-.nav-icon { font-size: 20px; line-height: 1; }
+.nav-btn.active .nav-icon { transform: scale(1.1); }
+.nav-icon {
+  font-size: 21px; line-height: 1;
+  transition: transform .3s var(--ease);
+}
+.nav-active-dot {
+  position: absolute; bottom: 6px; width: 4px; height: 4px;
+  border-radius: 50%; background: var(--accent);
+  opacity: 0; transform: scale(0);
+  transition: all .3s var(--ease);
+}
+.nav-btn.active .nav-active-dot { opacity: 1; transform: scale(1); }
 
-/* CONTENT AREA */
+/* ——— CONTENT AREA ——— */
 .content {
-  position: fixed; top: var(--top-h); bottom: var(--nav-h);
-  left: 0; right: 0; overflow-y: auto; overflow-x: hidden;
-  padding: 16px; -webkit-overflow-scrolling: touch;
+  position: fixed;
+  top: var(--top-h);
+  bottom: var(--nav-h);
+  left: 0; right: 0;
+  overflow: hidden;
+}
+.view-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 18px 16px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
-/* VIEWS */
-.view { display: none; }
-.view.active { display: block; animation: fadeIn .2s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+/* ——— VIEWS ——— */
+.view {
+  display: none;
+  position: absolute;
+  inset: 0;
+}
+.view.active { display: block; }
+.view-wrapper { opacity: 0; transform: translateY(10px); transition: opacity .25s var(--ease2), transform .25s var(--ease2); }
+.view.active .view-wrapper { opacity: 1; transform: translateY(0); }
 
-/* CARDS */
+/* ——— TOAST ——— */
+#toast-container {
+  position: fixed; top: calc(var(--top-h) + 12px); left: 50%; transform: translateX(-50%);
+  z-index: 1000; display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+}
+.toast {
+  background: var(--surface3); border: 1px solid var(--border2);
+  border-radius: var(--r3); padding: 10px 18px;
+  font-size: 13px; font-weight: 600; color: var(--text);
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: toastIn .3s var(--ease) forwards;
+}
+.toast.out { animation: toastOut .3s ease forwards; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-12px) scale(.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes toastOut { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-8px) scale(.95); } }
+
+/* ——— RIPPLE ——— */
+.ripple-container { position: relative; overflow: hidden; }
+.ripple-effect {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  transform: scale(0); animation: rippleAnim .5s linear;
+  pointer-events: none;
+}
+@keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+
+/* ——— SHARED COMPONENTS ——— */
+.section-label {
+  font-size: 10px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-family: var(--mono); margin-bottom: 12px; margin-top: 6px;
+}
+
 .card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--r); padding: 14px 16px; margin-bottom: 12px;
 }
-.card-sm { padding: 10px 14px; }
 
-/* SECTION LABEL */
-.section-label {
-  font-size: 11px; font-weight: 600; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 0.1em;
-  font-family: var(--mono); margin-bottom: 10px; margin-top: 4px;
-}
-
-/* STREAK BANNER */
-.streak-banner {
-  background: linear-gradient(135deg, rgba(139,124,246,0.2), rgba(139,124,246,0.05));
-  border: 1px solid rgba(139,124,246,0.3); border-radius: var(--r);
-  padding: 16px; margin-bottom: 12px;
-  display: flex; align-items: center; gap: 14px;
-}
-.streak-num { font-size: 40px; font-weight: 800; color: var(--accent); line-height: 1; }
-.streak-label { font-size: 13px; color: var(--text2); }
-.streak-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-/* STAT GRID */
-.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; }
-.stat-lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); margin-bottom: 4px; }
-.stat-val { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1.1; }
-.stat-sub { font-size: 11px; color: var(--text2); margin-top: 3px; }
-
-/* TASKS */
-.task-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 11px 0; border-bottom: 1px solid var(--border);
-}
-.task-item:last-child { border-bottom: none; }
-.task-check {
-  width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
-  border: 1.5px solid var(--border2); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .2s; font-size: 11px; color: #fff;
-}
-.task-check.done { background: var(--green); border-color: var(--green); }
-.task-text { flex: 1; font-size: 13px; color: var(--text); }
-.task-text.done { text-decoration: line-through; color: var(--text3); }
-.task-badge {
-  font-size: 10px; padding: 2px 7px; border-radius: 20px;
-  font-family: var(--mono); font-weight: 700; flex-shrink: 0;
-}
-
-/* PROGRESS BAR */
-.prog-wrap { margin-bottom: 10px; }
-.prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.prog-bar { height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; transition: width .8s var(--ease2); }
+.prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
 .prog-name { font-size: 14px; font-weight: 600; }
 .prog-pct { font-size: 12px; font-family: var(--mono); color: var(--text2); }
-.prog-bar { height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
-.prog-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
-.prog-detail { font-size: 11px; color: var(--text3); margin-top: 4px; }
 
-/* SUBJECT COLORS */
-.c-math { color: #8b7cf6; } .bg-math { background: #8b7cf6; }
-.c-phys { color: #60a5fa; } .bg-phys { background: #60a5fa; }
-.c-chem { color: #fb923c; } .bg-chem { background: #fb923c; }
-.c-cs   { color: #f87171; } .bg-cs   { background: #f87171; }
-.dim-math { background: rgba(139,124,246,0.12); }
-.dim-phys { background: rgba(96,165,250,0.12); }
-.dim-chem { background: rgba(251,146,60,0.12); }
-.dim-cs   { background: rgba(248,113,113,0.12); }
-
-/* CHAPTER VIEW */
-.exam-section { margin-bottom: 20px; }
-.exam-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.08em; font-family: var(--mono);
-  padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
-}
-.exam-unit { background: rgba(139,124,246,0.2); color: #8b7cf6; }
-.exam-half { background: rgba(96,165,250,0.2); color: #60a5fa; }
-.exam-cum  { background: rgba(251,146,60,0.2); color: #fb923c; }
-.exam-ann  { background: rgba(74,222,128,0.2); color: #4ade80; }
-.exam-rev  { background: rgba(248,113,113,0.2); color: #f87171; }
-
-.chapter-item {
-  display: flex; align-items: center; gap: 11px;
-  padding: 10px 14px; border-radius: var(--r2);
-  background: var(--surface2); margin-bottom: 6px;
-  cursor: pointer; transition: opacity .15s; border: 1px solid transparent;
-  -webkit-user-select: none; user-select: none;
-}
-.chapter-item.done { opacity: 0.55; border-color: rgba(74,222,128,0.3); }
-.chapter-item.done .ch-name { text-decoration: line-through; color: var(--text3); }
-.ch-icon {
-  width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
-  border: 1.5px solid var(--border2); display: flex; align-items: center;
-  justify-content: center; font-size: 11px; color: #fff; font-weight: 700;
-  transition: all .2s;
-}
-.chapter-item.done .ch-icon { background: var(--green); border-color: var(--green); }
-.ch-name { flex: 1; font-size: 13px; color: var(--text); }
-.ch-note { font-size: 10px; color: var(--text3); font-family: var(--mono); }
-
-/* SUBJECT SELECTOR */
 .subj-pills { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
 .subj-pill {
   padding: 7px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
   border: 1.5px solid var(--border2); background: transparent; color: var(--text2);
-  transition: all .2s; cursor: pointer;
+  transition: all .2s var(--ease2); cursor: pointer;
 }
 .subj-pill.active { color: #fff; border-color: transparent; }
 .pill-math.active { background: #8b7cf6; }
@@ -193,131 +188,295 @@ input, select, textarea { font-family: var(--font); outline: none; }
 .pill-chem.active { background: #fb923c; }
 .pill-cs.active   { background: #f87171; }
 
-/* MIND MAPS */
-.mm-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 16px; margin-bottom: 10px;
-  cursor: pointer; transition: border-color .2s;
-}
-.mm-card:active { border-color: var(--accent); }
-.mm-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-.mm-emoji { font-size: 28px; }
-.mm-card-title { font-size: 16px; font-weight: 700; color: var(--text); }
-.mm-card-sub { font-size: 12px; color: var(--text3); }
-.mm-chips { display: flex; flex-wrap: wrap; gap: 5px; }
-.mm-chip {
-  font-size: 10px; padding: 3px 8px; border-radius: 20px;
-  background: var(--bg3); color: var(--text2); border: 1px solid var(--border);
-}
-
-.mm-node {
-  background: var(--surface2); border-radius: var(--r2);
-  margin-bottom: 8px; overflow: hidden;
-}
-.mm-node-head {
-  display: flex; align-items: center; gap: 10px; padding: 12px 14px;
-  cursor: pointer; -webkit-user-select: none; user-select: none;
-}
-.mm-node-arrow { font-size: 10px; color: var(--text3); transition: transform .2s; flex-shrink: 0; }
-.mm-node.open .mm-node-arrow { transform: rotate(90deg); }
-.mm-node-title { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
-.mm-node-body {
-  display: none; padding: 0 14px 12px; font-size: 12px; color: var(--text2); line-height: 1.7;
-}
-.mm-node.open .mm-node-body { display: block; }
-.formula-tag {
-  display: inline-block; background: rgba(139,124,246,0.15); color: #a89af8;
-  font-family: var(--mono); font-size: 11px; padding: 2px 7px; border-radius: 4px; margin: 2px 2px 2px 0;
-}
-
-/* BACK HEADER */
-.back-header {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
-}
+.back-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 .back-btn {
   background: var(--surface2); border: 1px solid var(--border2); color: var(--text2);
   padding: 7px 14px; border-radius: 20px; font-size: 13px; font-weight: 500;
+  transition: all .2s;
 }
-.back-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.back-btn:active { opacity: 0.7; transform: scale(0.97); }
+.back-title { font-size: 17px; font-weight: 700; color: var(--text); }
 
-/* FOCUS / TIMER */
-.timer-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
-  padding: 24px 16px; text-align: center; margin-bottom: 12px;
+.btn-primary {
+  background: var(--accent); color: #fff; padding: 12px 22px;
+  border-radius: var(--r2); font-size: 14px; font-weight: 700;
+  transition: all .2s var(--ease); width: 100%;
+}
+.btn-primary:active { opacity: 0.85; transform: scale(0.98); }
+
+.form-input {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--r2); padding: 11px 13px; color: var(--text); font-size: 14px;
+  transition: border .2s;
+}
+.form-input:focus { border-color: var(--accent); }
+.form-label {
+  font-size: 10px; color: var(--text3); text-transform: uppercase;
+  letter-spacing: 0.08em; font-family: var(--mono); margin-bottom: 7px; display: block;
+}
+.form-group { margin-bottom: 14px; }
+
+/* ——— HOME ——— */
+.streak-banner {
+  background: linear-gradient(135deg, rgba(139,124,246,0.18), rgba(139,124,246,0.04));
+  border: 1px solid rgba(139,124,246,0.28); border-radius: var(--r);
+  padding: 18px; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 14px;
+  position: relative; overflow: hidden;
+}
+.streak-banner::before {
+  content: ''; position: absolute; top: -20px; right: -20px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(139,124,246,0.15), transparent 70%);
+  pointer-events: none;
+}
+.streak-flame { font-size: 40px; line-height: 1; animation: flicker 2s ease-in-out infinite; }
+@keyframes flicker { 0%,100%{transform:scale(1) rotate(-2deg)} 50%{transform:scale(1.05) rotate(2deg)} }
+.streak-num { font-size: 42px; font-weight: 800; color: var(--accent); line-height: 1; }
+.streak-label { font-size: 13px; color: var(--text2); }
+.streak-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.streak-log-btn {
+  margin-left: auto; background: rgba(139,124,246,0.2);
+  border: 1px solid rgba(139,124,246,0.4); color: #a89af8;
+  padding: 9px 14px; border-radius: 10px; font-size: 12px; font-weight: 700;
+  transition: all .2s var(--ease); flex-shrink: 0;
+}
+.streak-log-btn:active { transform: scale(0.95); background: rgba(139,124,246,0.35); }
+
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 15px;
+  position: relative; overflow: hidden;
+}
+.stat-card::after {
+  content: ''; position: absolute; bottom: 0; right: 0;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-dim), transparent);
+  transform: translate(30%, 30%);
+}
+.stat-lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); margin-bottom: 5px; }
+.stat-val { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+.stat-sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+/* ——— CHAPTERS ——— */
+.exam-badge {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; font-family: var(--mono);
+  padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+}
+.exam-unit { background: rgba(139,124,246,0.2); color: #8b7cf6; border: 1px solid rgba(139,124,246,0.3); }
+
+.chapter-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: var(--r2);
+  background: var(--surface2); margin-bottom: 7px;
+  cursor: pointer; border: 1px solid transparent;
+  transition: all .2s var(--ease2);
+  -webkit-user-select: none; user-select: none;
+  position: relative; overflow: hidden;
+}
+.chapter-item:active { transform: scale(0.98); }
+.chapter-item.done { border-color: rgba(74,222,128,0.25); background: rgba(74,222,128,0.04); }
+.chapter-item.done .ch-name { text-decoration: line-through; color: var(--text3); }
+.ch-icon {
+  width: 24px; height: 24px; border-radius: 7px; flex-shrink: 0;
+  border: 1.5px solid var(--border2); display: flex; align-items: center;
+  justify-content: center; font-size: 11px; color: #fff; font-weight: 700;
+  transition: all .25s var(--ease);
+}
+.chapter-item.done .ch-icon {
+  background: var(--green); border-color: var(--green);
+  box-shadow: 0 0 12px rgba(74,222,128,0.3);
+}
+.ch-name { flex: 1; font-size: 13px; color: var(--text); font-weight: 500; }
+.ch-subtext { font-size: 10px; color: var(--text3); font-family: var(--mono); }
+
+.ch-progress-bar { height: 3px; background: var(--bg3); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+.ch-progress-fill { height: 100%; border-radius: 2px; transition: width .6s var(--ease2); }
+
+/* ——— FORMULAS ——— */
+.formula-chapter-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); margin-bottom: 10px; overflow: hidden;
+}
+.formula-ch-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; cursor: pointer;
+  -webkit-user-select: none; user-select: none;
+  transition: background .2s;
+}
+.formula-ch-head:active { background: var(--surface2); }
+.formula-ch-arrow {
+  font-size: 10px; color: var(--text3);
+  transition: transform .3s var(--ease2); flex-shrink: 0;
+}
+.formula-chapter-card.open .formula-ch-arrow { transform: rotate(90deg); }
+.formula-ch-title { font-size: 14px; font-weight: 700; color: var(--text); flex: 1; }
+.formula-ch-count {
+  font-size: 10px; font-family: var(--mono); color: var(--text3);
+  background: var(--surface3); padding: 2px 7px; border-radius: 10px;
+}
+.formula-ch-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s var(--ease2), padding .3s;
+  padding: 0 16px;
+}
+.formula-chapter-card.open .formula-ch-body {
+  max-height: 1200px;
+  padding: 0 16px 16px;
+}
+.formula-group { margin-bottom: 14px; }
+.formula-group-title {
+  font-size: 10px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  font-family: var(--mono); margin-bottom: 8px;
+}
+.formula-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.f-tag {
+  display: inline-block;
+  background: rgba(139,124,246,0.13); color: #b8a8ff;
+  border: 1px solid rgba(139,124,246,0.25);
+  font-family: var(--mono); font-size: 11px;
+  padding: 4px 9px; border-radius: 6px;
+  line-height: 1.4;
+}
+.f-tag.orange { background: rgba(251,146,60,0.12); color: #fca97a; border-color: rgba(251,146,60,0.25); }
+.f-tag.blue   { background: rgba(96,165,250,0.12); color: #93c5fd; border-color: rgba(96,165,250,0.25); }
+.f-tag.green  { background: rgba(74,222,128,0.12); color: #86efac; border-color: rgba(74,222,128,0.25); }
+.f-tag.red    { background: rgba(248,113,113,0.12); color: #fca5a5; border-color: rgba(248,113,113,0.25); }
+.formula-note {
+  font-size: 12px; color: var(--text2); line-height: 1.7;
+  background: var(--surface2); border-radius: var(--r2);
+  padding: 10px 12px; border-left: 2px solid var(--accent);
+}
+.formula-tip {
+  font-size: 11px; color: var(--orange); font-family: var(--mono);
+  background: rgba(251,146,60,0.08); border-radius: var(--r2);
+  padding: 7px 10px; margin-top: 6px;
+}
+
+/* ——— TIMER ——— */
+.timer-wrap { text-align: center; padding: 24px 16px; }
+.timer-ring-container {
+  position: relative; width: 200px; height: 200px;
+  margin: 0 auto 20px;
+}
+.timer-ring { transform: rotate(-90deg); }
+.timer-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 8; }
+.timer-ring-fill {
+  fill: none; stroke: var(--accent); stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 534.07;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset .5s ease, stroke .4s;
+}
+.timer-center {
+  position: absolute; inset: 0; display: flex;
+  flex-direction: column; align-items: center; justify-content: center;
+}
+.timer-display {
+  font-family: var(--mono); font-size: 46px; font-weight: 700;
+  color: var(--text); letter-spacing: 0.04em; line-height: 1;
+}
+.timer-lbl {
+  font-size: 9px; color: var(--text3); font-family: var(--mono);
+  text-transform: uppercase; letter-spacing: 0.12em; margin-top: 6px;
 }
 .timer-mode-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
 .timer-mode-btn {
-  padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
-  border: 1.5px solid var(--border2); background: transparent; color: var(--text2); transition: all .2s;
+  padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  border: 1.5px solid var(--border2); background: transparent; color: var(--text2);
+  transition: all .2s var(--ease2);
 }
 .timer-mode-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-.timer-display { font-family: var(--mono); font-size: 56px; font-weight: 700; color: var(--text); letter-spacing: 0.04em; margin-bottom: 6px; }
-.timer-sublabel { font-size: 11px; color: var(--text3); margin-bottom: 18px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em; }
-.timer-btns { display: flex; gap: 10px; justify-content: center; }
+.timer-btns { display: flex; gap: 10px; justify-content: center; margin-bottom: 28px; }
 .t-btn {
-  padding: 10px 28px; border-radius: 10px; font-size: 14px; font-weight: 700;
-  transition: all .2s;
+  padding: 12px 30px; border-radius: 12px; font-size: 15px; font-weight: 700;
+  transition: all .2s var(--ease);
 }
-.t-start { background: var(--accent); color: #fff; }
-.t-start:active { opacity: 0.85; }
+.t-btn:active { transform: scale(0.95); }
+.t-start { background: var(--accent); color: #fff; box-shadow: 0 4px 20px rgba(139,124,246,0.4); }
 .t-reset { background: var(--surface2); border: 1px solid var(--border2); color: var(--text2); }
 
-.focus-topic {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text2);
+.time-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.time-stat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 14px 14px; text-align: center;
 }
-.focus-topic:last-child { border-bottom: none; }
-.ft-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
-.imp-q {
-  background: var(--surface2); border-left: 2px solid var(--orange);
-  border-radius: 0 var(--r2) var(--r2) 0; padding: 10px 12px; margin-bottom: 8px;
-  font-size: 12px; color: var(--text);
-}
-.imp-q-badge { font-size: 10px; color: var(--orange); font-family: var(--mono); display: block; margin-bottom: 3px; font-weight: 700; }
+.time-stat-val { font-size: 22px; font-weight: 800; color: var(--accent); font-family: var(--mono); }
+.time-stat-lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); margin-top: 3px; }
 
-/* MORE / REMINDERS */
+.session-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.session-item:last-child { border-bottom: none; }
+.session-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.session-text { flex: 1; font-size: 13px; color: var(--text2); }
+.session-dur { font-size: 12px; font-family: var(--mono); color: var(--text3); }
+
+/* ——— MORE ——— */
 .more-menu-item {
   display: flex; align-items: center; gap: 14px;
-  padding: 15px 16px; background: var(--surface);
+  padding: 16px; background: var(--surface);
   border: 1px solid var(--border); border-radius: var(--r);
-  margin-bottom: 10px; cursor: pointer; transition: border-color .2s;
+  margin-bottom: 10px; cursor: pointer; transition: all .2s;
+  position: relative; overflow: hidden;
 }
-.more-menu-item:active { border-color: var(--accent); }
-.more-icon { font-size: 22px; width: 36px; text-align: center; }
+.more-menu-item:active { border-color: var(--accent); transform: scale(0.99); }
+.more-icon-wrap {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
 .more-label { font-size: 15px; font-weight: 600; color: var(--text); }
 .more-sub { font-size: 12px; color: var(--text3); }
 .more-arrow { margin-left: auto; color: var(--text3); font-size: 18px; }
 
-/* FORM CONTROLS */
-.form-input {
-  width: 100%; background: var(--surface2); border: 1px solid var(--border2);
-  border-radius: var(--r2); padding: 10px 13px; color: var(--text); font-size: 14px;
-  transition: border .2s;
+/* ——— CUSTOM TIMETABLE ——— */
+.day-section { margin-bottom: 16px; }
+.day-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
 }
-.form-input:focus { border-color: var(--accent); }
-.form-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; font-family: var(--mono); margin-bottom: 6px; display: block; }
-.form-group { margin-bottom: 14px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-.btn-primary {
-  background: var(--accent); color: #fff; padding: 11px 22px;
-  border-radius: var(--r2); font-size: 14px; font-weight: 700;
-  transition: opacity .2s; width: 100%;
+.day-label {
+  font-size: 12px; font-weight: 700; color: var(--text2);
+  text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono);
 }
-.btn-primary:active { opacity: 0.85; }
-
-.toggle-pill {
-  padding: 6px 13px; border-radius: 20px; font-size: 12px; font-weight: 600;
-  border: 1.5px solid var(--border2); background: transparent; color: var(--text2);
-  transition: all .2s; cursor: pointer; margin: 3px;
+.tt-slot {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface2); border-radius: var(--r2);
+  padding: 10px 12px; margin-bottom: 6px;
+  animation: slideIn .2s var(--ease2);
 }
-.toggle-pill.on { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+@keyframes slideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.tt-color-bar { width: 3px; border-radius: 2px; height: 32px; flex-shrink: 0; }
+.tt-slot-info { flex: 1; }
+.tt-slot-time { font-size: 10px; color: var(--text3); font-family: var(--mono); }
+.tt-slot-text { font-size: 13px; color: var(--text); font-weight: 500; }
+.tt-slot-del {
+  background: none; border: none; color: var(--text3); font-size: 18px;
+  padding: 4px; cursor: pointer; transition: color .2s; flex-shrink: 0;
+}
+.tt-slot-del:hover { color: var(--red); }
+.tt-empty { text-align: center; padding: 14px; color: var(--text3); font-size: 12px; }
 
-/* REMINDER ITEM */
+.add-slot-panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 16px; margin-top: 14px;
+}
+.add-slot-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+
+select.form-input { appearance: none; -webkit-appearance: none; }
+
+/* ——— REMINDERS ——— */
 .rem-item {
   display: flex; align-items: center; gap: 12px;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--r); padding: 13px 14px; margin-bottom: 8px;
+  animation: slideIn .2s var(--ease2);
 }
 .rem-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .rem-text { flex: 1; font-size: 14px; color: var(--text); }
@@ -325,185 +484,199 @@ input, select, textarea { font-family: var(--font); outline: none; }
 .rem-del { background: none; border: none; color: var(--text3); font-size: 20px; padding: 4px; cursor: pointer; transition: color .2s; }
 .rem-del:hover { color: var(--red); }
 
-/* TIMETABLE */
-.tt-week-pills { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
-.week-pill {
-  padding: 7px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+/* ——— TIME CALC ——— */
+.toggle-pill {
+  padding: 7px 13px; border-radius: 20px; font-size: 12px; font-weight: 600;
   border: 1.5px solid var(--border2); background: transparent; color: var(--text2);
-  transition: all .2s; cursor: pointer;
+  transition: all .2s var(--ease2); cursor: pointer; margin: 3px;
 }
-.week-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-.tt-day-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 10px; overflow: hidden; }
-.tt-day-header { background: var(--surface2); padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--mono); }
-.tt-slot-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
-.tt-slot-item:last-child { border-bottom: none; }
-.tt-color-bar { width: 3px; border-radius: 2px; height: 28px; flex-shrink: 0; }
-.tt-slot-text { font-size: 13px; color: var(--text); }
-
-/* ALLOC RESULT */
-.alloc-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.toggle-pill.on { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+.alloc-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .alloc-subj { font-size: 13px; color: var(--text); width: 90px; flex-shrink: 0; }
 .alloc-bar-w { flex: 1; }
 .alloc-hrs { font-size: 12px; font-family: var(--mono); color: var(--text2); width: 48px; text-align: right; flex-shrink: 0; }
-
-/* ABOUT PAGE */
-.about-hero {
-  background: linear-gradient(135deg, rgba(139,124,246,0.2), rgba(96,165,250,0.1));
-  border: 1px solid rgba(139,124,246,0.3); border-radius: var(--r);
-  padding: 28px 20px; text-align: center; margin-bottom: 16px;
+.calc-result-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 16px; margin-top: 14px;
 }
-.about-logo { font-size: 36px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -1px; }
+
+/* ——— ABOUT ——— */
+.about-hero {
+  background: linear-gradient(135deg, rgba(139,124,246,0.18), rgba(96,165,250,0.08));
+  border: 1px solid rgba(139,124,246,0.28); border-radius: var(--r);
+  padding: 30px 20px; text-align: center; margin-bottom: 16px;
+}
+.about-logo { font-size: 38px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -1px; }
 .about-logo span { color: var(--accent); }
 .about-sub { font-size: 13px; color: var(--text3); }
 .about-credit {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
-  padding: 20px; text-align: center; margin-bottom: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 20px; text-align: center; margin-bottom: 10px;
 }
 .about-credit-name { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-.about-credit-sub { font-size: 12px; color: var(--text3); font-family: var(--mono); }
-.about-info-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 8px; }
+.about-credit-sub { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+.about-info-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 8px;
+}
 .about-info-icon { font-size: 20px; }
 .about-info-text { font-size: 13px; color: var(--text2); }
 
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
-
-/* MOTIVATION QUOTE */
+/* ——— QUOTE ——— */
 .quote-card {
   background: var(--surface); border-left: 3px solid var(--accent);
-  border-radius: 0 var(--r) var(--r) 0; padding: 14px 16px; margin-bottom: 12px;
+  border-radius: 0 var(--r) var(--r) 0; padding: 13px 16px; margin-bottom: 12px;
   font-size: 13px; color: var(--text2); font-style: italic;
 }
 .quote-card strong { color: var(--accent); font-style: normal; }
 
-/* EMPTY STATE */
-.empty-state { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; }
-.empty-state .es-icon { font-size: 36px; margin-bottom: 10px; }
+/* ——— SCROLLBAR ——— */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
 
-/* CALC RESULT */
-.calc-result-box {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
-  padding: 16px; margin-top: 14px;
-}
+/* ——— EMPTY STATE ——— */
+.empty-state { text-align: center; padding: 36px 20px; color: var(--text3); font-size: 13px; }
+.empty-state .es-icon { font-size: 36px; margin-bottom: 10px; }
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
+<div id="toast-container"></div>
+
+<!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-logo">Study<span>OS</span></div>
-  <div class="topbar-right">ISC · Class XI</div>
+  <div class="topbar-tag">UNIT TEST</div>
+  <div class="topbar-right">ISC · XI</div>
 </div>
 
 <!-- CONTENT -->
-<div class="content" id="main-content">
+<div class="content">
 
-  <!-- HOME VIEW -->
+  <!-- HOME -->
   <div class="view active" id="view-home">
-    <div class="streak-banner">
-      <div style="font-size:36px;line-height:1">🔥</div>
-      <div>
-        <div class="streak-num" id="streak-num">0</div>
-        <div class="streak-label">day streak</div>
-        <div class="streak-sub">Tap to log today's session</div>
+    <div class="view-wrapper">
+      <div class="streak-banner">
+        <div class="streak-flame">🔥</div>
+        <div>
+          <div class="streak-num" id="streak-num">0</div>
+          <div class="streak-label">day streak</div>
+          <div class="streak-sub" id="streak-sub-text">Start your streak today!</div>
+        </div>
+        <button class="streak-log-btn ripple-container" onclick="logStreak(this)">
+          Log ✓
+        </button>
       </div>
-      <button onclick="logStreak()" style="margin-left:auto;background:rgba(139,124,246,0.2);border:1px solid rgba(139,124,246,0.4);color:#a89af8;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;">
-        Log ✓
-      </button>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-lbl">Chapters done</div>
+          <div class="stat-val" id="home-ch-done">0</div>
+          <div class="stat-sub" id="home-ch-total">of 0 total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Overall</div>
+          <div class="stat-val" id="home-topics">0%</div>
+          <div class="stat-sub">unit test topics</div>
+        </div>
+      </div>
+
+      <div class="section-label">Subject Progress</div>
+      <div id="home-progress"></div>
     </div>
-
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-lbl">Chapters done</div>
-        <div class="stat-val" id="home-ch-done">0</div>
-        <div class="stat-sub" id="home-ch-total">of 0 total</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-lbl">Topics covered</div>
-        <div class="stat-val" id="home-topics">0%</div>
-        <div class="stat-sub">overall progress</div>
-      </div>
-    </div>
-
-    <div class="section-label">Today's Tasks</div>
-    <div class="card" id="task-list"></div>
-
-    <div class="section-label" style="margin-top:6px">Subject Progress</div>
-    <div id="home-progress"></div>
   </div>
 
-  <!-- CHAPTERS VIEW -->
+  <!-- CHAPTERS -->
   <div class="view" id="view-chapters">
-    <div id="chapters-subj-select">
-      <div class="section-label">Choose Subject</div>
+    <div class="view-wrapper">
+      <div class="section-label">Unit Test Syllabus</div>
       <div class="subj-pills" id="ch-pills"></div>
       <div id="chapter-content"></div>
     </div>
   </div>
 
-  <!-- MIND MAPS VIEW -->
-  <div class="view" id="view-maps">
-    <div id="maps-list">
-      <div class="section-label">Mind Maps</div>
-      <div id="mm-subject-cards"></div>
-    </div>
-    <div id="maps-detail" style="display:none">
-      <div class="back-header">
-        <button class="back-btn" onclick="closeMM()">← Back</button>
-        <div class="back-title" id="mm-detail-title"></div>
-      </div>
-      <div id="mm-nodes"></div>
+  <!-- FORMULAS -->
+  <div class="view" id="view-formulas">
+    <div class="view-wrapper">
+      <div class="section-label">Formula Bank</div>
+      <div class="subj-pills" id="formula-pills"></div>
+      <div id="formula-content"></div>
     </div>
   </div>
 
-  <!-- FOCUS VIEW -->
-  <div class="view" id="view-focus">
-    <div class="timer-card">
-      <div class="timer-mode-row">
-        <button class="timer-mode-btn active" onclick="setMode(this,25,'Focus')" data-mins="25">Focus</button>
-        <button class="timer-mode-btn" onclick="setMode(this,5,'Short Break')" data-mins="5">Short Break</button>
-        <button class="timer-mode-btn" onclick="setMode(this,15,'Long Break')" data-mins="15">Long Break</button>
+  <!-- TIMER -->
+  <div class="view" id="view-timer">
+    <div class="view-wrapper">
+      <div class="timer-wrap">
+        <div class="timer-mode-row">
+          <button class="timer-mode-btn active" onclick="setMode(this,25,'Focus')" data-mins="25">Focus</button>
+          <button class="timer-mode-btn" onclick="setMode(this,5,'Short Break')" data-mins="5">Short Break</button>
+          <button class="timer-mode-btn" onclick="setMode(this,15,'Long Break')" data-mins="15">Long Break</button>
+        </div>
+        <div class="timer-ring-container">
+          <svg class="timer-ring" width="200" height="200" viewBox="0 0 200 200">
+            <circle class="timer-ring-bg" cx="100" cy="100" r="85"/>
+            <circle class="timer-ring-fill" id="timer-ring-fill" cx="100" cy="100" r="85"/>
+          </svg>
+          <div class="timer-center">
+            <div class="timer-display" id="timer-disp">25:00</div>
+            <div class="timer-lbl" id="timer-lbl">FOCUS SESSION</div>
+          </div>
+        </div>
+        <div class="timer-btns">
+          <button class="t-btn t-start ripple-container" id="timer-start-btn" onclick="timerToggle(this)">Start</button>
+          <button class="t-btn t-reset ripple-container" onclick="timerReset()">Reset</button>
+        </div>
       </div>
-      <div class="timer-display" id="timer-disp">25:00</div>
-      <div class="timer-sublabel" id="timer-lbl">FOCUS SESSION</div>
-      <div class="timer-btns">
-        <button class="t-btn t-start" id="timer-start-btn" onclick="timerToggle()">Start</button>
-        <button class="t-btn t-reset" onclick="timerReset()">Reset</button>
+
+      <div class="section-label">Study Stats</div>
+      <div class="time-stats-grid">
+        <div class="time-stat">
+          <div class="time-stat-val" id="stat-today">0h 0m</div>
+          <div class="time-stat-lbl">Today</div>
+        </div>
+        <div class="time-stat">
+          <div class="time-stat-val" id="stat-total">0h 0m</div>
+          <div class="time-stat-lbl">All Time</div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:6px">Recent Sessions</div>
+      <div class="card" id="session-list">
+        <div class="empty-state"><div class="es-icon">⏱️</div>No sessions yet. Start studying!</div>
       </div>
     </div>
-    <div class="subj-pills" id="focus-pills"></div>
-    <div id="focus-content"></div>
   </div>
 
-  <!-- MORE VIEW -->
+  <!-- MORE -->
   <div class="view" id="view-more">
-    <div id="more-menu">
-      <div class="section-label">More</div>
-      <div class="more-menu-item" onclick="showMoreView('reminders')">
-        <div class="more-icon">🔔</div>
-        <div><div class="more-label">Reminders</div><div class="more-sub">Daily study reminders</div></div>
-        <div class="more-arrow">›</div>
+    <div class="view-wrapper">
+      <div id="more-menu">
+        <div class="section-label">More</div>
+        <div class="more-menu-item ripple-container" onclick="showMoreView('timetable')">
+          <div class="more-icon-wrap" style="background:rgba(96,165,250,0.12)">📅</div>
+          <div><div class="more-label">Custom Timetable</div><div class="more-sub">Build your study schedule</div></div>
+          <div class="more-arrow">›</div>
+        </div>
+        <div class="more-menu-item ripple-container" onclick="showMoreView('timecalc')">
+          <div class="more-icon-wrap" style="background:rgba(251,146,60,0.12)">⏳</div>
+          <div><div class="more-label">Time Calculator</div><div class="more-sub">Smart study planner</div></div>
+          <div class="more-arrow">›</div>
+        </div>
+        <div class="more-menu-item ripple-container" onclick="showMoreView('reminders')">
+          <div class="more-icon-wrap" style="background:rgba(139,124,246,0.12)">🔔</div>
+          <div><div class="more-label">Reminders</div><div class="more-sub">Daily study nudges</div></div>
+          <div class="more-arrow">›</div>
+        </div>
+        <div class="more-menu-item ripple-container" onclick="showMoreView('about')">
+          <div class="more-icon-wrap" style="background:rgba(74,222,128,0.12)">ℹ️</div>
+          <div><div class="more-label">About</div><div class="more-sub">App info & credits</div></div>
+          <div class="more-arrow">›</div>
+        </div>
       </div>
-      <div class="more-menu-item" onclick="showMoreView('timetable')">
-        <div class="more-icon">📅</div>
-        <div><div class="more-label">Timetable</div><div class="more-sub">Weekly study schedule</div></div>
-        <div class="more-arrow">›</div>
-      </div>
-      <div class="more-menu-item" onclick="showMoreView('timecalc')">
-        <div class="more-icon">⏳</div>
-        <div><div class="more-label">Time Calculator</div><div class="more-sub">Smart study planner</div></div>
-        <div class="more-arrow">›</div>
-      </div>
-      <div class="more-menu-item" onclick="showMoreView('about')">
-        <div class="more-icon">ℹ️</div>
-        <div><div class="more-label">About</div><div class="more-sub">App info & credits</div></div>
-        <div class="more-arrow">›</div>
-      </div>
+      <div id="more-subview" style="display:none"></div>
     </div>
-
-    <!-- SUB VIEWS INSIDE MORE -->
-    <div id="more-subview" style="display:none"></div>
   </div>
 
 </div>
@@ -512,295 +685,342 @@ input, select, textarea { font-family: var(--font); outline: none; }
 <div class="bottom-nav">
   <button class="nav-btn active" onclick="navigate('home',this)">
     <div class="nav-icon">🏠</div>Home
+    <div class="nav-active-dot"></div>
   </button>
   <button class="nav-btn" onclick="navigate('chapters',this)">
     <div class="nav-icon">📚</div>Chapters
+    <div class="nav-active-dot"></div>
   </button>
-  <button class="nav-btn" onclick="navigate('maps',this)">
-    <div class="nav-icon">🗺️</div>Maps
+  <button class="nav-btn" onclick="navigate('formulas',this)">
+    <div class="nav-icon">📝</div>Formulas
+    <div class="nav-active-dot"></div>
   </button>
-  <button class="nav-btn" onclick="navigate('focus',this)">
-    <div class="nav-icon">⏱️</div>Focus
+  <button class="nav-btn" onclick="navigate('timer',this)">
+    <div class="nav-icon">⏱️</div>Timer
+    <div class="nav-active-dot"></div>
   </button>
   <button class="nav-btn" onclick="navigate('more',this)">
     <div class="nav-icon">☰</div>More
+    <div class="nav-active-dot"></div>
   </button>
 </div>
 
 <script>
-/* ==============================
+/* ============================================================
    DATA
-============================== */
+============================================================ */
 const SUBJECTS = [
   {
     id: 'math', name: 'Mathematics', emoji: '📐', color: '#8b7cf6',
-    examSections: [
-      {
-        label: 'Unit Test', type: 'unit',
-        chapters: ['Sets','Relations & Functions','Trigonometry','Height and Distance']
-      },
-      {
-        label: 'Half-Yearly', type: 'half',
-        chapters: ['Trigonometry (Advanced)','Complex Numbers','Quadratic Equations','Linear Inequalities','Permutations & Combinations','Conic Sections','Limits','Derivatives']
-      },
-      {
-        label: 'Cumulative', type: 'cum',
-        chapters: ['Linear & Quadratic Inequalities','Binomial Theorem','Sequences & Series','Straight Lines','Introduction to 3D Geometry']
-      },
-      {
-        label: 'Annual', type: 'ann',
-        chapters: ['Circles','Probability','Statistics']
-      }
-    ]
+    unitTest: ['Sets','Relations & Functions','Trigonometry','Height & Distance']
   },
   {
     id: 'phys', name: 'Physics', emoji: '⚛️', color: '#60a5fa',
-    examSections: [
-      {
-        label: 'Unit Test', type: 'unit',
-        chapters: ['Dimensional Analysis','Motion in a Straight Line','Motion in a Plane','Newton\'s Laws of Motion']
-      },
-      {
-        label: 'Half-Yearly', type: 'half',
-        chapters: ['Friction','Uniform Circular Motion','Work, Power & Energy','Centre of Mass','Rotational Motion of Rigid Body','Gravitation','Elasticity','Fluid Pressure'],
-        revision: ['Newton\'s Laws of Motion']
-      },
-      {
-        label: 'Cumulative', type: 'cum',
-        chapters: ['Flow of Liquids','Surface Tension','Thermodynamics','Isothermal & Adiabatic Process','Heat Engine','Kinetic Theory of Gases','Simple Harmonic Motion'],
-        revision: ['Ch-3 to Ch-14 (All)']
-      },
-      {
-        label: 'Annual', type: 'ann',
-        chapters: ['Waves','Wave Motion','Interference and Beats','Stationary Waves','Vibration of Stretched String']
-      }
-    ]
+    unitTest: ['Dimensional Analysis','Motion in a Straight Line','Motion in a Plane','Newton\'s Laws of Motion']
   },
   {
     id: 'chem', name: 'Chemistry', emoji: '🧪', color: '#fb923c',
-    examSections: [
-      {
-        label: 'Unit Test', type: 'unit',
-        chapters: ['Some Basic Concepts of Chemistry','Structure of Atom']
-      },
-      {
-        label: 'Half-Yearly', type: 'half',
-        chapters: ['Classification of Elements & Periodicity','Chemical Bonding & Molecular Structure','Chemical Thermodynamics'],
-        revision: ['Some Basic Concepts','Structure of Atom']
-      },
-      {
-        label: 'Cumulative', type: 'cum',
-        chapters: ['Equilibrium','Redox Reactions','Organic Chemistry — Basic Principles & Techniques'],
-        revision: ['Chemical Bonding','Chemical Thermodynamics']
-      },
-      {
-        label: 'Annual', type: 'ann',
-        chapters: ['Hydrocarbons']
-      }
-    ]
+    unitTest: ['Some Basic Concepts of Chemistry','Structure of Atom']
   },
   {
     id: 'cs', name: 'Computer Sc.', emoji: '💻', color: '#f87171',
-    examSections: [
-      {
-        label: 'Unit Test', type: 'unit',
-        chapters: ['Java Basics & Syntax','OOP — Encapsulation & Classes','OOP — Inheritance & Polymorphism','Constructors & Methods']
-      },
-      {
-        label: 'Half-Yearly', type: 'half',
-        chapters: ['Arrays & Strings','String Methods & Operations','2D Arrays & Matrices','Recursion Basics']
-      },
-      {
-        label: 'Cumulative', type: 'cum',
-        chapters: ['Sorting Algorithms (Bubble, Selection, Insertion)','Searching Algorithms','Boolean Algebra','Logic Gates']
-      },
-      {
-        label: 'Annual', type: 'ann',
-        chapters: ['File Handling','Exception Handling','Data Structures Overview']
-      }
-    ]
+    unitTest: ['Java Basics & Syntax','OOP — Encapsulation & Classes','OOP — Inheritance & Polymorphism','Constructors & Methods']
   }
 ];
 
-const ALL_CHAPTERS = [];
-SUBJECTS.forEach(s => {
-  s.examSections.forEach(sec => {
-    sec.chapters.forEach(ch => {
-      ALL_CHAPTERS.push({ subj: s.id, ch: ch });
-    });
-  });
-});
-
-const MINDMAP_DATA = {
+const FORMULA_DATA = {
   math: [
     {
-      title: 'Sets & Relations',
-      body: '<b>Key Formulas:</b><br><span class="formula-tag">n(A∪B) = n(A)+n(B)−n(A∩B)</span><span class="formula-tag">De Morgan: (A∪B)\'=A\'∩B\'</span><br><br><b>Topics:</b> Venn diagrams, types of relations (reflexive, symmetric, transitive, equivalence), domain & range of functions, one-one & onto.'
+      ch: 'Sets',
+      groups: [
+        {
+          title: 'Core Set Formulas',
+          formulas: ['n(A∪B) = n(A)+n(B)−n(A∩B)', 'n(A∪B∪C) = n(A)+n(B)+n(C)−n(A∩B)−n(B∩C)−n(A∩C)+n(A∩B∩C)', 'A − B = A ∩ B\'', 'A × B = {(a,b) : a∈A, b∈B}'],
+          note: 'For 3 sets, always use the triple union formula. Never forget the +n(A∩B∩C) at the end!'
+        },
+        {
+          title: 'De Morgan\'s Laws',
+          formulas: ['(A ∪ B)\' = A\' ∩ B\'', '(A ∩ B)\' = A\' ∪ B\''],
+          note: 'Union becomes intersection and vice versa when complement is taken. Very frequently tested!'
+        }
+      ]
     },
     {
-      title: 'Trigonometry',
-      body: '<span class="formula-tag">sin²θ+cos²θ=1</span><span class="formula-tag">sin(A+B)=sinAcosB+cosAsinB</span><span class="formula-tag">cos2A=1−2sin²A</span><br><br><b>Unit circle values:</b> memorise 0°,30°,45°,60°,90°. Height & Distance — always draw diagram first.'
+      ch: 'Relations & Functions',
+      groups: [
+        {
+          title: 'Key Definitions',
+          formulas: ['Domain = set of all first elements (x-values)', 'Range = set of all second elements (y-values)', 'Codomain = total output set', 'n(A×B) = n(A) × n(B)'],
+          note: 'Range ⊆ Codomain always. If Range = Codomain → function is onto (surjective).'
+        },
+        {
+          title: 'Types of Functions',
+          formulas: ['One-one (Injective): f(a)=f(b) ⟹ a=b', 'Onto (Surjective): Range = Codomain', 'Bijective: One-one AND Onto', 'Identity: f(x) = x'],
+          note: 'For ISC, always verify both one-one and onto conditions separately. State which one fails if it\'s not bijective.'
+        }
+      ]
     },
     {
-      title: 'Complex Numbers',
-      body: '<span class="formula-tag">z = a+ib</span><span class="formula-tag">|z| = √(a²+b²)</span><span class="formula-tag">z·z̄ = |z|²</span><br><br>Rationalise by conjugate. Powers of i cycle: i,−1,−i,1. Modulus & argument are frequently tested.'
+      ch: 'Trigonometry',
+      groups: [
+        {
+          title: 'Pythagorean Identities',
+          formulas: ['sin²θ + cos²θ = 1', '1 + tan²θ = sec²θ', '1 + cot²θ = cosec²θ'],
+          note: 'These three are the foundation of all trig proofs. Memorise all three forms.'
+        },
+        {
+          title: 'Compound Angle Formulas',
+          formulas: ['sin(A±B) = sinAcosB ± cosAsinB', 'cos(A±B) = cosAcosB ∓ sinAsinB', 'tan(A+B) = (tanA+tanB)/(1−tanAtanB)', 'tan(A−B) = (tanA−tanB)/(1+tanAtanB)'],
+          note: 'Note: cos(A+B) has MINUS for sin×sin. The ∓ means sign flips relative to ±.'
+        },
+        {
+          title: 'Double Angle Formulas',
+          formulas: ['sin2A = 2sinAcosA', 'cos2A = cos²A − sin²A', 'cos2A = 1 − 2sin²A', 'cos2A = 2cos²A − 1', 'tan2A = 2tanA/(1−tan²A)'],
+          note: 'cos2A has 3 forms — use whichever eliminates more terms in the expression.'
+        },
+        {
+          title: 'Triple Angle & Transforms',
+          formulas: ['sin3A = 3sinA − 4sin³A', 'cos3A = 4cos³A − 3cosA', '2sinAcosB = sin(A+B)+sin(A−B)', '2cosAcosB = cos(A−B)+cos(A+B)', '2sinAsinB = cos(A−B)−cos(A+B)'],
+          note: 'Sum-to-product formulas: sinC+sinD = 2sin((C+D)/2)cos((C−D)/2)'
+        },
+        {
+          title: 'Standard Values',
+          formulas: ['sin0°=0, sin30°=1/2, sin45°=1/√2', 'sin60°=√3/2, sin90°=1', 'cos0°=1, cos60°=1/2, cos90°=0', 'tan30°=1/√3, tan45°=1, tan60°=√3'],
+          note: 'sin increases 0→90°, cos decreases 0→90°. For sin: 0, 1/2, 1/√2, √3/2, 1.'
+        }
+      ]
     },
     {
-      title: 'Sequences & Series',
-      body: '<span class="formula-tag">aₙ=a+(n−1)d</span><span class="formula-tag">Sₙ=n/2[2a+(n−1)d]</span><span class="formula-tag">Σn²=n(n+1)(2n+1)/6</span><br><br>For 3 numbers in AP: use a−d,a,a+d. For GP: use a/r,a,ar.'
-    },
-    {
-      title: 'P & C + Binomial',
-      body: '<span class="formula-tag">ⁿPr=n!/(n−r)!</span><span class="formula-tag">ⁿCr=n!/[r!(n−r)!]</span><span class="formula-tag">Tᵣ₊₁=ⁿCr·aⁿ⁻ʳ·bʳ</span><br><br>Circular permutation: (n−1)!. For term independent of x: set exponent of x = 0 and solve for r.'
-    },
-    {
-      title: 'Limits & Derivatives',
-      body: '<span class="formula-tag">lim(x→0) sinx/x=1</span><span class="formula-tag">lim(x→0)(aˣ−1)/x=ln a</span><span class="formula-tag">d/dx(xⁿ)=nxⁿ⁻¹</span><br><br>L\'Hôpital: use when form is 0/0 or ∞/∞. Product rule: d(uv)=udv+vdu.'
+      ch: 'Height & Distance',
+      groups: [
+        {
+          title: 'Basic Formulas',
+          formulas: ['tanθ = Opposite/Adjacent = Height/Distance', 'sinθ = Opposite/Hypotenuse', 'cosθ = Adjacent/Hypotenuse'],
+          note: 'ALWAYS draw a clear diagram first. Label the angle of elevation/depression. H&D is 100% formula application.'
+        },
+        {
+          title: 'Key Concepts',
+          formulas: ['Angle of Elevation: measured upward from horizontal', 'Angle of Depression: measured downward from horizontal', 'If two poles, distance = d: use tanθ₁ and tanθ₂ simultaneously'],
+          note: 'Tip: Angle of elevation from A to B = Angle of depression from B to A. Set up simultaneous equations for two-angle problems.'
+        }
+      ]
     }
   ],
   phys: [
     {
-      title: 'Dimensional Analysis',
-      body: '<b>Key dimensions:</b><br>Velocity [LT⁻¹], Force [MLT⁻²], Pressure [ML⁻¹T⁻²], Energy [ML²T⁻²], Power [ML²T⁻³]<br><br>Use dimensional analysis to: check formula correctness, derive relations, find units. Significant figures and error analysis are always tested.'
+      ch: 'Dimensional Analysis',
+      groups: [
+        {
+          title: 'Fundamental Quantities',
+          formulas: ['Mass → [M]', 'Length → [L]', 'Time → [T]', 'Temperature → [K]', 'Current → [A]'],
+          note: 'Everything else is derived from these. Every formula must be dimensionally consistent.'
+        },
+        {
+          title: 'Derived Dimensions',
+          formulas: ['Velocity: [LT⁻¹]', 'Acceleration: [LT⁻²]', 'Force: [MLT⁻²]', 'Work/Energy: [ML²T⁻²]', 'Power: [ML²T⁻³]', 'Pressure: [ML⁻¹T⁻²]', 'Momentum: [MLT⁻¹]'],
+          note: 'ISC often asks: "Find dimensions of X" or "Check if the formula is dimensionally correct."'
+        },
+        {
+          title: 'Error Analysis',
+          formulas: ['Absolute error: Δa = |a_mean − a_i|', 'Mean absolute error: Δā = ΣΔaᵢ/n', 'Relative error = Δā/ā', 'Percentage error = (Δā/ā) × 100%'],
+          note: 'For Z = A^m × B^n: ΔZ/Z = m(ΔA/A) + n(ΔB/B). Errors always ADD, even for division.'
+        }
+      ]
     },
     {
-      title: 'Laws of Motion',
-      body: '<span class="formula-tag">F=ma</span><span class="formula-tag">Impulse=F·Δt=Δp</span><span class="formula-tag">f≤μN</span><br><br>Always draw FBDs. Atwood machine: a=(m₁−m₂)g/(m₁+m₂). Inclined plane: a=g(sinθ−μcosθ). Newton\'s 3rd law pairs must act on different bodies.'
+      ch: 'Motion in a Straight Line',
+      groups: [
+        {
+          title: 'Equations of Motion (constant acceleration)',
+          formulas: ['v = u + at', 's = ut + ½at²', 'v² = u² + 2as', 'sₙ = u + a(2n−1)/2  [nth second]'],
+          note: 'u = initial velocity, v = final velocity, a = acceleration, s = displacement, t = time. If decelerating, a is negative.'
+        },
+        {
+          title: 'Average & Relative Velocity',
+          formulas: ['Average velocity = (u+v)/2  [only for constant a]', 'Average velocity = Total displacement / Total time', 'Average speed = Total distance / Total time'],
+          note: 'Average velocity ≠ Average speed if the object changes direction. Always check whether it reverses direction.'
+        }
+      ]
     },
     {
-      title: 'Work, Power & Energy',
-      body: '<span class="formula-tag">W=F·d·cosθ</span><span class="formula-tag">KE=½mv²</span><span class="formula-tag">PE=mgh</span><span class="formula-tag">Spring PE=½kx²</span><br><br>Work-Energy theorem: W_net = ΔKE. Conservation of energy: identify ALL forms. Power = W/t = F·v.'
+      ch: 'Motion in a Plane',
+      groups: [
+        {
+          title: 'Projectile Motion',
+          formulas: ['Range: R = u²sin2θ/g', 'Max Height: H = u²sin²θ/2g', 'Time of Flight: T = 2usinθ/g', 'At max range: θ = 45°, R_max = u²/g'],
+          note: 'Horizontal velocity stays constant throughout. Vertical velocity = 0 at max height. At θ and (90°−θ), range is the same!'
+        },
+        {
+          title: 'Vectors',
+          formulas: ['Resultant: R = √(A²+B²+2ABcosθ)', 'tanα = Bsinθ/(A+Bcosθ)', 'Dot product: A·B = ABcosθ', 'Cross product: |A×B| = ABsinθ'],
+          note: 'For perpendicular vectors: dot product = 0. For parallel vectors: cross product = 0.'
+        },
+        {
+          title: 'Relative & Circular Motion',
+          formulas: ['v_AB = v_A − v_B  [velocity of A relative to B]', 'Centripetal acceleration: ac = v²/r = ω²r', 'Centripetal force: F = mv²/r', 'Angular velocity: ω = 2π/T = 2πf'],
+          note: 'Centripetal force is not an extra force — it is the net force directed towards the centre.'
+        }
+      ]
     },
     {
-      title: 'Rotational Motion',
-      body: '<span class="formula-tag">τ=Iα</span><span class="formula-tag">L=Iω</span><span class="formula-tag">KE_rot=½Iω²</span><br><br>Moment of inertia: Rod (centre) = ML²/12, Disc = MR²/2, Ring = MR². Parallel axis theorem: I=Icm+Md².'
-    },
-    {
-      title: 'Gravitation',
-      body: '<span class="formula-tag">F=Gm₁m₂/r²</span><span class="formula-tag">g=GM/R²</span><span class="formula-tag">v_esc=√(2gR)</span><br><br>Orbital velocity: v=√(GM/r). Kepler\'s 3rd law: T²∝r³. Variation of g with height and depth frequently tested.'
+      ch: 'Newton\'s Laws of Motion',
+      groups: [
+        {
+          title: 'The Three Laws',
+          formulas: ['1st Law: F_net = 0 ⟹ a = 0 (inertia)', '2nd Law: F = ma', '3rd Law: F_AB = −F_BA (action-reaction)', 'Impulse: J = F·Δt = Δp = m(v−u)'],
+          note: 'Newton\'s 3rd law pairs ALWAYS act on DIFFERENT bodies. Draw separate FBDs for each body.'
+        },
+        {
+          title: 'Friction',
+          formulas: ['Static friction: f_s ≤ μ_s N', 'Kinetic friction: f_k = μ_k N', 'μ_s > μ_k always', 'On incline: a = g(sinθ − μcosθ)'],
+          note: 'Maximum static friction = μ_s N (limiting friction). Once moving, kinetic friction applies.'
+        },
+        {
+          title: 'System Problems',
+          formulas: ['Atwood machine: a = (m₁−m₂)g/(m₁+m₂)', 'Atwood tension: T = 2m₁m₂g/(m₁+m₂)', 'Connected blocks (horizontal): a = F/(m₁+m₂)', 'Tension between blocks: T = m₂F/(m₁+m₂)'],
+          note: 'Always assume a direction for acceleration, write F=ma for each body, then solve simultaneously.'
+        }
+      ]
     }
   ],
   chem: [
     {
-      title: 'Atomic Structure',
-      body: '<span class="formula-tag">Eₙ=−13.6/n² eV</span><span class="formula-tag">rₙ=0.529n²/Z Å</span><br><br>Quantum numbers: n (shell), l (subshell, 0 to n−1), m (orientation, −l to +l), s (spin ±½). Aufbau principle, Hund\'s rule, Pauli exclusion — know all exceptions (Cu, Cr).'
+      ch: 'Some Basic Concepts of Chemistry',
+      groups: [
+        {
+          title: 'Mole Concept',
+          formulas: ['n = m/M  (moles = mass/molar mass)', 'n = V/22.4  (for gases at STP, V in litres)', 'N = n × Nₐ  (number of particles)', 'Nₐ = 6.022 × 10²³ mol⁻¹ (Avogadro\'s number)'],
+          note: 'STP = 0°C and 1 atm. 1 mole of ANY gas occupies 22.4 L at STP.'
+        },
+        {
+          title: 'Concentration & Composition',
+          formulas: ['% by mass = (mass of component/total mass) × 100', 'Molarity M = moles of solute/volume of solution (in L)', 'Molality m = moles of solute/mass of solvent (in kg)', 'Mole fraction Xₐ = nₐ/(nₐ+n_b)'],
+          note: 'Molarity changes with temperature (volume changes). Molality does NOT change with temperature.'
+        },
+        {
+          title: 'Stoichiometry Steps',
+          formulas: ['Step 1: Balance the equation', 'Step 2: Convert given to moles', 'Step 3: Use mole ratio', 'Step 4: Convert back to required unit'],
+          note: 'Limiting reagent: calculate moles of product from EACH reactant. The one giving LESS product is limiting.'
+        }
+      ]
     },
     {
-      title: 'Chemical Bonding',
-      body: 'VSEPR theory: shapes based on electron pairs. Hybridisation: sp (linear, 180°), sp² (trigonal planar, 120°), sp³ (tetrahedral, 109.5°).<br><br><span class="formula-tag">Formal charge = V − N − B/2</span><br><br>Bond order from MO theory determines stability and magnetic properties.'
-    },
-    {
-      title: 'Thermodynamics',
-      body: '<span class="formula-tag">ΔH=ΔU+ΔngRT</span><span class="formula-tag">ΔG=ΔH−TΔS</span><span class="formula-tag">ΔG°=−RTlnK</span><br><br>ΔG<0: spontaneous. Hess\'s law: ΔH is path-independent. Standard enthalpy of formation, combustion, neutralisation — learn key values.'
-    },
-    {
-      title: 'Equilibrium',
-      body: '<span class="formula-tag">Kc=[C]c[D]d/[A]a[B]b</span><span class="formula-tag">Kp=Kc(RT)^Δn</span><br><br>Le Chatelier: ↑temp shifts toward endothermic side. ↑pressure favours fewer moles side. pH = −log[H⁺]. Ka·Kb = Kw = 10⁻¹⁴.'
-    },
-    {
-      title: 'Organic Chemistry Basics',
-      body: 'IUPAC naming: find longest chain, number from end nearest substituent, alphabetical substituent order.<br><br>Inductive, mesomeric, hyperconjugation effects determine reactivity. Nucleophile attacks electron-poor carbon; electrophile attacks electron-rich sites. Know SN1 vs SN2 conditions.'
+      ch: 'Structure of Atom',
+      groups: [
+        {
+          title: 'Bohr Model (H-like atoms)',
+          formulas: ['Energy: Eₙ = −13.6/n² eV', 'Radius: rₙ = 0.529 × n²/Z Å', 'Velocity: vₙ = 2.18×10⁶ × Z/n m/s', 'ΔE = −13.6(1/n₂² − 1/n₁²) eV'],
+          note: 'For H: Z=1. For He⁺: Z=2. Energy is negative → bound state. More negative = more stable = lower n.'
+        },
+        {
+          title: 'Wave-Particle Duality',
+          formulas: ['de Broglie: λ = h/mv = h/p', 'Heisenberg: Δx·Δp ≥ h/4π', 'Photon energy: E = hν = hc/λ', 'h = 6.626 × 10⁻³⁴ J·s'],
+          note: 'de Broglie wavelength is significant only for microscopic particles. For macroscopic objects, λ ≈ 0.'
+        },
+        {
+          title: 'Quantum Numbers',
+          formulas: ['n (Principal): 1,2,3,… → shell (energy)', 'l (Azimuthal): 0 to (n−1) → subshell shape', 'm_l (Magnetic): −l to +l → orientation', 'm_s (Spin): +½ or −½'],
+          note: 'n=1: l=0 (s only). n=2: l=0,1 (s,p). n=3: l=0,1,2 (s,p,d). Max electrons in shell = 2n².'
+        },
+        {
+          title: 'Electronic Configuration Rules',
+          formulas: ['Aufbau: fill lower energy first (1s 2s 2p 3s 3p…)', 'Hund\'s Rule: max unpaired electrons in same subshell', 'Pauli Exclusion: no two electrons with identical quantum numbers'],
+          note: 'EXCEPTIONS: Cr = [Ar]3d⁵4s¹ (not 3d⁴4s²) and Cu = [Ar]3d¹⁰4s¹ (not 3d⁹4s²). Stability of half-filled/fully-filled d subshell.'
+        }
+      ]
     }
   ],
   cs: [
     {
-      title: 'Java OOP Concepts',
-      body: '<b>4 Pillars:</b> Encapsulation, Inheritance, Polymorphism, Abstraction.<br><br>Constructor overloading vs method overloading. <code>super()</code> calls parent constructor. Runtime polymorphism via method overriding. <code>this</code> refers to current object. Abstract class cannot be instantiated.'
+      ch: 'Java Basics & Syntax',
+      groups: [
+        {
+          title: 'Data Types',
+          formulas: ['int: 32-bit integer (-2³¹ to 2³¹-1)', 'long: 64-bit integer', 'double: 64-bit floating point', 'float: 32-bit floating point', 'char: 16-bit Unicode character', 'boolean: true or false', 'String: object (not primitive)'],
+          note: 'int/char/boolean are passed by VALUE. Objects (String, arrays) are passed by REFERENCE.'
+        },
+        {
+          title: 'Operators & Precedence',
+          formulas: ['Arithmetic: +, -, *, /, % (modulo)', 'Relational: ==, !=, <, >, <=, >=', 'Logical: && (AND), || (OR), ! (NOT)', 'Precedence: !, *, /, %, +, -, <, >, ==, &&, ||'],
+          note: '5/2 = 2 (integer division). 5.0/2 = 2.5. Always cast to double if decimal needed: (double)a/b.'
+        },
+        {
+          title: 'Control Structures',
+          formulas: ['for(init; condition; update) { }', 'while(condition) { }', 'do { } while(condition);', 'switch(expr) { case v: ... break; default: }'],
+          note: 'do-while always executes at least ONCE. switch works with int, char, String (Java 7+). Always include break!'
+        }
+      ]
     },
     {
-      title: 'Arrays & Strings',
-      body: '<span class="formula-tag">int[] a = new int[n];</span><span class="formula-tag">int[][] m = new int[r][c];</span><br><br>String methods: length(), charAt(i), substring(s,e), indexOf(ch), toUpperCase(), trim(), equals() vs ==. Character methods: Character.isDigit(), isLetter(), isUpperCase().'
+      ch: 'OOP — Encapsulation & Classes',
+      groups: [
+        {
+          title: 'Class Structure',
+          formulas: ['class ClassName { fields; constructors; methods; }', 'Access: public (any), private (class only), protected (subclass)', 'static: belongs to class, not object', 'final: cannot be changed/overridden'],
+          note: 'private fields with public getters/setters = Encapsulation. This is the core of data hiding.'
+        },
+        {
+          title: 'this Keyword',
+          formulas: ['this.fieldName → refers to current object\'s field', 'this(args) → calls another constructor of same class', 'return this → method chaining'],
+          note: 'Use this when parameter name = field name to avoid shadowing. ISC frequently tests this.'
+        }
+      ]
     },
     {
-      title: 'Sorting Algorithms',
-      body: '<b>Bubble Sort:</b> O(n²) — adjacent swaps, largest bubbles up each pass.<br><b>Selection Sort:</b> O(n²) — find min, swap with position i.<br><b>Insertion Sort:</b> O(n²) worst, O(n) best — shift elements right, insert at correct position.<br><br>ISC always asks for dry run — show array state after EACH pass.'
+      ch: 'OOP — Inheritance & Polymorphism',
+      groups: [
+        {
+          title: 'Inheritance',
+          formulas: ['class Child extends Parent { }', 'super.method() → calls parent\'s method', 'super(args) → calls parent\'s constructor', 'instanceof → checks object type'],
+          note: 'Java has single inheritance (one parent). super() must be FIRST line in constructor if used.'
+        },
+        {
+          title: 'Polymorphism',
+          formulas: ['Compile-time: Method Overloading (same name, diff params)', 'Runtime: Method Overriding (same signature in subclass)', '@Override annotation → good practice', 'Dynamic dispatch: parent_ref.method() calls child\'s version'],
+          note: 'Overloading = same class, different parameters. Overriding = parent vs child, same signature. ISC loves asking the difference!'
+        }
+      ]
     },
     {
-      title: 'Boolean Algebra',
-      body: '<b>Laws:</b> Identity (A+0=A), Complement (A+A\'=1), De Morgan: (AB)\'=A\'+B\'<br><br>SOP (Sum of Products) and POS (Product of Sums) forms. K-Map for simplification — group 1s in powers of 2. Logic gates: AND, OR, NOT, NAND, NOR, XOR truth tables.'
+      ch: 'Constructors & Methods',
+      groups: [
+        {
+          title: 'Constructor Rules',
+          formulas: ['Same name as class', 'No return type (not even void)', 'Default constructor: no args, auto-created if none defined', 'Parameterised constructor: args to initialise fields', 'Called with: new ClassName(args)'],
+          note: 'If you define ANY constructor, Java stops providing the default constructor. Define it explicitly if still needed.'
+        },
+        {
+          title: 'Method Essentials',
+          formulas: ['Signature = name + parameter types', 'Overloading: same name, different signature', 'return type must match declaration', 'void: no return value'],
+          note: 'Method overloading is resolved at COMPILE time. Method overriding is resolved at RUNTIME.'
+        },
+        {
+          title: 'String Methods (ISC Favourite)',
+          formulas: ['length() → number of characters', 'charAt(i) → char at index i', 'substring(s,e) → from s to e-1', 'indexOf(ch) → first occurrence', 'toUpperCase() / toLowerCase()', 'equals(s) → content comparison (use this!)', 'compareTo(s) → lexicographic comparison'],
+          note: 'NEVER use == for String comparison in ISC programs. Always use .equals(). == checks reference, not content!'
+        }
+      ]
     }
   ]
 };
 
-const TASKS = [
-  { text: 'Solve Sets — Exercise 1.3', subj: 'math', done: false },
-  { text: 'Read Dimensional Analysis notes', subj: 'phys', done: false },
-  { text: 'Revise Atomic Structure formulas', subj: 'chem', done: false },
-  { text: 'Java — write Bubble Sort dry run', subj: 'cs', done: false },
-  { text: 'Trigonometry values practice', subj: 'math', done: false },
-];
-
-const BADGE_LABELS = { unit: 'Unit Test', half: 'Half-Yearly', cum: 'Cumulative', ann: 'Annual' };
-const BADGE_CLASS = { unit: 'exam-unit', half: 'exam-half', cum: 'exam-cum', ann: 'exam-ann' };
-
-const FOCUS_DATA = {
-  math: {
-    topics: ['Sets — Venn diagrams & De Morgan\'s laws', 'Trigonometry — all standard values', 'Relations — types and definitions', 'Height & Distance — angle of elevation/depression', 'Functions — domain, range, one-one & onto'],
-    qs: ['If A={1,2,3} and B={2,3,4}, find A∩B, A∪B, A−B', 'Prove: sin²A+cos²A=1 using unit circle', 'A tower 100m high — find angle of elevation from 100m away']
-  },
-  phys: {
-    topics: ['Dimensions: Force, Pressure, Energy, Power', 'FBD — Atwood machine & inclined plane', 'Newton\'s 3rd law — action-reaction pairs', 'Projectile motion — max height, range, time of flight', 'Relative velocity problems'],
-    qs: ['5kg block on 30° incline (μ=0.3) — find acceleration', 'Two masses 3kg, 5kg on Atwood — find acceleration', 'Ball thrown at 45°, range=100m — find initial velocity']
-  },
-  chem: {
-    topics: ['Mole concept — n=m/M=V/22.4', 'Electronic configuration & quantum numbers', 'Bohr model — energy & radius formulae', 'Stoichiometry — balancing equations', 'Limiting reagent problems'],
-    qs: ['Find electrons, protons, neutrons in ²³Na and ³⁵Cl', 'Calculate moles in 54g of H₂O', 'Balance: Fe + HCl → FeCl₂ + H₂']
-  },
-  cs: {
-    topics: ['this keyword — current object reference', 'super keyword — parent class access', 'Method overloading vs overriding', 'Constructor — default vs parameterised', 'String: equals() vs == difference'],
-    qs: ['Write Java: print Fibonacci series up to n terms', 'Trace Bubble Sort on [8,3,5,1,9,2] — show each pass', 'Write method to check if string is palindrome']
-  }
-};
-
-const TIMETABLE = {
-  current: [
-    { day: 'Monday',    slots: [{text:'Mathematics — Sets & Relations',color:'#8b7cf6'},{text:'Physics — Dimensional Analysis',color:'#60a5fa'}] },
-    { day: 'Tuesday',   slots: [{text:'Chemistry — Atomic Structure',color:'#fb923c'},{text:'Mathematics — Trigonometry',color:'#8b7cf6'}] },
-    { day: 'Wednesday', slots: [{text:'Computer Sc. — Java OOP',color:'#f87171'},{text:'Physics — Laws of Motion',color:'#60a5fa'}] },
-    { day: 'Thursday',  slots: [{text:'Mathematics — Complex Numbers',color:'#8b7cf6'},{text:'Chemistry — Basic Concepts',color:'#fb923c'}] },
-    { day: 'Friday',    slots: [{text:'Physics — Motion',color:'#60a5fa'},{text:'Computer Sc. — Arrays',color:'#f87171'}] },
-    { day: 'Saturday',  slots: [{text:'Full Revision — Unit Test topics',color:'#4ade80'},{text:'Mock test — 2 hours',color:'#a78bfa'}] },
-    { day: 'Sunday',    slots: [{text:'Rest / Catch-up',color:'#64748b'}] },
-  ],
-  next: [
-    { day: 'Monday',    slots: [{text:'Mathematics — Sequences & Series',color:'#8b7cf6'},{text:'Physics — Work & Energy',color:'#60a5fa'}] },
-    { day: 'Tuesday',   slots: [{text:'Chemistry — Chemical Bonding',color:'#fb923c'},{text:'Computer Sc. — Sorting',color:'#f87171'}] },
-    { day: 'Wednesday', slots: [{text:'Mathematics — P & C',color:'#8b7cf6'},{text:'Physics — Gravitation',color:'#60a5fa'}] },
-    { day: 'Thursday',  slots: [{text:'Chemistry — Equilibrium',color:'#fb923c'},{text:'Mathematics — Limits',color:'#8b7cf6'}] },
-    { day: 'Friday',    slots: [{text:'Computer Sc. — Boolean Algebra',color:'#f87171'},{text:'Physics — Rotational Motion',color:'#60a5fa'}] },
-    { day: 'Saturday',  slots: [{text:'Full Mock Test',color:'#4ade80'},{text:'Error Analysis',color:'#a78bfa'}] },
-    { day: 'Sunday',    slots: [{text:'Weak Subject Focus',color:'#64748b'}] },
-  ],
-  revision: [
-    { day: 'Monday',    slots: [{text:'Math — All formulas drill',color:'#8b7cf6'},{text:'Math — Trigonometry revision',color:'#8b7cf6'}] },
-    { day: 'Tuesday',   slots: [{text:'Physics — Units to Motion',color:'#60a5fa'},{text:'Physics — Numericals',color:'#60a5fa'}] },
-    { day: 'Wednesday', slots: [{text:'Chemistry — Full revision',color:'#fb923c'},{text:'CS — Programs list',color:'#f87171'}] },
-    { day: 'Thursday',  slots: [{text:'CS — Algorithms dry run',color:'#f87171'},{text:'Math — Coordinate Geom.',color:'#8b7cf6'}] },
-    { day: 'Friday',    slots: [{text:'Full Paper Practice',color:'#4ade80'}] },
-    { day: 'Saturday',  slots: [{text:'Light review only',color:'#64748b'}] },
-    { day: 'Sunday',    slots: [{text:'Rest — exam tomorrow',color:'#64748b'}] },
-  ]
-};
-
 const QUOTES = [
-  '"The expert in anything was once a beginner." — Class 11 is your beginning.',
+  '"The expert in anything was once a beginner."',
   '"Success is the sum of small efforts repeated daily."',
-  '"Your future self is watching you right now." — Make them proud.',
+  '"Your future self is watching you right now."',
   '"Hard work beats talent when talent doesn\'t work hard."',
   '"Study hard in silence. Let success make the noise."'
 ];
 
-/* ==============================
-   STATE (localStorage)
-============================== */
+/* ============================================================
+   STATE
+============================================================ */
 function getState() {
-  try {
-    return JSON.parse(localStorage.getItem('studyos_state') || '{}');
-  } catch(e) { return {}; }
+  try { return JSON.parse(localStorage.getItem('studyos_v3') || '{}'); }
+  catch(e) { return {}; }
 }
-function saveState(state) {
-  localStorage.setItem('studyos_state', JSON.stringify(state));
-}
+function saveState(s) { localStorage.setItem('studyos_v3', JSON.stringify(s)); }
+
 function getChapterDone(subjId, chName) {
   const s = getState();
   return !!(s.chapters && s.chapters[subjId] && s.chapters[subjId][chName]);
@@ -812,145 +1032,199 @@ function toggleChapterDone(subjId, chName) {
   s.chapters[subjId][chName] = !s.chapters[subjId][chName];
   saveState(s);
 }
-function getStreak() {
-  const s = getState();
-  return s.streak || 0;
-}
-function logStreak() {
+function getStreak() { return getState().streak || 0; }
+
+function logStreak(btn) {
   const s = getState();
   const today = new Date().toDateString();
-  if (s.lastLog === today) {
-    alert('Already logged today! Come back tomorrow 🔥');
-    return;
-  }
+  if (s.lastLog === today) { showToast('Already logged today! 🔥 Come back tomorrow'); return; }
   s.streak = (s.streak || 0) + 1;
   s.lastLog = today;
   saveState(s);
   document.getElementById('streak-num').textContent = s.streak;
+  document.getElementById('streak-sub-text').textContent = 'Logged today! Keep it up!';
+  showToast('Streak updated! 🔥 ' + s.streak + ' days!');
+  addRipple(btn, event);
 }
+
 function getReminders() {
-  const s = getState();
-  return s.reminders || [
+  return getState().reminders || [
     { text: 'Morning study session', time: '07:00', color: '#8b7cf6' },
     { text: 'Formula revision — 15 min', time: '13:00', color: '#4ade80' },
     { text: 'Evening problem solving', time: '18:30', color: '#60a5fa' },
     { text: 'Review notes before sleep', time: '21:30', color: '#fb923c' },
   ];
 }
-function saveReminders(r) {
+function saveReminders(r) { const s=getState(); s.reminders=r; saveState(s); }
+
+function getTimetable() { return getState().customTT || []; }
+function saveTimetable(tt) { const s=getState(); s.customTT=tt; saveState(s); }
+
+function getTimeStats() {
   const s = getState();
-  s.reminders = r;
-  saveState(s);
+  const today = new Date().toDateString();
+  if (s.timeStats && s.timeStats.date !== today) {
+    s.timeStats.todaySecs = 0;
+    s.timeStats.date = today;
+    saveState(s);
+  }
+  return s.timeStats || { totalSecs: 0, todaySecs: 0, date: today, sessions: [] };
 }
-function getTasks() {
-  const s = getState();
-  return s.tasks || TASKS.map(t => ({...t}));
-}
-function saveTasks(t) {
-  const s = getState();
-  s.tasks = t;
-  saveState(s);
+function saveTimeStats(ts) { const s=getState(); s.timeStats=ts; saveState(s); }
+
+function addStudyTime(seconds) {
+  const ts = getTimeStats();
+  const today = new Date().toDateString();
+  if (ts.date !== today) { ts.todaySecs = 0; ts.date = today; }
+  ts.totalSecs += seconds;
+  ts.todaySecs += seconds;
+  const now = new Date();
+  ts.sessions = ts.sessions || [];
+  ts.sessions.unshift({
+    dur: seconds,
+    time: now.toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'}),
+    date: now.toDateString(),
+    mode: timerModeName
+  });
+  if (ts.sessions.length > 10) ts.sessions = ts.sessions.slice(0, 10);
+  saveTimeStats(ts);
+  updateTimeStatsUI();
 }
 
-/* ==============================
+function formatTime(secs) {
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  if (h > 0) return h + 'h ' + m + 'm';
+  return m + 'm ' + (secs % 60) + 's';
+}
+
+function updateTimeStatsUI() {
+  const ts = getTimeStats();
+  const el1 = document.getElementById('stat-today');
+  const el2 = document.getElementById('stat-total');
+  if (el1) el1.textContent = formatTime(ts.todaySecs);
+  if (el2) el2.textContent = formatTime(ts.totalSecs);
+  renderSessionList(ts.sessions || []);
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+function showToast(msg, emoji) {
+  const tc = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = (emoji ? emoji + ' ' : '') + msg;
+  tc.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('out');
+    setTimeout(() => t.remove(), 300);
+  }, 2500);
+}
+
+/* ============================================================
+   RIPPLE
+============================================================ */
+function addRipple(el, e) {
+  if (!el || !e) return;
+  const rect = el.getBoundingClientRect();
+  const r = document.createElement('span');
+  r.className = 'ripple-effect';
+  const size = Math.max(rect.width, rect.height);
+  r.style.width = r.style.height = size + 'px';
+  const x = (e.clientX || rect.left + rect.width/2) - rect.left - size/2;
+  const y = (e.clientY || rect.top + rect.height/2) - rect.top - size/2;
+  r.style.left = x + 'px'; r.style.top = y + 'px';
+  el.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+}
+
+document.querySelectorAll('.ripple-container').forEach(el => {
+  el.addEventListener('click', e => addRipple(el, e));
+});
+
+/* ============================================================
    NAVIGATION
-============================== */
+============================================================ */
 let currentView = 'home';
 function navigate(view, btn) {
+  if (currentView === view) return;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('view-' + view).classList.add('active');
   btn.classList.add('active');
   currentView = view;
 
-  // Reset More sub-views
   if (view === 'more') {
     document.getElementById('more-menu').style.display = 'block';
     document.getElementById('more-subview').style.display = 'none';
   }
 
-  if (view === 'home') renderHome();
-  if (view === 'chapters') initChapters();
-  if (view === 'maps') initMaps();
-  if (view === 'focus') initFocus();
+  const initMap = { home: renderHome, chapters: initChapters, formulas: initFormulas, timer: initTimer };
+  if (initMap[view]) initMap[view]();
 }
 
-/* ==============================
+/* ============================================================
    HOME
-============================== */
-function renderHome() {
-  const streak = getStreak();
-  document.getElementById('streak-num').textContent = streak;
+============================================================ */
+function animateCounter(el, target) {
+  let current = 0;
+  const step = Math.max(1, Math.ceil(target / 20));
+  const interval = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current;
+    if (current >= target) clearInterval(interval);
+  }, 30);
+}
 
-  // Count chapters
+function renderHome() {
+  const s = getState();
+  document.getElementById('streak-num').textContent = getStreak();
+  const today = new Date().toDateString();
+  document.getElementById('streak-sub-text').textContent =
+    s.lastLog === today ? 'Logged today! Keep it up! 🎉' : 'Tap to log today\'s session';
+
   let done = 0, total = 0;
-  SUBJECTS.forEach(s => {
-    s.examSections.forEach(sec => {
-      sec.chapters.forEach(ch => {
-        total++;
-        if (getChapterDone(s.id, ch)) done++;
-      });
+  SUBJECTS.forEach(subj => {
+    subj.unitTest.forEach(ch => {
+      total++;
+      if (getChapterDone(subj.id, ch)) done++;
     });
   });
-  document.getElementById('home-ch-done').textContent = done;
-  document.getElementById('home-ch-total').textContent = `of ${total} total`;
-  document.getElementById('home-topics').textContent = total ? Math.round(done/total*100) + '%' : '0%';
 
-  // Tasks
-  const tasks = getTasks();
-  const tl = document.getElementById('task-list');
-  tl.innerHTML = '';
-  tasks.forEach((t, i) => {
-    const colors = {math:'#8b7cf6',phys:'#60a5fa',chem:'#fb923c',cs:'#f87171'};
-    const names = {math:'Math',phys:'Physics',chem:'Chemistry',cs:'Comp Sc.'};
-    const div = document.createElement('div');
-    div.className = 'task-item';
-    div.innerHTML = `
-      <div class="task-check ${t.done?'done':''}" onclick="toggleTask(${i})">
-        ${t.done ? '✓' : ''}
-      </div>
-      <span class="task-text ${t.done?'done':''}">${t.text}</span>
-      <span class="task-badge" style="background:${colors[t.subj]}22;color:${colors[t.subj]}">${names[t.subj]}</span>
-    `;
-    tl.appendChild(div);
-  });
+  const doneEl = document.getElementById('home-ch-done');
+  const pctEl = document.getElementById('home-topics');
+  doneEl.textContent = done;
+  document.getElementById('home-ch-total').textContent = 'of ' + total + ' total';
+  pctEl.textContent = total ? Math.round(done/total*100) + '%' : '0%';
 
-  // Subject progress
   const hp = document.getElementById('home-progress');
   hp.innerHTML = '';
-  SUBJECTS.forEach(s => {
-    let sdone = 0, stotal = 0;
-    s.examSections.forEach(sec => {
-      sec.chapters.forEach(ch => {
-        stotal++;
-        if (getChapterDone(s.id, ch)) sdone++;
-      });
-    });
-    const pct = stotal ? Math.round(sdone/stotal*100) : 0;
-    hp.innerHTML += `
-      <div class="card card-sm" style="margin-bottom:8px">
-        <div class="prog-top">
-          <span class="prog-name">${s.emoji} ${s.name}</span>
-          <span class="prog-pct">${sdone}/${stotal}</span>
-        </div>
-        <div class="prog-bar">
-          <div class="prog-fill" style="background:${s.color};width:${pct}%"></div>
-        </div>
+  SUBJECTS.forEach(subj => {
+    let sd = 0, st = subj.unitTest.length;
+    subj.unitTest.forEach(ch => { if (getChapterDone(subj.id, ch)) sd++; });
+    const pct = st ? Math.round(sd/st*100) : 0;
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.marginBottom = '9px';
+    div.innerHTML = `
+      <div class="prog-top">
+        <span class="prog-name">${subj.emoji} ${subj.name}</span>
+        <span class="prog-pct">${sd}/${st} · ${pct}%</span>
       </div>
+      <div class="prog-bar"><div class="prog-fill" id="hp-${subj.id}" style="background:${subj.color};width:0%"></div></div>
     `;
+    hp.appendChild(div);
+    setTimeout(() => {
+      const f = document.getElementById('hp-' + subj.id);
+      if (f) f.style.width = pct + '%';
+    }, 100);
   });
 }
 
-function toggleTask(i) {
-  const tasks = getTasks();
-  tasks[i].done = !tasks[i].done;
-  saveTasks(tasks);
-  renderHome();
-}
-
-/* ==============================
+/* ============================================================
    CHAPTERS
-============================== */
+============================================================ */
 let activeSubj = 'math';
 
 function initChapters() {
@@ -967,183 +1241,181 @@ function initChapters() {
 }
 
 function renderChapterContent(subjId) {
-  const s = SUBJECTS.find(x => x.id === subjId);
-  let html = '';
+  const subj = SUBJECTS.find(x => x.id === subjId);
+  let done = 0;
+  subj.unitTest.forEach(ch => { if (getChapterDone(subjId, ch)) done++; });
+  const total = subj.unitTest.length;
 
-  s.examSections.forEach(sec => {
-    html += `<div class="exam-section">
-      <div>
-        <span class="exam-badge ${BADGE_CLASS[sec.type]}">${BADGE_LABELS[sec.type]}</span>
-      </div>`;
+  let html = `<div class="card" style="margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <span style="font-size:12px;font-weight:700;color:var(--text2)">${subj.emoji} Unit Test — ${done}/${total} done</span>
+      <span class="exam-badge exam-unit">Unit Test</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="ch-prog-fill" style="background:${subj.color};width:${total?Math.round(done/total*100):0}%"></div></div>
+  </div>`;
 
-    sec.chapters.forEach(ch => {
-      const done = getChapterDone(subjId, ch);
-      html += `
-        <div class="chapter-item ${done?'done':''}" onclick="handleChChapter('${subjId}','${ch.replace(/'/g,"\\'")}')">
-          <div class="ch-icon">${done ? '✓' : ''}</div>
-          <span class="ch-name">${ch}</span>
-        </div>`;
-    });
-
-    if (sec.revision && sec.revision.length) {
-      html += `<div style="margin-top:6px;margin-bottom:4px"><span class="exam-badge exam-rev">Revision</span></div>`;
-      sec.revision.forEach(ch => {
-        html += `<div class="chapter-item" style="opacity:0.6;cursor:default">
-          <div class="ch-icon" style="font-size:9px;color:var(--text3)">↩</div>
-          <span class="ch-name" style="color:var(--text3)">${ch}</span>
-          <span class="ch-note">revise</span>
-        </div>`;
-      });
-    }
-
-    html += `</div>`;
+  subj.unitTest.forEach((ch, i) => {
+    const isDone = getChapterDone(subjId, ch);
+    html += `<div class="chapter-item ripple-container ${isDone?'done':''}" onclick="handleChapter('${subjId}','${ch.replace(/'/g,"\\'")}',this,event)" style="animation-delay:${i*40}ms">
+      <div class="ch-icon">${isDone ? '✓' : ''}</div>
+      <div style="flex:1">
+        <span class="ch-name">${ch}</span>
+      </div>
+      ${isDone ? '<span style="font-size:11px;color:var(--green);font-family:var(--mono)">✓ done</span>' : ''}
+    </div>`;
   });
 
   document.getElementById('chapter-content').innerHTML = html;
 }
 
-function handleChChapter(subjId, chName) {
+function handleChapter(subjId, chName, el, e) {
+  addRipple(el, e);
+  const wasDone = getChapterDone(subjId, chName);
   toggleChapterDone(subjId, chName);
-  renderChapterContent(subjId);
-
-  // Also update home stats in background
-  const streak = getStreak();
-  document.getElementById('streak-num').textContent = streak;
+  const now = !wasDone;
+  showToast(now ? '✅ ' + chName + ' marked done!' : '↩️ Unmarked');
+  setTimeout(() => renderChapterContent(subjId), 150);
 }
 
-/* ==============================
-   MIND MAPS
-============================== */
-function initMaps() {
-  document.getElementById('maps-list').style.display = 'block';
-  document.getElementById('maps-detail').style.display = 'none';
+/* ============================================================
+   FORMULAS
+============================================================ */
+let activeFormulaSubj = 'math';
 
-  const cards = document.getElementById('mm-subject-cards');
-  cards.innerHTML = '';
-  SUBJECTS.forEach(s => {
-    const nodes = MINDMAP_DATA[s.id] || [];
-    const chips = nodes.slice(0, 3).map(n => `<div class="mm-chip">${n.title}</div>`).join('');
-    cards.innerHTML += `
-      <div class="mm-card" onclick="openMM('${s.id}')">
-        <div class="mm-card-top">
-          <div class="mm-emoji">${s.emoji}</div>
-          <div>
-            <div class="mm-card-title">${s.name}</div>
-            <div class="mm-card-sub">${nodes.length} topics</div>
-          </div>
-        </div>
-        <div class="mm-chips">${chips}${nodes.length>3?`<div class="mm-chip">+${nodes.length-3} more</div>`:''}</div>
-      </div>`;
-  });
-}
-
-function openMM(subjId) {
-  const s = SUBJECTS.find(x => x.id === subjId);
-  document.getElementById('maps-list').style.display = 'none';
-  document.getElementById('maps-detail').style.display = 'block';
-  document.getElementById('mm-detail-title').textContent = s.emoji + ' ' + s.name;
-
-  const nodes = MINDMAP_DATA[subjId] || [];
-  let html = '';
-  nodes.forEach((n, i) => {
-    html += `
-      <div class="mm-node" id="mmn-${i}">
-        <div class="mm-node-head" onclick="toggleMMNode(${i})">
-          <div class="mm-node-arrow">▶</div>
-          <div class="mm-node-title">${n.title}</div>
-        </div>
-        <div class="mm-node-body">${n.body}</div>
-      </div>`;
-  });
-  if (!html) html = '<div class="empty-state"><div class="es-icon">🚧</div>Mind map coming soon!</div>';
-  document.getElementById('mm-nodes').innerHTML = html;
-}
-
-function closeMM() {
-  document.getElementById('maps-list').style.display = 'block';
-  document.getElementById('maps-detail').style.display = 'none';
-}
-
-function toggleMMNode(i) {
-  document.getElementById('mmn-' + i).classList.toggle('open');
-}
-
-/* ==============================
-   FOCUS / TIMER
-============================== */
-let timerSecs = 25 * 60, timerRunning = false, timerInterval = null, timerMins = 25, timerModeName = 'FOCUS SESSION';
-let activeFocusSubj = 'math';
-
-function initFocus() {
-  const pills = document.getElementById('focus-pills');
+function initFormulas() {
+  const pills = document.getElementById('formula-pills');
   pills.innerHTML = '';
   SUBJECTS.forEach(s => {
     const btn = document.createElement('button');
-    btn.className = `subj-pill pill-${s.id} ${s.id === activeFocusSubj ? 'active' : ''}`;
+    btn.className = `subj-pill pill-${s.id} ${s.id === activeFormulaSubj ? 'active' : ''}`;
     btn.textContent = s.emoji + ' ' + s.name;
-    btn.onclick = () => { activeFocusSubj = s.id; initFocus(); };
+    btn.onclick = () => { activeFormulaSubj = s.id; renderFormulas(s.id); updateFormulaPills(); };
     pills.appendChild(btn);
   });
-  renderFocusContent(activeFocusSubj);
+  renderFormulas(activeFormulaSubj);
 }
 
-function renderFocusContent(subjId) {
-  const data = FOCUS_DATA[subjId];
-  const s = SUBJECTS.find(x => x.id === subjId);
-  let html = `<div class="card" style="margin-bottom:10px">
-    <div class="section-label" style="color:${s.color}">Key Topics</div>`;
-  data.topics.forEach(t => {
-    html += `<div class="focus-topic">
-      <div class="ft-dot" style="background:${s.color}"></div>${t}
-    </div>`;
+function updateFormulaPills() {
+  document.querySelectorAll('#formula-pills .subj-pill').forEach((btn, i) => {
+    btn.classList.toggle('active', SUBJECTS[i].id === activeFormulaSubj);
   });
-  html += `</div><div class="section-label">Must-Do Questions</div>`;
-  data.qs.forEach(q => {
-    html += `<div class="imp-q"><span class="imp-badge">★ Important</span>${q}</div>`;
+}
+
+function renderFormulas(subjId) {
+  const data = FORMULA_DATA[subjId] || [];
+  const subj = SUBJECTS.find(x => x.id === subjId);
+  let html = '';
+  data.forEach((ch, ci) => {
+    const totalFormulas = ch.groups.reduce((a, g) => a + g.formulas.length, 0);
+    html += `<div class="formula-chapter-card" id="fch-${ci}">
+      <div class="formula-ch-head" onclick="toggleFormulaCard(${ci})">
+        <div class="formula-ch-arrow">▶</div>
+        <div class="formula-ch-title">${ch.ch}</div>
+        <div class="formula-ch-count">${totalFormulas} formulas</div>
+      </div>
+      <div class="formula-ch-body">`;
+    ch.groups.forEach(g => {
+      html += `<div class="formula-group">
+        <div class="formula-group-title">${g.title}</div>
+        <div class="formula-tags">`;
+      g.formulas.forEach(f => {
+        html += `<span class="f-tag">${f}</span>`;
+      });
+      html += `</div>`;
+      if (g.note) html += `<div class="formula-note">💡 ${g.note}</div>`;
+      html += `</div>`;
+    });
+    html += `</div></div>`;
   });
-  document.getElementById('focus-content').innerHTML = html;
+  document.getElementById('formula-content').innerHTML = html;
+}
+
+function toggleFormulaCard(i) {
+  const card = document.getElementById('fch-' + i);
+  const isOpen = card.classList.contains('open');
+  // Close all others
+  document.querySelectorAll('.formula-chapter-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+/* ============================================================
+   TIMER
+============================================================ */
+const CIRCUMFERENCE = 2 * Math.PI * 85; // 534.07
+let timerSecs, timerMins = 25, timerModeName = 'FOCUS', timerRunning = false, timerInterval = null;
+let sessionStartSecs = 0;
+
+function initTimer() {
+  timerSecs = timerMins * 60;
+  updateTimerDisp();
+  updateRing(1);
+  updateTimeStatsUI();
 }
 
 function setMode(btn, mins, name) {
+  if (timerRunning) timerStop();
   document.querySelectorAll('.timer-mode-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  timerMins = mins; timerModeName = name.toUpperCase() + ' SESSION';
-  timerSecs = mins * 60; timerRunning = false;
-  clearInterval(timerInterval);
-  document.getElementById('timer-start-btn').textContent = 'Start';
-  document.getElementById('timer-lbl').textContent = timerModeName;
+  timerMins = mins; timerModeName = name.toUpperCase();
+  timerSecs = mins * 60;
+  document.getElementById('timer-lbl').textContent = name.toUpperCase() + ' SESSION';
+  const fill = document.getElementById('timer-ring-fill');
+  if (fill) {
+    const colors = { 'FOCUS': '#8b7cf6', 'SHORT BREAK': '#4ade80', 'LONG BREAK': '#60a5fa' };
+    fill.style.stroke = colors[timerModeName] || '#8b7cf6';
+  }
   updateTimerDisp();
+  updateRing(1);
 }
 
-function timerToggle() {
-  if (timerRunning) {
-    clearInterval(timerInterval); timerRunning = false;
-    document.getElementById('timer-start-btn').textContent = 'Resume';
-  } else {
-    timerRunning = true;
-    document.getElementById('timer-start-btn').textContent = 'Pause';
-    timerInterval = setInterval(() => {
-      if (timerSecs <= 0) {
-        clearInterval(timerInterval); timerRunning = false;
-        timerSecs = timerMins * 60;
-        document.getElementById('timer-start-btn').textContent = 'Start';
-        updateTimerDisp();
-        if (Notification && Notification.permission === 'granted') {
-          new Notification('StudyOS', { body: timerModeName + ' complete! Take a break.' });
-        }
-        return;
-      }
-      timerSecs--;
+function timerToggle(btn) {
+  if (timerRunning) timerStop();
+  else timerStart();
+  if (btn) addRipple(btn, event);
+}
+
+function timerStart() {
+  if (timerSecs <= 0) timerSecs = timerMins * 60;
+  timerRunning = true;
+  sessionStartSecs = timerMins * 60 - timerSecs;
+  document.getElementById('timer-start-btn').textContent = 'Pause';
+  timerInterval = setInterval(() => {
+    timerSecs--;
+    updateTimerDisp();
+    updateRing(timerSecs / (timerMins * 60));
+    if (timerSecs <= 0) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      document.getElementById('timer-start-btn').textContent = 'Start';
+      const elapsed = timerMins * 60;
+      addStudyTime(elapsed);
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      showToast('⏰ Session complete! +' + formatTime(elapsed));
+      timerSecs = timerMins * 60;
       updateTimerDisp();
-    }, 1000);
+      updateRing(1);
+    }
+  }, 1000);
+}
+
+function timerStop() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  document.getElementById('timer-start-btn').textContent = 'Resume';
+  const elapsed = (timerMins * 60) - timerSecs;
+  if (elapsed > 5) {
+    addStudyTime(elapsed);
+    showToast('Saved ' + formatTime(elapsed) + ' to your total');
   }
 }
 
 function timerReset() {
-  clearInterval(timerInterval); timerRunning = false;
+  clearInterval(timerInterval);
+  timerRunning = false;
   timerSecs = timerMins * 60;
   document.getElementById('timer-start-btn').textContent = 'Start';
   updateTimerDisp();
+  updateRing(1);
 }
 
 function updateTimerDisp() {
@@ -1152,17 +1424,38 @@ function updateTimerDisp() {
     String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 }
 
-/* ==============================
-   MORE SUB-VIEWS
-============================== */
+function updateRing(fraction) {
+  const fill = document.getElementById('timer-ring-fill');
+  if (!fill) return;
+  fill.style.strokeDashoffset = CIRCUMFERENCE * (1 - Math.max(0, fraction));
+}
+
+function renderSessionList(sessions) {
+  const sl = document.getElementById('session-list');
+  if (!sl) return;
+  if (!sessions || !sessions.length) {
+    sl.innerHTML = '<div class="empty-state"><div class="es-icon">⏱️</div>No sessions yet. Start studying!</div>';
+    return;
+  }
+  sl.innerHTML = sessions.slice(0, 7).map(s => `
+    <div class="session-item">
+      <div class="session-dot"></div>
+      <div class="session-text">${s.mode} · ${s.date === new Date().toDateString() ? 'Today' : s.date}</div>
+      <div class="session-dur">${formatTime(s.dur)} @ ${s.time}</div>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   MORE
+============================================================ */
 function showMoreView(view) {
   document.getElementById('more-menu').style.display = 'none';
   const sv = document.getElementById('more-subview');
   sv.style.display = 'block';
-
-  if (view === 'reminders') sv.innerHTML = buildRemindersHTML();
-  else if (view === 'timetable') sv.innerHTML = buildTimetableHTML();
+  if (view === 'timetable') sv.innerHTML = buildTimetableHTML();
   else if (view === 'timecalc') sv.innerHTML = buildTimeCalcHTML();
+  else if (view === 'reminders') sv.innerHTML = buildRemindersHTML();
   else if (view === 'about') sv.innerHTML = buildAboutHTML();
 }
 
@@ -1171,7 +1464,96 @@ function backToMore() {
   document.getElementById('more-subview').style.display = 'none';
 }
 
-/* REMINDERS */
+/* ——— CUSTOM TIMETABLE ——— */
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+function buildTimetableHTML() {
+  const tt = getTimetable();
+  let dayHTML = '';
+  DAYS.forEach(day => {
+    const slots = tt.filter(s => s.day === day);
+    dayHTML += `<div class="day-section">
+      <div class="day-head">
+        <div class="day-label">${day}</div>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">${slots.length} slot${slots.length !== 1 ? 's' : ''}</span>
+      </div>`;
+    if (!slots.length) {
+      dayHTML += `<div class="tt-empty">No slots — add below ↓</div>`;
+    }
+    slots.forEach((sl, idx) => {
+      const globalIdx = tt.indexOf(sl);
+      dayHTML += `<div class="tt-slot">
+        <div class="tt-color-bar" style="background:${sl.color}"></div>
+        <div class="tt-slot-info">
+          <div class="tt-slot-time">${sl.time}</div>
+          <div class="tt-slot-text">${sl.label}</div>
+        </div>
+        <button class="tt-slot-del" onclick="deleteTTSlot(${globalIdx})">×</button>
+      </div>`;
+    });
+    dayHTML += `</div>`;
+  });
+
+  let subjOpts = SUBJECTS.map(s => `<option value="${s.id}" data-color="${s.color}">${s.emoji} ${s.name}</option>`).join('');
+
+  return `
+    <div class="back-header">
+      <button class="back-btn" onclick="backToMore()">← Back</button>
+      <div class="back-title">Custom Timetable</div>
+    </div>
+    ${dayHTML}
+    <div class="add-slot-panel">
+      <div class="add-slot-title">➕ Add Slot</div>
+      <div class="form-group">
+        <label class="form-label">Day</label>
+        <select class="form-input" id="tt-day">
+          ${DAYS.map(d => `<option value="${d}">${d}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Time</label>
+        <input type="time" class="form-input" id="tt-time" value="08:00"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <select class="form-input" id="tt-subj">${subjOpts}</select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Topic / Note (optional)</label>
+        <input type="text" class="form-input" id="tt-note" placeholder="e.g. Sets — Exercise 1.3"/>
+      </div>
+      <button class="btn-primary" onclick="addTTSlot()">Add to Timetable</button>
+    </div>`;
+}
+
+function addTTSlot() {
+  const day = document.getElementById('tt-day').value;
+  const time = document.getElementById('tt-time').value;
+  const subjId = document.getElementById('tt-subj').value;
+  const note = document.getElementById('tt-note').value.trim();
+  const subj = SUBJECTS.find(x => x.id === subjId);
+  const tt = getTimetable();
+  const label = subj.emoji + ' ' + subj.name + (note ? ' — ' + note : '');
+  tt.push({ day, time, label, color: subj.color, subjId });
+  tt.sort((a, b) => {
+    const di = DAYS.indexOf(a.day) - DAYS.indexOf(b.day);
+    if (di !== 0) return di;
+    return a.time.localeCompare(b.time);
+  });
+  saveTimetable(tt);
+  document.getElementById('more-subview').innerHTML = buildTimetableHTML();
+  showToast('✅ Slot added for ' + day);
+}
+
+function deleteTTSlot(idx) {
+  const tt = getTimetable();
+  tt.splice(idx, 1);
+  saveTimetable(tt);
+  document.getElementById('more-subview').innerHTML = buildTimetableHTML();
+  showToast('Slot removed');
+}
+
+/* ——— REMINDERS ——— */
 function buildRemindersHTML() {
   const rems = getReminders();
   const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
@@ -1191,69 +1573,33 @@ function buildRemindersHTML() {
     </div>`;
   });
   html += `</div>
-    <div style="display:flex;gap:8px;margin-top:12px">
+    <div style="display:flex;gap:8px;margin-top:14px">
       <input type="text" class="form-input" id="rem-new-text" placeholder="Reminder text…" style="flex:1"/>
-      <input type="time" class="form-input" id="rem-new-time" value="08:00" style="width:100px"/>
+      <input type="time" class="form-input" id="rem-new-time" value="08:00" style="width:105px"/>
     </div>
     <button class="btn-primary" style="margin-top:10px" onclick="addReminder()">+ Add Reminder</button>`;
   return html;
 }
 
 function deleteReminder(i) {
-  const rems = getReminders();
-  rems.splice(i, 1);
-  saveReminders(rems);
+  const r = getReminders(); r.splice(i,1); saveReminders(r);
   document.getElementById('more-subview').innerHTML = buildRemindersHTML();
+  showToast('Reminder removed');
 }
 
 function addReminder() {
   const text = document.getElementById('rem-new-text').value.trim();
   const time = document.getElementById('rem-new-time').value;
-  if (!text) return;
-  const rems = getReminders();
+  if (!text) { showToast('Enter reminder text!'); return; }
+  const r = getReminders();
   const colors = ['#8b7cf6','#4ade80','#60a5fa','#fb923c','#f87171'];
-  rems.push({ text, time, color: colors[rems.length % colors.length] });
-  saveReminders(rems);
+  r.push({ text, time, color: colors[r.length % colors.length] });
+  saveReminders(r);
   document.getElementById('more-subview').innerHTML = buildRemindersHTML();
+  showToast('⏰ Reminder added!');
 }
 
-/* TIMETABLE */
-let activeWeek = 'current';
-function buildTimetableHTML(week) {
-  week = week || activeWeek;
-  activeWeek = week;
-  const weeks = ['current', 'next', 'revision'];
-  const labels = { current: 'This Week', next: 'Next Week', revision: 'Revision' };
-  let html = `
-    <div class="back-header">
-      <button class="back-btn" onclick="backToMore()">← Back</button>
-      <div class="back-title">Timetable</div>
-    </div>
-    <div class="tt-week-pills">`;
-  weeks.forEach(w => {
-    html += `<button class="week-pill ${w===week?'active':''}" onclick="switchTTWeek('${w}')">${labels[w]}</button>`;
-  });
-  html += `</div><div id="tt-days-content">`;
-  TIMETABLE[week].forEach(d => {
-    html += `<div class="tt-day-card">
-      <div class="tt-day-header">${d.day}</div>`;
-    d.slots.forEach(sl => {
-      html += `<div class="tt-slot-item">
-        <div class="tt-color-bar" style="background:${sl.color}"></div>
-        <div class="tt-slot-text">${sl.text}</div>
-      </div>`;
-    });
-    html += `</div>`;
-  });
-  html += `</div>`;
-  return html;
-}
-
-function switchTTWeek(week) {
-  document.getElementById('more-subview').innerHTML = buildTimetableHTML(week);
-}
-
-/* TIME CALCULATOR */
+/* ——— TIME CALCULATOR ——— */
 function buildTimeCalcHTML() {
   let toggles = '', weakToggles = '';
   SUBJECTS.forEach(s => {
@@ -1267,7 +1613,7 @@ function buildTimeCalcHTML() {
     </div>
     <div class="card">
       <div class="form-group">
-        <label class="form-label">Total Study Days Available</label>
+        <label class="form-label">Study Days Available</label>
         <input type="number" class="form-input" id="tc-days" value="30" min="1" max="365"/>
       </div>
       <div class="form-group">
@@ -1279,43 +1625,40 @@ function buildTimeCalcHTML() {
         <div id="tc-subjects" style="margin-top:6px">${toggles}</div>
       </div>
       <div class="form-group">
-        <label class="form-label">Weak Subjects (extra time)</label>
+        <label class="form-label">Weak Subjects (extra 50% time)</label>
         <div id="tc-weak" style="margin-top:6px">${weakToggles}</div>
       </div>
-      <button class="btn-primary" onclick="calcTime()">Calculate Plan</button>
+      <button class="btn-primary" onclick="calcTime()">Generate Plan</button>
     </div>
     <div id="tc-result"></div>`;
 }
 
 function calcTime() {
-  const days = parseInt(document.getElementById('tc-days').value) || 30;
-  const hpd = parseFloat(document.getElementById('tc-hours').value) || 4;
-  const sel = [...document.querySelectorAll('#tc-subjects .toggle-pill.on')].map(b => b.dataset.id);
-  const weak = [...document.querySelectorAll('#tc-weak .toggle-pill.on')].map(b => b.dataset.id);
-  if (!sel.length) { alert('Select at least one subject.'); return; }
+  const days = parseInt(document.getElementById('tc-days').value)||30;
+  const hpd = parseFloat(document.getElementById('tc-hours').value)||4;
+  const sel = [...document.querySelectorAll('#tc-subjects .toggle-pill.on')].map(b=>b.dataset.id);
+  const weak = [...document.querySelectorAll('#tc-weak .toggle-pill.on')].map(b=>b.dataset.id);
+  if (!sel.length) { showToast('Select at least one subject!'); return; }
   const total = days * hpd;
   const weights = {}; sel.forEach(id => { weights[id] = weak.includes(id) ? 1.5 : 1; });
-  const wsum = Object.values(weights).reduce((a,b) => a+b, 0);
+  const wsum = Object.values(weights).reduce((a,b)=>a+b,0);
   const alloc = {}; sel.forEach(id => { alloc[id] = +(total * weights[id] / wsum).toFixed(1); });
   const maxH = Math.max(...Object.values(alloc));
-  let html = `<div class="calc-result-box">
-    <div class="section-label">Your Personalised Plan</div>`;
+  let html = `<div class="calc-result-box"><div class="section-label">Your Plan</div>`;
   sel.forEach(id => {
-    const s = SUBJECTS.find(x => x.id === id);
-    const pct = alloc[id] / maxH * 100;
+    const s = SUBJECTS.find(x=>x.id===id);
+    const pct = alloc[id]/maxH*100;
     html += `<div class="alloc-item">
       <div class="alloc-subj">${s.emoji} ${s.name}</div>
-      <div class="alloc-bar-w">
-        <div class="prog-bar"><div class="prog-fill" style="background:${s.color};width:${pct}%"></div></div>
-      </div>
+      <div class="alloc-bar-w"><div class="prog-bar"><div class="prog-fill" style="background:${s.color};width:${pct}%"></div></div></div>
       <div class="alloc-hrs">${alloc[id]}h</div>
     </div>`;
   });
-  html += `<div style="font-size:11px;color:var(--text3);margin-top:10px;font-family:var(--mono)">${days} days × ${hpd}h = ${total}h total across ${sel.length} subjects</div></div>`;
+  html += `<div style="font-size:11px;color:var(--text3);margin-top:10px;font-family:var(--mono)">${days}d × ${hpd}h = ${total}h total</div></div>`;
   document.getElementById('tc-result').innerHTML = html;
 }
 
-/* ABOUT */
+/* ——— ABOUT ——— */
 function buildAboutHTML() {
   return `
     <div class="back-header">
@@ -1324,49 +1667,40 @@ function buildAboutHTML() {
     </div>
     <div class="about-hero">
       <div class="about-logo">Study<span>OS</span></div>
-      <div class="about-sub">Your ISC Class XI study companion</div>
+      <div class="about-sub">Your ISC Class XI unit test companion</div>
     </div>
     <div class="about-credit">
       <div class="about-credit-name">Rupam Sadhukhan</div>
       <div class="about-credit-sub">MADE WITH THE HELP OF CLAUDE AI</div>
       <div style="margin-top:12px;font-size:22px">🎓✨</div>
     </div>
-    <div class="about-info-row">
-      <div class="about-info-icon">📚</div>
-      <div class="about-info-text">ISC Class XI — PCM + Computer Science</div>
-    </div>
-    <div class="about-info-row">
-      <div class="about-info-icon">📐</div>
-      <div class="about-info-text">Mathematics, Physics, Chemistry, Computer Sc.</div>
-    </div>
-    <div class="about-info-row">
-      <div class="about-info-icon">🗺️</div>
-      <div class="about-info-text">Full syllabus mind maps with key formulas</div>
-    </div>
-    <div class="about-info-row">
-      <div class="about-info-icon">⏱️</div>
-      <div class="about-info-text">Pomodoro timer — Focus / Short Break / Long Break</div>
-    </div>
-    <div class="about-info-row">
-      <div class="about-info-icon">✅</div>
-      <div class="about-info-text">Track chapters across Unit Test, Half-Yearly, Cumulative & Annual</div>
-    </div>
-    <div class="about-info-row">
-      <div class="about-info-icon">💾</div>
-      <div class="about-info-text">Progress saved locally on your device</div>
-    </div>
-    <div style="text-align:center;padding:24px 0 8px;font-size:11px;color:var(--text3);font-family:var(--mono)">
-      StudyOS v2.0 · Built for ISC 2025–26
-    </div>`;
+    <div class="about-info-row"><div class="about-info-icon">📚</div><div class="about-info-text">ISC Class XI — PCM + Computer Science</div></div>
+    <div class="about-info-row"><div class="about-info-icon">📝</div><div class="about-info-text">Unit Test formula bank — all 4 subjects</div></div>
+    <div class="about-info-row"><div class="about-info-icon">⏱️</div><div class="about-info-text">Pomodoro timer with total study time tracking</div></div>
+    <div class="about-info-row"><div class="about-info-icon">📅</div><div class="about-info-text">Custom timetable — build your own schedule</div></div>
+    <div class="about-info-row"><div class="about-info-icon">✅</div><div class="about-info-text">Track unit test chapter completion</div></div>
+    <div class="about-info-row"><div class="about-info-icon">💾</div><div class="about-info-text">Progress saved locally on your device</div></div>
+    <div style="text-align:center;padding:24px 0 8px;font-size:11px;color:var(--text3);font-family:var(--mono)">StudyOS v3.0 · ISC 2025–26</div>`;
 }
 
-/* ==============================
+/* ============================================================
    INIT
-============================== */
+============================================================ */
+// Init timer circumference
+(function() {
+  const fill = document.getElementById('timer-ring-fill');
+  if (fill) {
+    fill.style.strokeDasharray = CIRCUMFERENCE;
+    fill.style.strokeDashoffset = 0;
+  }
+  timerSecs = timerMins * 60;
+})();
+
 renderHome();
 initChapters();
-initMaps();
-initFocus();
+initFormulas();
+updateTimeStatsUI();
 </script>
 </body>
 </html>
+
